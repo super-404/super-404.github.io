@@ -8,9 +8,23 @@
     <link href="/2023/06/03/Authentication%20Failed%E5%8F%AF%E8%83%BD%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"/>
     <url>/2023/06/03/Authentication%20Failed%E5%8F%AF%E8%83%BD%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</url>
     
-    <content type="html"><![CDATA[<meta name="referrer" content="no-referrer"/>事情是这样的，手贱改了下github的名字，并且**申请了个人的token**。问题应该就出在这里。然后当我再次push的时候，一直提示Authentication Failed。我就纳了闷了。难道是我密码输错了吗？然后又开始重新输入。最后在[stackoverflow](https://stackoverflow.com/questions/17659206/git-push-results-in-authentication-failed)这里找到了答案。唉，最关键的时我当时把高赞答案漏了，直接看到下面的去了。在凌晨一两点中的时候，突然发现上面还有一个答案，这个答案给的解决方法是适用我的。我真的是.................<p>stackoverflow高赞答案: <img src="https://img-blog.csdnimg.cn/71886d2a3fe9483cbc7f1c00c027c4e6.png" alt="stackoverflow高赞答案"></p><p><strong>翻译一下</strong>：</p><blockquote><p>如果您在 GitHub 帐户中启用了双因素身份验证，您将无法使用您的帐户密码通过 HTTPS 进行推送。相反，您需要生成个人访问令牌。这可以在您的 GitHub 帐户的应用程序设置中完成。使用此令牌作为密码应该允许您通过 HTTPS 推送到远程存储库。像往常一样使用您的用户名。</p></blockquote><p><strong>再翻译一下</strong>：</p><p><code>使用你的个人的token代替之前的密码</code></p><blockquote><p>一天的光阴，能够写进我们记忆中的并不多，能够为人生带来些助益的，也不见得有多少。我们一直在求有所得，但却每一分每一秒都在错过。</p></blockquote>]]></content>
+    <content type="html"><![CDATA[<p>事情是这样的，手贱改了下github的名字，并且<strong>申请了个人的token</strong>。</p><p>问题应该就出在这里。</p><p>然后当我再次push的时候，一直提示Authentication Failed。</p><p>我就纳了闷了。难道是我密码输错了吗？然后又开始重新输入。</p><p>最后在<a href="https://stackoverflow.com/questions/17659206/git-push-results-in-authentication-failed">stackoverflow</a>这里找到了答案。</p><p>stackoverflow高赞答案: <img src="https://img-blog.csdnimg.cn/71886d2a3fe9483cbc7f1c00c027c4e6.png" alt="stackoverflow高赞答案"></p><p><strong>翻译一下</strong>：</p><blockquote><p>如果您在 GitHub 帐户中启用了双因素身份验证，您将无法使用您的帐户密码通过 HTTPS 进行推送。相反，您需要生成个人访问令牌。这可以在您的 GitHub 帐户的应用程序设置中完成。使用此令牌作为密码应该允许您通过 HTTPS 推送到远程存储库。像往常一样使用您的用户名。</p></blockquote><p><strong>再翻译一下</strong>：</p><p><code>使用你的个人的token代替之前的密码</code></p><blockquote><p>一天的光阴，能够写进我们记忆中的并不多，能够为人生带来些助益的，也不见得有多少。我们一直在求有所得，但却每一分每一秒都在错过。</p></blockquote>]]></content>
     
     
+    <categories>
+      
+      <category>bug</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>github</tag>
+      
+      <tag>problems</tag>
+      
+    </tags>
     
   </entry>
   
