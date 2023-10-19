@@ -16,25 +16,24 @@
   <meta name="author" content="super-404">
   <meta name="keywords" content="">
   
-    <meta name="description" content="事情是这样的，手贱改了下github的名字，并且申请了个人的token。 问题应该就出在这里。 然后当我再次push的时候，一直提示Authentication Failed。 我就纳了闷了。难道是我密码输错了吗？然后又开始重新输入。 最后在stackoverflow这里找到了答案。 stackoverflow高赞答案:  翻译一下：  如果您在 GitHub 帐户中启用了双因素身份验证，您将无法">
+    <meta name="description" content="leetcode学习了一下什么是滑动窗口，学习地址 适合解决的数组连续区间的问题 模板 12345678910111213141516left &#x3D; 0right &#x3D; 0while right &lt; len(nums):    window.append(nums[right])        # 超过窗口大小时，缩小窗口，维护窗口中始终为 window_size 的长度    if right">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git push results in &quot;Authentication Failed&quot;可能的解决方法">
-<meta property="og:url" content="http://example.com/2023/06/03/Authentication%20Failed%E5%8F%AF%E8%83%BD%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:title" content="学习记录2023&#x2F;10&#x2F;19">
+<meta property="og:url" content="http://example.com/2023/10/19/leetcode1343/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="事情是这样的，手贱改了下github的名字，并且申请了个人的token。 问题应该就出在这里。 然后当我再次push的时候，一直提示Authentication Failed。 我就纳了闷了。难道是我密码输错了吗？然后又开始重新输入。 最后在stackoverflow这里找到了答案。 stackoverflow高赞答案:  翻译一下：  如果您在 GitHub 帐户中启用了双因素身份验证，您将无法">
+<meta property="og:description" content="leetcode学习了一下什么是滑动窗口，学习地址 适合解决的数组连续区间的问题 模板 12345678910111213141516left &#x3D; 0right &#x3D; 0while right &lt; len(nums):    window.append(nums[right])        # 超过窗口大小时，缩小窗口，维护窗口中始终为 window_size 的长度    if right">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/71886d2a3fe9483cbc7f1c00c027c4e6.png">
-<meta property="article:published_time" content="2023-06-03T12:41:44.539Z">
-<meta property="article:modified_time" content="2023-10-19T11:07:28.913Z">
+<meta property="og:image" content="z:\hexo-blog\source_posts\leetcode1343\leetcode1343.png">
+<meta property="article:published_time" content="2023-10-19T11:02:27.000Z">
+<meta property="article:modified_time" content="2023-10-19T11:37:02.089Z">
 <meta property="article:author" content="super-404">
-<meta property="article:tag" content="github">
-<meta property="article:tag" content="problems">
+<meta property="article:tag" content="leetcode">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/71886d2a3fe9483cbc7f1c00c027c4e6.png">
+<meta name="twitter:image" content="z:\hexo-blog\source_posts\leetcode1343\leetcode1343.png">
   
   
   
-  <title>Git push results in &#34;Authentication Failed&#34;可能的解决方法 - Hexo</title>
+  <title>学习记录2023/10/19 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Git push results in &#34;Authentication Failed&#34;可能的解决方法"></span>
+            <span id="subtitle" data-typed-text="学习记录2023/10/19"></span>
           
         </div>
 
@@ -211,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-06-03 20:41" pubdate>
-          2023年6月3日 晚上
+        <time datetime="2023-10-19 19:02" pubdate>
+          2023年10月19日 晚上
         </time>
       </span>
     
@@ -223,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          379 字
+          769 字
         
       </span>
     
@@ -234,7 +233,7 @@
         
         
         
-          4 分钟
+          7 分钟
         
       </span>
     
@@ -272,26 +271,23 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Git push results in &#34;Authentication Failed&#34;可能的解决方法</h1>
+            <h1 style="display: none">学习记录2023/10/19</h1>
             
             
               <div class="markdown-body">
                 
-                <p>事情是这样的，手贱改了下github的名字，并且<strong>申请了个人的token</strong>。</p>
-<p>问题应该就出在这里。</p>
-<p>然后当我再次push的时候，一直提示Authentication Failed。</p>
-<p>我就纳了闷了。难道是我密码输错了吗？然后又开始重新输入。</p>
-<p>最后在<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/17659206/git-push-results-in-authentication-failed">stackoverflow</a>这里找到了答案。</p>
-<p>stackoverflow高赞答案: <img src="https://img-blog.csdnimg.cn/71886d2a3fe9483cbc7f1c00c027c4e6.png" srcset="/img/loading.gif" lazyload alt="stackoverflow高赞答案"></p>
-<p><strong>翻译一下</strong>：</p>
-<blockquote>
-<p>如果您在 GitHub 帐户中启用了双因素身份验证，您将无法使用您的帐户密码通过 HTTPS 进行推送。相反，您需要生成个人访问令牌。这可以在您的 GitHub 帐户的应用程序设置中完成。使用此令牌作为密码应该允许您通过 HTTPS 推送到远程存储库。像往常一样使用您的用户名。</p>
-</blockquote>
-<p><strong>再翻译一下</strong>：</p>
-<p><code>使用你的个人的token代替之前的密码</code></p>
-<blockquote>
-<p>一天的光阴，能够写进我们记忆中的并不多，能够为人生带来些助益的，也不见得有多少。我们一直在求有所得，但却每一分每一秒都在错过。</p>
-</blockquote>
+                <h3 id="leetcode"><a href="#leetcode" class="headerlink" title="leetcode"></a>leetcode</h3><p>学习了一下什么是滑动窗口，<a target="_blank" rel="noopener" href="https://algo.itcharge.cn/01.Array/05.Array-Sliding-Window/01.Array-Sliding-Window/">学习地址</a></p>
+<p>适合解决的数组连续区间的问题</p>
+<p>模板</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java">left = <span class="hljs-number">0</span><br>right = <span class="hljs-number">0</span><br><br><span class="hljs-keyword">while</span> right &lt; len(nums):<br>    window.append(nums[right])<br>    <br>    # 超过窗口大小时，缩小窗口，维护窗口中始终为 window_size 的长度<br>    <span class="hljs-keyword">if</span> right - left + <span class="hljs-number">1</span> &gt;= window_size:<br>        # ... 维护答案<br>        window.popleft()<br>        left += <span class="hljs-number">1</span><br>    <br>    # 向右侧增大窗口<br>    right += <span class="hljs-number">1</span><br>    <br><br></code></pre></td></tr></table></figure>
+
+<p>例题：</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold/">1343. 大小为 K 且平均值大于等于阈值的子数组数目 - 力扣（LeetCode）</a></p>
+<h4 id=""><a href="#" class="headerlink" title=""></a><img src="Z:\hexo-blog\source_posts\leetcode1343\leetcode1343.png" srcset="/img/loading.gif" lazyload alt="image-20231019191907752"></h4><p>要求我们满足一定的条件的区间个数</p>
+<p>按照模板，初始化<code>left=0,right=0</code></p>
+<p>一开始区间肯定是空的，应该先无脑将区间填满。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numOfSubarrays</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> k, <span class="hljs-type">int</span> threshold)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br><br>        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (right &lt; arr.length) &#123;<br>			<span class="hljs-comment">//无脑填满</span><br>            sum += arr[right];<br>            <span class="hljs-comment">//判断是不是填满了，如果填满了是不是满足条件，</span><br>            <span class="hljs-keyword">if</span> (right - left + <span class="hljs-number">1</span> &gt;= k) &#123;<br>                <span class="hljs-type">int</span> <span class="hljs-variable">average</span> <span class="hljs-operator">=</span> sum / k;<br>                <span class="hljs-keyword">if</span> (average &gt;=threshold) &#123;<br>                    res++;<br>                &#125;<br>                <span class="hljs-comment">//无论满不满足，这个区间已经没用了，开发下一个区间</span><br>                sum -= arr[left];<br>                left++;<br>            &#125;<br>            <span class="hljs-comment">//因为上面判断是用right-left+1，因此right++要放在判断的后面</span><br>            right++;<br>        &#125;<br>        <span class="hljs-keyword">return</span> res;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
@@ -300,34 +296,11 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/bug/" class="category-chain-item">bug</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/github/">#github</a>
-      
-        <a href="/tags/problems/">#problems</a>
+        <a href="/tags/leetcode/">#leetcode</a>
       
     </div>
   
@@ -339,8 +312,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Git push results in &#34;Authentication Failed&#34;可能的解决方法</div>
-      <div>http://example.com/2023/06/03/Authentication Failed可能的解决方法/</div>
+      <div>学习记录2023/10/19</div>
+      <div>http://example.com/2023/10/19/leetcode1343/</div>
     </div>
     <div class="license-meta">
       
@@ -352,7 +325,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年6月3日</div>
+          <div>2023年10月19日</div>
         </div>
       
       
@@ -384,18 +357,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/10/19/leetcode1343/" title="学习记录2023/10/19">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">学习记录2023/10/19</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/06/02/test/" title="Markdown编辑器的使用">
-                        <span class="hidden-mobile">Markdown编辑器的使用</span>
+                      <a href="/2023/06/03/Authentication%20Failed%E5%8F%AF%E8%83%BD%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" title="Git push results in &#34;Authentication Failed&#34;可能的解决方法">
+                        <span class="hidden-mobile">Git push results in &#34;Authentication Failed&#34;可能的解决方法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
