@@ -24,7 +24,7 @@
 <meta property="og:description" content="Systemd程序Systemd其实是Linux系统用来管理系统的一个程序，用来代替原来的init进程(用来管理启动系统其它的服务进程)，现在很多Linux发行版都已经自带Systemd程序了。 systemctl命令1. Unitsystemctl命令是Systemd中最重要的一个命令，用于对服务进行启动，停止等操作，在Systemd中有Unit的概念，每个进程都是一个Unit，总共有十二种Un">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-27T16:06:52.000Z">
-<meta property="article:modified_time" content="2024-09-27T16:13:11.661Z">
+<meta property="article:modified_time" content="2024-09-27T16:17:29.823Z">
 <meta property="article:author" content="super-404">
 <meta property="article:tag" content="命令">
 <meta name="twitter:card" content="summary_large_image">
@@ -231,7 +231,7 @@
         
         
         
-          51 分钟
+          52 分钟
         
       </span>
     
@@ -312,6 +312,9 @@
 <h3 id="查看Unit启动日志"><a href="#查看Unit启动日志" class="headerlink" title="查看Unit启动日志"></a>查看Unit启动日志</h3><p>Systemd统一管理了所有Unit的启动日志，因此只需要使用journalctl命令就可以查看到服务的日志</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs sql"># 查看所有日志（默认情况下 ，只保存本次启动的日志）<br>journalctl<br><br># 查看指定时间的日志<br>journalctl <span class="hljs-comment">--since=&quot;2012-10-30 18:17:16&quot;</span><br>journalctl <span class="hljs-comment">--since &quot;20 min ago&quot;</span><br>journalctl <span class="hljs-comment">--since yesterday</span><br>journalctl <span class="hljs-comment">--since &quot;2015-01-10&quot; --until &quot;2015-01-11 03:00&quot;</span><br>journalctl <span class="hljs-comment">--since 09:00 --until &quot;1 hour ago&quot;</span><br><br># 显示尾部的最新<span class="hljs-number">10</span>行日志<br>journalctl <span class="hljs-operator">-</span>n<br><br># 显示尾部指定行数的日志<br>journalctl <span class="hljs-operator">-</span>n <span class="hljs-number">20</span><br><br># 实时滚动显示最新日志<br>journalctl <span class="hljs-operator">-</span>f<br><br># 查看指定服务的日志<br>journalctl <span class="hljs-operator">/</span>usr<span class="hljs-operator">/</span>lib<span class="hljs-operator">/</span>systemd<span class="hljs-operator">/</span>systemd<br><br># 查看指定进程的日志<br>journalctl _PID<span class="hljs-operator">=</span><span class="hljs-number">1</span><br><br># 查看某个路径的脚本的日志<br>journalctl <span class="hljs-operator">/</span>usr<span class="hljs-operator">/</span>bin<span class="hljs-operator">/</span>bash<br><br># 查看指定用户的日志<br>journalctl _UID<span class="hljs-operator">=</span><span class="hljs-number">33</span> <span class="hljs-comment">--since today</span><br><br># 查看某个 Unit 的日志<br>journalctl <span class="hljs-operator">-</span>u nginx.service<br>journalctl <span class="hljs-operator">-</span>u nginx.service <span class="hljs-comment">--since today</span><br><br># 实时滚动显示某个 Unit 的最新日志<br>journalctl <span class="hljs-operator">-</span>u nginx.service <span class="hljs-operator">-</span>f<br><br># 合并显示多个 Unit 的日志<br>$ journalctl <span class="hljs-operator">-</span>u nginx.service <span class="hljs-operator">-</span>u php<span class="hljs-operator">-</span>fpm.service <span class="hljs-comment">--since today</span><br></code></pre></td></tr></table></figure>
 
+<blockquote>
+<p>一天的光阴，能够写进我们记忆中的并不多，能够为人生带来些助益的，也不见得有多少。我们一直在求有所得，但却每一分每一秒都在错过。</p>
+</blockquote>
 
                 
               </div>
@@ -402,9 +405,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/06/02/hello-world/" title="Hello World">
+                      <a href="/2023/10/19/risc-vOS%20%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" title="risc-v OS学习记录">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Hello World</span>
+                        <span class="hidden-mobile">risc-v OS学习记录</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
