@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>背包问题</title>
+    <link href="/2024/09/28/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/"/>
+    <url>/2024/09/28/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://leetcode.cn/problems/number-of-great-partitions/">2518. 好分区的数目</a></p><p>那么原问题就转换为「从 nums 中选择若干元素，使得元素和小于 k 的方案数」，这样用 01 背包就不会超时了。</p><p><a href="https://leetcode.cn/problems/find-the-sum-of-the-power-of-all-subsequences/">3082. 求出所有子序列的能量和</a></p><p>数组 nums 的长度是 n。如果数组 nums 中存在一个长度为 p 的子序列的元素和等于 k，则不在该子序列中的元素个数是 n−p，包含该长度为 p 的子序列的子序列个数是$ 2^{n-p}$，因此该长度为 p 的子序列对于数组 nums 的所有子序列的能量和的贡献值是<br>$$<br>2^{n-p}<br>$$<br>创建 (n+1)×(k+1)×(n+1) 的三维数组 dp，其中dp[i]  [j]  [k]表示数组 nums 的前 i 个元素可以组成的元素和为 j 且长度为 p 的子序列的数目。</p><p>相当于是多了一个维度 p,选择p个组成j,  而不是选择任意多个元素，多了一份约束</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>动态规划</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>LockSupport的使用和基本原理</title>
     <link href="/2024/04/13/LockSupport%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"/>
     <url>/2024/04/13/LockSupport%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
