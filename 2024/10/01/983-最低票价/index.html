@@ -16,22 +16,22 @@
   <meta name="author" content="super-404">
   <meta name="keywords" content="">
   
-    <meta name="description" content="原文 引言代码审查似乎是个很不错的主意，对吧？两个开发人员查看同一段代码意味着有两次发现问题的机会；它传播了对项目演变方式的理解；审查者可以通过详细阅读作者的代码学习有用的技巧，或发现机会教作者一些他们不知道的有用技巧。 但这仅仅是对于“光明面”代码审查者而言，他们试图通过审查来改善代码库和开发者的集体技能。代码审查也可以是一个强大的工具，用于完全不同的目的。当一个代码审查者转向“黑暗面”时，他们">
+    <meta name="description" content="题目在一个火车旅行很受欢迎的国度，你提前一年计划了一些火车旅行。在接下来的一年里，你要旅行的日子将以一个名为 days 的数组给出。每一项是一个从 1 到 365 的整数。 火车票有 三种不同的销售方式 ：  一张 为期一天 的通行证售价为 costs[0] 美元； 一张 为期七天 的通行证售价为 costs[1] 美元； 一张 为期三十天 的通行证售价为 costs[2] 美元。  通行证允许数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="反模式的代码审查">
-<meta property="og:url" content="http://example.com/2024/10/15/%E5%8F%8D%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5/index.html">
+<meta property="og:title" content="983.最低票价">
+<meta property="og:url" content="http://example.com/2024/10/01/983-%E6%9C%80%E4%BD%8E%E7%A5%A8%E4%BB%B7/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="原文 引言代码审查似乎是个很不错的主意，对吧？两个开发人员查看同一段代码意味着有两次发现问题的机会；它传播了对项目演变方式的理解；审查者可以通过详细阅读作者的代码学习有用的技巧，或发现机会教作者一些他们不知道的有用技巧。 但这仅仅是对于“光明面”代码审查者而言，他们试图通过审查来改善代码库和开发者的集体技能。代码审查也可以是一个强大的工具，用于完全不同的目的。当一个代码审查者转向“黑暗面”时，他们">
+<meta property="og:description" content="题目在一个火车旅行很受欢迎的国度，你提前一年计划了一些火车旅行。在接下来的一年里，你要旅行的日子将以一个名为 days 的数组给出。每一项是一个从 1 到 365 的整数。 火车票有 三种不同的销售方式 ：  一张 为期一天 的通行证售价为 costs[0] 美元； 一张 为期七天 的通行证售价为 costs[1] 美元； 一张 为期三十天 的通行证售价为 costs[2] 美元。  通行证允许数">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-10-15T03:18:59.000Z">
-<meta property="article:modified_time" content="2024-10-15T03:54:13.437Z">
+<meta property="article:published_time" content="2024-10-01T15:39:09.000Z">
+<meta property="article:modified_time" content="2024-10-31T14:09:04.643Z">
 <meta property="article:author" content="super-404">
-<meta property="article:tag" content="译文">
+<meta property="article:tag" content="动态规划">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>反模式的代码审查 - Hexo</title>
+  <title>983.最低票价 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -197,7 +197,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="反模式的代码审查"></span>
+            <span id="subtitle" data-typed-text="983.最低票价"></span>
           
         </div>
 
@@ -208,8 +208,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-15 11:18" pubdate>
-          2024年10月15日 上午
+        <time datetime="2024-10-01 23:39" pubdate>
+          2024年10月1日 晚上
         </time>
       </span>
     
@@ -220,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k 字
+          1.4k 字
         
       </span>
     
@@ -231,7 +231,7 @@
         
         
         
-          9 分钟
+          13 分钟
         
       </span>
     
@@ -269,29 +269,155 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">反模式的代码审查</h1>
+            <h1 style="display: none">983.最低票价</h1>
             
             
               <div class="markdown-body">
                 
-                <p><a target="_blank" rel="noopener" href="https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/code-review-antipatterns/">原文</a></p>
-<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a><strong>引言</strong></h2><p>代码审查似乎是个很不错的主意，对吧？两个开发人员查看同一段代码意味着有两次发现问题的机会；它传播了对项目演变方式的理解；审查者可以通过详细阅读作者的代码学习有用的技巧，或发现机会教作者一些他们不知道的有用技巧。</p>
-<p>但这仅仅是对于“光明面”代码审查者而言，他们试图通过审查来改善代码库和开发者的集体技能。代码审查也可以是一个强大的工具，用于完全不同的目的。当一个代码审查者转向“黑暗面”时，他们有大量的方式来阻碍或延迟对代码的改进，惹恼补丁作者或完全打击他们的积极性，或者追求他们自己的其他目标。</p>
-<p>如果您最近才转向“黑暗面”，您可能还没有想到所有的可能性。因此，这里列出了一些代码审查反模式，供那些灵感枯竭的“黑暗面”代码审查者参考。</p>
-<h2 id="往返千次的死亡"><a href="#往返千次的死亡" class="headerlink" title="往返千次的死亡"></a><strong>往返千次的死亡</strong></h2><p>你开始审阅代码。只要发现小问题，你就添加评论指出它。然后你停止继续阅读。</p>
-<p>开发者认真地修复了你指出的小问题，并提交了修改后的补丁。</p>
-<p>你开始阅读新版本。这次你又发现了一个小问题，与第一个无关。其实你本可以在第一次就指出它，但因为没读那么远，所以没有发现。于是你指出这个问题，然后再次停止阅读。</p>
-<p>如此反复，直到开发者失去希望。</p>
-<p>如果你与开发者处在非常不同的时区，自然会有24小时的往返时间，这样补丁的演变速度会慢到极致。如果你们处在相近的时区或同一时区，那么为了让补丁的提交尽可能拖延，你需要安排其他事情让自己忙起来，以便有个合理的借口让每个版本的审阅花上一两天。</p>
-<p>要抵制住说诸如“这看起来好多了”这样的诱惑性评论。如果你暗示自己快要满意了，开发者就会有继续努力的理由！</p>
-<h2 id="勒索信"><a href="#勒索信" class="headerlink" title="勒索信"></a><strong>勒索信</strong></h2><p>这个特定的补丁对提交的开发者来说似乎特别重要。（也许他们直接说了这点，作为试图说服你接受补丁的理由，或者你从字里行间读出了这种意思。）</p>
-<p>但这个补丁对你来说并不是特别重要——因此你处于一个有利的位置！现在你可以把他们迫切需要的修改扣为“人质”，直到他们完成大量与补丁无关的额外工作。虽然这些工作不一定非得在同一个提交里完成，但对你来说很重要。</p>
-<p>“如果你还想看到你心爱的补丁……”</p>
-<h2 id="双人组"><a href="#双人组" class="headerlink" title="双人组"></a><strong>双人组</strong></h2><p>一个补丁，两位审阅者。</p>
-<p>每次其中一个审阅者要求修改，开发者都会顺从地做出修改——然后另一个审阅者就可以开始提出新的意见！</p>
-<p>轮流提出互相矛盾的要求，但始终将矛头指向开发者。避免在审阅中直接与另一位审阅者争论，也不要承认补丁作者的建议，即两位审阅者应该互相沟通并达成共识，明确补丁的最终样子。</p>
-<p>看看能让开发者在两人间来回折腾多少次，直到他们放弃。</p>
-<p>（如果实在找不到同伙，你可以试试推翻自己之前的审阅评论。不过通常有人会发现。最好还是有两位审阅者来配合。）</p>
+                <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>在一个火车旅行很受欢迎的国度，你提前一年计划了一些火车旅行。在接下来的一年里，你要旅行的日子将以一个名为 <code>days</code> 的数组给出。每一项是一个从 <code>1</code> 到 <code>365</code> 的整数。</p>
+<p>火车票有 <strong>三种不同的销售方式</strong> ：</p>
+<ul>
+<li>一张 <strong>为期一天</strong> 的通行证售价为 <code>costs[0]</code> 美元；</li>
+<li>一张 <strong>为期七天</strong> 的通行证售价为 <code>costs[1]</code> 美元；</li>
+<li>一张 <strong>为期三十天</strong> 的通行证售价为 <code>costs[2]</code> 美元。</li>
+</ul>
+<p>通行证允许数天无限制的旅行。 例如，如果我们在第 <code>2</code> 天获得一张 <strong>为期 7 天</strong> 的通行证，那么我们可以连着旅行 7 天：第 <code>2</code> 天、第 <code>3</code> 天、第 <code>4</code> 天、第 <code>5</code> 天、第 <code>6</code> 天、第 <code>7</code> 天和第 <code>8</code> 天。</p>
+<p>返回 <em>你想要完成在给定的列表 <code>days</code> 中列出的每一天的旅行所需要的最低消费</em> 。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs tap">输入：days = [1,4,6,7,8,20], costs = [2,7,15]<br>输出：11<br>解释： <br>例如，这里有一种购买通行证的方法，可以让你完成你的旅行计划：<br>在第<span class="hljs-number"> 1 </span>天，你花了 costs[0] = $2 买了一张为期<span class="hljs-number"> 1 </span>天的通行证，它将在第<span class="hljs-number"> 1 </span>天生效。<br>在第<span class="hljs-number"> 3 </span>天，你花了 costs[1] = $7 买了一张为期<span class="hljs-number"> 7 </span>天的通行证，它将在第 3, 4, ...,<span class="hljs-number"> 9 </span>天生效。<br>在第<span class="hljs-number"> 20 </span>天，你花了 costs[0] = $2 买了一张为期<span class="hljs-number"> 1 </span>天的通行证，它将在第<span class="hljs-number"> 20 </span>天生效。<br>你总共花了 $11，并完成了你计划的每一天旅行。<br></code></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs tap">输入：days = [1,2,3,4,5,6,7,8,9,10,30,31], costs = [2,7,15]<br>输出：17<br>解释：<br>例如，这里有一种购买通行证的方法，可以让你完成你的旅行计划： <br>在第<span class="hljs-number"> 1 </span>天，你花了 costs[2] = $15 买了一张为期<span class="hljs-number"> 30 </span>天的通行证，它将在第 1, 2, ...,<span class="hljs-number"> 30 </span>天生效。<br>在第<span class="hljs-number"> 31 </span>天，你花了 costs[0] = $2 买了一张为期<span class="hljs-number"> 1 </span>天的通行证，它将在第<span class="hljs-number"> 31 </span>天生效。 <br>你总共花了 $17，并完成了你计划的每一天旅行<br></code></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= days.length &lt;= 365</code></li>
+<li><code>1 &lt;= days[i] &lt;= 365</code></li>
+<li><code>days</code> 按顺序严格递增</li>
+<li><code>costs.length == 3</code></li>
+<li><code>1 &lt;= costs[i] &lt;= 1000</code></li>
+</ul>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>数据量还是比较大的，单纯的爆搜不太可能，考虑记忆化或者动态规划</p>
+<p>这题有点类似青蛙跳楼梯，</p>
+<p>区别在于青蛙跳楼梯是连续的，</p>
+<p>这一题对于不连续的位置要怎么考虑状态</p>
+<p>对于每一天来说，他都有三种选择</p>
+<p>分别对应三种cost</p>
+<p>具体来说，f[i] 的定义  表示 1 到 i 天的最小花费。</p>
+<p>f[i]&#x3D;min(f[i−1]+costs[0],f[i−7]+costs[1],f[i−30]+costs[2])</p>
+<p>i-7和i-30又可能小于0</p>
+<p>但是实际上小于0，和等于0是等价的</p>
+<h3 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h3><p>days &#x3D; [1,4,6,7,8,20], costs &#x3D; [2,7,15]</p>
+<p>下标从1开始</p>
+<p>t[1] &#x3D;&#x3D; 1，需要出去旅游，选择最小值2</p>
+<p>2，3天不用出去旅游，他们的花费来源于f[i-1] 因此截至到第三天，花费2</p>
+<p>最大天数是20天，初始化一个dp数组f</p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+<th>16</th>
+<th>17</th>
+<th>18</th>
+<th>19</th>
+<th>20</th>
+<th>21</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>考虑到第四天，t[4] &#x3D;&#x3D; 1，需要出去旅游，选择花费的最小值</p>
+<p>f[4] &#x3D; min(2+2,2+7,2+15);</p>
+<p>t[6] 同理</p>
+<p>f[7] &#x3D; min(4+4,2+7,15+2)</p>
+<p>f[8] &#x3D; min(8+2,7+2,15+2)</p>
+<p>f[21] &#x3D; min(9+2,9+7,15+6)</p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+<th>16</th>
+<th>17</th>
+<th>18</th>
+<th>19</th>
+<th>20</th>
+<th>21</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>4</td>
+<td>6</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>11</td>
+</tr>
+</tbody></table>
 
                 
               </div>
@@ -300,11 +426,32 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E8%AF%91%E6%96%87/">#译文</a>
+        <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">#动态规划</a>
       
     </div>
   
@@ -316,8 +463,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>反模式的代码审查</div>
-      <div>http://example.com/2024/10/15/反模式的代码审查/</div>
+      <div>983.最低票价</div>
+      <div>http://example.com/2024/10/01/983-最低票价/</div>
     </div>
     <div class="license-meta">
       
@@ -329,7 +476,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月15日</div>
+          <div>2024年10月1日</div>
         </div>
       
       
@@ -361,9 +508,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/10/26/%E6%B4%9B%E8%B0%B7P3985%20%E4%B8%8D%E5%BC%80%E5%BF%83%E7%9A%84%E9%87%91%E6%98%8E/" title="">
+                      <a href="/2024/10/15/%E5%8F%8D%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5/" title="反模式的代码审查">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">反模式的代码审查</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -371,8 +518,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/10/01/983-%E6%9C%80%E4%BD%8E%E7%A5%A8%E4%BB%B7/" title="983.最低票价">
-                        <span class="hidden-mobile">983.最低票价</span>
+                      <a href="/2024/09/28/java-lang-String%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" title="SpringBoot升级3.2报错Invalid value type for attribute factoryBeanObjectType java.lang.String的解决方案">
+                        <span class="hidden-mobile">SpringBoot升级3.2报错Invalid value type for attribute factoryBeanObjectType java.lang.String的解决方案</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
