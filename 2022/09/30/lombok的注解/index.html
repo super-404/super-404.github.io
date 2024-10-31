@@ -1,0 +1,714 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1. @Getter 和 @Setter 功能：自动生成类中的所有字段的 getter 和 setter 方法。  用法：  @Getter：为字段生成 getter 方法。 @Setter：为字段生成 setter 方法。  示例： 12345678910javaimport lombok.Getter;import lombok.Setter;public class User &amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lombok 的注解">
+<meta property="og:url" content="http://example.com/2022/09/30/lombok%E7%9A%84%E6%B3%A8%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. @Getter 和 @Setter 功能：自动生成类中的所有字段的 getter 和 setter 方法。  用法：  @Getter：为字段生成 getter 方法。 @Setter：为字段生成 setter 方法。  示例： 12345678910javaimport lombok.Getter;import lombok.Setter;public class User &amp;#123;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-30T12:19:19.000Z">
+<meta property="article:modified_time" content="2024-10-31T13:48:50.910Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="lombok">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>lombok 的注解 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="lombok 的注解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-30 20:19" pubdate>
+          2022年9月30日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">lombok 的注解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-Getter-和-Setter"><a href="#1-Getter-和-Setter" class="headerlink" title="1. @Getter 和 @Setter"></a>1. <code>@Getter</code> 和 <code>@Setter</code></h3><ul>
+<li><p><strong>功能</strong>：自动生成类中的所有字段的 getter 和 setter 方法。</p>
+</li>
+<li><p><strong>用法</strong>：</p>
+<ul>
+<li><code>@Getter</code>：为字段生成 <code>getter</code> 方法。</li>
+<li><code>@Setter</code>：为字段生成 <code>setter</code> 方法。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">javaimport</span> <span class="hljs-selector-tag">lombok</span><span class="hljs-selector-class">.Getter</span>;<br><span class="hljs-selector-tag">import</span> <span class="hljs-selector-tag">lombok</span><span class="hljs-selector-class">.Setter</span>;<br><br><span class="hljs-selector-tag">public</span> <span class="hljs-selector-tag">class</span> <span class="hljs-selector-tag">User</span> &#123;<br>    <span class="hljs-variable">@Getter</span> <span class="hljs-variable">@Setter</span><br>    private String name;<br><br>    <span class="hljs-variable">@Getter</span> <span class="hljs-variable">@Setter</span><br>    private int age;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-NoArgsConstructor、-AllArgsConstructor、-RequiredArgsConstructor"><a href="#3-NoArgsConstructor、-AllArgsConstructor、-RequiredArgsConstructor" class="headerlink" title="3. @NoArgsConstructor、@AllArgsConstructor、@RequiredArgsConstructor"></a>3. <code>@NoArgsConstructor</code>、<code>@AllArgsConstructor</code>、<code>@RequiredArgsConstructor</code></h3><ul>
+<li><p><strong>功能</strong>：</p>
+<ul>
+<li><code>@NoArgsConstructor</code>：生成一个无参构造器。</li>
+<li><code>@AllArgsConstructor</code>：生成一个全参构造器（包含类中所有字段的构造函数）。</li>
+<li><code>@RequiredArgsConstructor</code>：生成一个包含 <code>final</code> 或带 <code>@NonNull</code> 注解字段的构造函数。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java">javaimport lombok.NoArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.RequiredArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.NonNull;<br><br><span class="hljs-meta">@NoArgsConstructor</span> <span class="hljs-comment">// 无参构造器</span><br><span class="hljs-meta">@AllArgsConstructor</span> <span class="hljs-comment">// 全参构造器</span><br><span class="hljs-meta">@RequiredArgsConstructor</span> <span class="hljs-comment">// 只包含final和@NonNull字段的构造器</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-meta">@NonNull</span><br>    <span class="hljs-keyword">private</span> Integer age; <span class="hljs-comment">// 由于带@NonNull，会被RequiredArgsConstructor包含</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-Data"><a href="#2-Data" class="headerlink" title="2. @Data"></a>2. <code>@Data</code></h3><ul>
+<li><p><strong>功能</strong>：自动生成 <code>getter</code>、<code>setter</code>、<code>toString()</code>、<code>equals()</code>、<code>hashCode()</code> 和 <code>全参构造器</code>。</p>
+</li>
+<li><p><strong>用法</strong>：</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs fortran">javaimport lombok.<span class="hljs-keyword">Data</span>;<br><br>@<span class="hljs-keyword">Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> User &#123;<br>    <span class="hljs-keyword">private</span> String <span class="hljs-keyword">name</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> age;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个注解等效于同时使用 <code>@Getter</code>、<code>@Setter</code>、<code>@ToString</code>、<code>@EqualsAndHashCode</code> 和 <code>@RequiredArgsConstructor</code>。你可以快速生成一整个实体类的基础功能。</p>
+</li>
+</ul>
+<h3 id="6-Builder"><a href="#6-Builder" class="headerlink" title="6. @Builder"></a>6. <code>@Builder</code></h3><ul>
+<li><p><strong>功能</strong>：为类生成一个 <code>Builder</code> 模式的构造器，方便链式构造对象。</p>
+</li>
+<li><p><strong>用法</strong>：</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">javaimport lombok.Builder;<br><br>@Builder<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-symbol">User</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> age;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用生成的 <code>builder</code>：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">java<br><span class="hljs-keyword">User</span> <span class="hljs-keyword">user</span> = <span class="hljs-keyword">User</span>.builder().name(&quot;Alice&quot;).age(<span class="hljs-number">25</span>).build();<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="7-NonNull"><a href="#7-NonNull" class="headerlink" title="7. @NonNull"></a>7. <code>@NonNull</code></h3><ul>
+<li><p><strong>功能</strong>：为字段生成空值检查。如果构造器或方法参数使用了 <code>@NonNull</code>，Lombok 会自动在生成的代码中插入空值检查。</p>
+</li>
+<li><p><strong>用法</strong>：</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">javaimport lombok.NonNull;<br><br><span class="hljs-built_in">public</span> <span class="hljs-keyword">class</span> <span class="hljs-keyword">User</span> &#123;<br>    <span class="hljs-built_in">public</span> <span class="hljs-keyword">User</span>(@NonNull String <span class="hljs-type">name</span>) &#123;<br>        this.name = <span class="hljs-type">name</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这会在构造器中生成类似于以下的代码：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">javapublic <span class="hljs-keyword">User</span>(String <span class="hljs-type">name</span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-type">name</span> == <span class="hljs-keyword">null</span>) &#123;<br>        throw <span class="hljs-built_in">new</span> NullPointerException(&quot;name is marked @NonNull but is null&quot;);<br>    &#125;<br>    this.name = <span class="hljs-type">name</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="8-Synchronized"><a href="#8-Synchronized" class="headerlink" title="8. @Synchronized"></a>8. <code>@Synchronized</code></h3><ul>
+<li><p><strong>功能</strong>：生成同步方法（类似于 <code>synchronized</code> 关键字）。比直接在方法上使用 <code>synchronized</code> 更安全，因为它可以防止同步在 <code>null</code> 对象上。</p>
+</li>
+<li><p><strong>用法</strong>：</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs gradle">javaimport lombok.<span class="hljs-keyword">Synchronized</span>;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> Counter &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-keyword">count</span> = <span class="hljs-number">0</span>;<br><br>    @<span class="hljs-keyword">Synchronized</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> increment() &#123;<br>        <span class="hljs-keyword">count</span>++;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="9-Slf4j"><a href="#9-Slf4j" class="headerlink" title="9. @Slf4j"></a>9. <code>@Slf4j</code></h3><ul>
+<li><p><strong>功能</strong>：为类生成一个 <code>Slf4j</code> 日志记录器实例。</p>
+</li>
+<li><p><strong>用法</strong>：</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs csharp">javaimport lombok.<span class="hljs-keyword">extern</span>.slf4j.Slf4j;<br><br>@Slf4j<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">UserService</span> &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span>()</span> &#123;<br>        log.info(<span class="hljs-string">&quot;Processing user...&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个注解会自动为类生成 <code>log</code> 对象，用于日志记录。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/lombok/" class="category-chain-item">lombok</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/lombok/">#lombok</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>lombok 的注解</div>
+      <div>http://example.com/2022/09/30/lombok的注解/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/21/linux%E6%89%A9%E5%AE%B9%E5%9C%A8centos-root%E4%B8%8B/" title="linux扩容在centos-root下">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">linux扩容在centos-root下</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/28/Sql%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0/" title="Sql窗口函数">
+                        <span class="hidden-mobile">Sql窗口函数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

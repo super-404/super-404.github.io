@@ -16,15 +16,15 @@
   <meta name="author" content="super-404">
   <meta name="keywords" content="">
   
-    <meta name="description" content="2518. 好分区的数目 那么原问题就转换为「从 nums 中选择若干元素，使得元素和小于 k 的方案数」，这样用 01 背包就不会超时了。 3082. 求出所有子序列的能量和 数组 nums 的长度是 n。如果数组 nums 中存在一个长度为 p 的子序列的元素和等于 k，则不在该子序列中的元素个数是 n−p，包含该长度为 p 的子序列的子序列个数是$ 2^{n-p}$，因此该长度为 p 的子序">
+    <meta name="description" content="2518. 好分区的数目那么原问题就转换为「从 nums 中选择若干元素，使得元素和小于 k 的方案数」，这样用 01 背包就不会超时了。 3082. 求出所有子序列的能量和数组 nums 的长度是 n。如果数组 nums 中存在一个长度为 p 的子序列的元素和等于 k，则不在该子序列中的元素个数是 n−p，包含该长度为 p 的子序列的子序列个数是$ 2^{n-p}$，因此该长度为 p 的子序列对">
 <meta property="og:type" content="article">
 <meta property="og:title" content="背包问题">
 <meta property="og:url" content="http://example.com/2024/09/28/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="2518. 好分区的数目 那么原问题就转换为「从 nums 中选择若干元素，使得元素和小于 k 的方案数」，这样用 01 背包就不会超时了。 3082. 求出所有子序列的能量和 数组 nums 的长度是 n。如果数组 nums 中存在一个长度为 p 的子序列的元素和等于 k，则不在该子序列中的元素个数是 n−p，包含该长度为 p 的子序列的子序列个数是$ 2^{n-p}$，因此该长度为 p 的子序">
+<meta property="og:description" content="2518. 好分区的数目那么原问题就转换为「从 nums 中选择若干元素，使得元素和小于 k 的方案数」，这样用 01 背包就不会超时了。 3082. 求出所有子序列的能量和数组 nums 的长度是 n。如果数组 nums 中存在一个长度为 p 的子序列的元素和等于 k，则不在该子序列中的元素个数是 n−p，包含该长度为 p 的子序列的子序列个数是$ 2^{n-p}$，因此该长度为 p 的子序列对">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-09-28T07:19:11.000Z">
-<meta property="article:modified_time" content="2024-09-28T16:01:09.607Z">
+<meta property="article:modified_time" content="2024-10-31T13:50:43.802Z">
 <meta property="article:author" content="super-404">
 <meta property="article:tag" content="动态规划">
 <meta name="twitter:card" content="summary_large_image">
@@ -220,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          325 字
+          351 字
         
       </span>
     
@@ -274,12 +274,10 @@
             
               <div class="markdown-body">
                 
-                <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-great-partitions/">2518. 好分区的数目</a></p>
-<p>那么原问题就转换为「从 nums 中选择若干元素，使得元素和小于 k 的方案数」，这样用 01 背包就不会超时了。</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-the-sum-of-the-power-of-all-subsequences/">3082. 求出所有子序列的能量和</a></p>
-<p>数组 nums 的长度是 n。如果数组 nums 中存在一个长度为 p 的子序列的元素和等于 k，则不在该子序列中的元素个数是 n−p，包含该长度为 p 的子序列的子序列个数是$ 2^{n-p}$，因此该长度为 p 的子序列对于数组 nums 的所有子序列的能量和的贡献值是<br>$$<br>2^{n-p}<br>$$<br>创建 (n+1)×(k+1)×(n+1) 的三维数组 dp，其中dp[i]  [j]  [k]表示数组 nums 的前 i 个元素可以组成的元素和为 j 且长度为 p 的子序列的数目。</p>
+                <h2 id="2518-好分区的数目"><a href="#2518-好分区的数目" class="headerlink" title="2518. 好分区的数目"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-great-partitions/">2518. 好分区的数目</a></h2><p>那么原问题就转换为「从 nums 中选择若干元素，使得元素和小于 k 的方案数」，这样用 01 背包就不会超时了。</p>
+<h2 id="3082-求出所有子序列的能量和"><a href="#3082-求出所有子序列的能量和" class="headerlink" title="3082. 求出所有子序列的能量和"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-the-sum-of-the-power-of-all-subsequences/">3082. 求出所有子序列的能量和</a></h2><p>数组 nums 的长度是 n。如果数组 nums 中存在一个长度为 p 的子序列的元素和等于 k，则不在该子序列中的元素个数是 n−p，包含该长度为 p 的子序列的子序列个数是$ 2^{n-p}$，因此该长度为 p 的子序列对于数组 nums 的所有子序列的能量和的贡献值是<br>$$<br>2^{n-p}<br>$$<br>创建 (n+1)×(k+1)×(n+1) 的三维数组 dp，其中dp[i]  [j]  [k]表示数组 nums 的前 i 个元素可以组成的元素和为 j 且长度为 p 的子序列的数目。</p>
 <p>相当于是多了一个维度 p,选择p个组成j,  而不是选择任意多个元素，多了一份约束</p>
-
+<h2 id="Bone-Collector-II-（01背包的第K优解）"><a href="#Bone-Collector-II-（01背包的第K优解）" class="headerlink" title="Bone Collector II （01背包的第K优解）"></a>Bone Collector II （01背包的第K优解）</h2>
                 
               </div>
             
