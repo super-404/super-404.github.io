@@ -4,6 +4,8 @@ date: '2026-04-27 11:27'
 categories:
   - '技术文档'
   - '数据库'
+  - 'Badger'
+  - '读路径'
 tags:
   - '数据库'
   - 'badger'

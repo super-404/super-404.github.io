@@ -3,7 +3,10 @@ title: 'BootstrapRegistryInitializer'
 date: '2025-10-24 15:27'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - '启动流程'
+  - 'BootstrapRegistry'
 tags:
   - 'springboot'
   - '3.5.6'

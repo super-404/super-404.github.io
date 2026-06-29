@@ -4,6 +4,8 @@ date: '2025-09-19 11:46'
 categories:
   - '技术文档'
   - '开源学习'
+  - 'Netty'
+  - 'ChannelHandler'
 tags:
   - '开源学习'
   - 'netty'

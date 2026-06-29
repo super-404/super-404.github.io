@@ -3,7 +3,10 @@ title: '一、@Import 是什么'
 date: '2025-10-22 13:18'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Framework'
+  - '类注册'
+  - '@Import'
 tags:
   - 'springboot'
   - '类的注册'

@@ -3,7 +3,9 @@ title: '@builder'
 date: '2025-09-01 15:02'
 categories:
   - '技术文档'
-  - '基础文档'
+  - 'Java'
+  - 'Lombok'
+  - 'Builder'
 tags:
 ---
 

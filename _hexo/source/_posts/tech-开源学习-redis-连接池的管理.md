@@ -4,6 +4,9 @@ date: '2025-09-01 15:06'
 categories:
   - '技术文档'
   - '开源学习'
+  - 'Redis'
+  - 'Spring集成'
+  - '连接池'
 tags:
   - '开源学习'
   - 'redis'

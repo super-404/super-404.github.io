@@ -3,7 +3,10 @@ title: '不同的时机调用的个性化定义'
 date: '2025-09-11 16:52'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - '生命周期扩展'
+  - '启动时机'
 tags:
   - 'springboot'
 ---

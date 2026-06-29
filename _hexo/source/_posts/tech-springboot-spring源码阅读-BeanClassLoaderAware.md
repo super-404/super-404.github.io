@@ -3,7 +3,10 @@ title: 'BeanClassLoaderAware'
 date: '2025-09-27 17:51'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Framework'
+  - '源码阅读'
+  - 'Aware接口'
 tags:
   - 'springboot'
   - 'spring源码阅读'

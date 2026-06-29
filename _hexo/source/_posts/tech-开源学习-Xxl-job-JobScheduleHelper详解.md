@@ -4,6 +4,9 @@ date: '2025-12-30 15:59'
 categories:
   - '技术文档'
   - '开源学习'
+  - 'XXL-JOB'
+  - '调度源码'
+  - 'JobScheduleHelper'
 tags:
   - '开源学习'
   - 'Xxl-job'

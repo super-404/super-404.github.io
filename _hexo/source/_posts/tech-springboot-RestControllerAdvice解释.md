@@ -3,7 +3,10 @@ title: 'RestControllerAdvice解释'
 date: '2025-09-02 16:03'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - 'Web接口'
+  - '全局异常处理'
 tags:
   - 'springboot'
 ---

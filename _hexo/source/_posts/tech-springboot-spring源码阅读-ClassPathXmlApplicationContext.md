@@ -3,7 +3,10 @@ title: 'ClassPathXmlApplicationContext'
 date: '2025-09-27 11:15'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Framework'
+  - '源码阅读'
+  - '容器启动'
 tags:
   - 'springboot'
   - 'spring源码阅读'

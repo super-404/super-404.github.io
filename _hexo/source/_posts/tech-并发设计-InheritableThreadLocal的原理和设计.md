@@ -3,7 +3,9 @@ title: 'InheritableThreadLocal的原理和设计'
 date: '2025-09-22 14:07'
 categories:
   - '技术文档'
-  - '并发设计'
+  - '并发编程'
+  - '线程上下文'
+  - 'InheritableThreadLocal'
 tags:
   - '并发设计'
 ---

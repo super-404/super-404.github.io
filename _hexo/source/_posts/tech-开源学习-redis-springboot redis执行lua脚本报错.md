@@ -4,6 +4,9 @@ date: '2025-08-31 17:59'
 categories:
   - '技术文档'
   - '开源学习'
+  - 'Redis'
+  - 'Spring集成'
+  - 'Lua脚本'
 tags:
   - '开源学习'
   - 'redis'

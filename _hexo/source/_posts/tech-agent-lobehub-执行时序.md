@@ -3,7 +3,9 @@ title: '执行时序'
 date: '2026-06-11 21:56'
 categories:
   - '技术文档'
-  - 'agent'
+  - 'AI Agent'
+  - 'LobeHub'
+  - '执行时序'
 tags:
   - 'agent'
   - 'lobehub'

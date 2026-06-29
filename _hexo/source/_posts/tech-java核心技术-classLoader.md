@@ -3,7 +3,9 @@ title: 'classLoader'
 date: '2025-10-20 10:48'
 categories:
   - '技术文档'
-  - 'java核心技术'
+  - 'Java'
+  - 'JVM'
+  - '类加载器'
 tags:
   - 'java核心技术'
 ---

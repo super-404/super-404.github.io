@@ -3,7 +3,9 @@ title: '实现一个简化的 CompletableFuture'
 date: '2025-09-05 10:48'
 categories:
   - '技术文档'
-  - '并发设计'
+  - '并发编程'
+  - '异步编程'
+  - 'CompletableFuture'
 tags:
   - '并发设计'
 ---

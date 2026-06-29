@@ -3,7 +3,10 @@ title: '@Params'
 date: '2025-08-25 11:09'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - 'Web接口'
+  - '参数绑定'
 tags:
   - 'springboot'
 ---

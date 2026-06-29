@@ -3,7 +3,10 @@ title: '在 META-INF/spring.factories 中，排序很重要'
 date: '2025-09-27 16:53'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - '源码阅读'
+  - '实例排序'
 tags:
   - 'springboot'
   - 'spring源码阅读'

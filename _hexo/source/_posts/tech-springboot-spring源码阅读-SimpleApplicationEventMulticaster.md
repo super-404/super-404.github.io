@@ -3,7 +3,10 @@ title: 'SimpleApplicationEventMulticaster'
 date: '2025-09-27 18:12'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Framework'
+  - '源码阅读'
+  - '事件广播'
 tags:
   - 'springboot'
   - 'spring源码阅读'

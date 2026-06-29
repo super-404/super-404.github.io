@@ -15,7 +15,11 @@
       
       <category>技术文档</category>
       
-      <category>agent</category>
+      <category>AI Agent</category>
+      
+      <category>LobeHub</category>
+      
+      <category>执行时序</category>
       
     </categories>
     
@@ -46,6 +50,10 @@
       
       <category>数据库</category>
       
+      <category>Badger</category>
+      
+      <category>读路径</category>
+      
     </categories>
     
     
@@ -73,7 +81,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>CAS</category>
+      
+      <category>性能分析</category>
       
     </categories>
     
@@ -100,7 +112,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>数据库</category>
+      
+      <category>存储引擎</category>
+      
+      <category>LSM Tree</category>
       
     </categories>
     
@@ -121,7 +137,9 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>待整理</category>
+      
+      <category>空文档</category>
       
     </categories>
     
@@ -142,7 +160,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>分布式系统</category>
+      
+      <category>分布式存储</category>
+      
+      <category>入门路线</category>
       
     </categories>
     
@@ -163,7 +185,11 @@
       
       <category>技术文档</category>
       
-      <category>分布式技术</category>
+      <category>分布式系统</category>
+      
+      <category>MIT 6.824</category>
+      
+      <category>GFS</category>
       
     </categories>
     
@@ -192,7 +218,11 @@
       
       <category>技术文档</category>
       
-      <category>分布式技术</category>
+      <category>分布式系统</category>
+      
+      <category>MIT 6.824</category>
+      
+      <category>MapReduce</category>
       
     </categories>
     
@@ -223,6 +253,12 @@
       
       <category>开源学习</category>
       
+      <category>XXL-JOB</category>
+      
+      <category>调度源码</category>
+      
+      <category>分布式锁</category>
+      
     </categories>
     
     
@@ -251,6 +287,12 @@
       <category>技术文档</category>
       
       <category>开源学习</category>
+      
+      <category>XXL-JOB</category>
+      
+      <category>调度源码</category>
+      
+      <category>时间轮</category>
       
     </categories>
     
@@ -281,6 +323,12 @@
       
       <category>开源学习</category>
       
+      <category>XXL-JOB</category>
+      
+      <category>任务过期</category>
+      
+      <category>分支处理</category>
+      
     </categories>
     
     
@@ -309,6 +357,12 @@
       <category>技术文档</category>
       
       <category>开源学习</category>
+      
+      <category>XXL-JOB</category>
+      
+      <category>任务过期</category>
+      
+      <category>处理机制</category>
       
     </categories>
     
@@ -339,6 +393,12 @@
       
       <category>开源学习</category>
       
+      <category>XXL-JOB</category>
+      
+      <category>任务过期</category>
+      
+      <category>原因分析</category>
+      
     </categories>
     
     
@@ -367,6 +427,12 @@
       <category>技术文档</category>
       
       <category>开源学习</category>
+      
+      <category>XXL-JOB</category>
+      
+      <category>调度源码</category>
+      
+      <category>JobScheduleHelper</category>
       
     </categories>
     
@@ -397,6 +463,12 @@
       
       <category>开源学习</category>
       
+      <category>XXL-JOB</category>
+      
+      <category>任务过期</category>
+      
+      <category>分析</category>
+      
     </categories>
     
     
@@ -425,6 +497,12 @@
       <category>技术文档</category>
       
       <category>开源学习</category>
+      
+      <category>XXL-JOB</category>
+      
+      <category>调度中心</category>
+      
+      <category>调度逻辑</category>
       
     </categories>
     
@@ -455,6 +533,12 @@
       
       <category>开源学习</category>
       
+      <category>XXL-JOB</category>
+      
+      <category>执行器</category>
+      
+      <category>注册逻辑</category>
+      
     </categories>
     
     
@@ -482,7 +566,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>并发编程</category>
+      
+      <category>高性能队列</category>
+      
+      <category>Disruptor</category>
       
     </categories>
     
@@ -503,7 +591,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>启动流程</category>
+      
+      <category>BootstrapRegistry</category>
       
     </categories>
     
@@ -532,7 +626,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>类注册</category>
+      
+      <category>ImportBeanDefinitionRegistrar</category>
       
     </categories>
     
@@ -561,7 +661,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>类注册</category>
+      
+      <category>@Import</category>
       
     </categories>
     
@@ -590,7 +696,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>运行模式</category>
+      
+      <category>Headless</category>
       
     </categories>
     
@@ -617,7 +729,11 @@
       
       <category>技术文档</category>
       
-      <category>java核心技术</category>
+      <category>Java</category>
+      
+      <category>JVM</category>
+      
+      <category>类加载器</category>
       
     </categories>
     
@@ -644,7 +760,11 @@
       
       <category>技术文档</category>
       
-      <category>值得收藏的好文</category>
+      <category>学习资源</category>
+      
+      <category>文章收藏</category>
+      
+      <category>链接汇总</category>
       
     </categories>
     
@@ -671,7 +791,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>源码阅读</category>
+      
+      <category>事件广播</category>
       
     </categories>
     
@@ -700,7 +826,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>源码阅读</category>
+      
+      <category>Aware接口</category>
       
     </categories>
     
@@ -729,7 +861,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>启动监听</category>
       
     </categories>
     
@@ -758,7 +896,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>run方法</category>
       
     </categories>
     
@@ -787,7 +931,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>实例排序</category>
       
     </categories>
     
@@ -816,7 +966,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>实例化</category>
       
     </categories>
     
@@ -845,7 +1001,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>spring.factories加载</category>
       
     </categories>
     
@@ -874,7 +1036,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>源码阅读</category>
+      
+      <category>资源加载</category>
       
     </categories>
     
@@ -903,7 +1071,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>扩展加载</category>
       
     </categories>
     
@@ -932,7 +1106,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>应用类型判断</category>
       
     </categories>
     
@@ -961,7 +1141,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>启动流程</category>
       
     </categories>
     
@@ -990,7 +1176,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>源码阅读</category>
+      
+      <category>容器启动</category>
       
     </categories>
     
@@ -1019,7 +1211,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>源码阅读</category>
+      
+      <category>UML结构图</category>
       
     </categories>
     
@@ -1048,7 +1246,11 @@
       
       <category>技术文档</category>
       
-      <category>命令工具</category>
+      <category>工程工具</category>
+      
+      <category>Java工具</category>
+      
+      <category>JAR结构</category>
       
     </categories>
     
@@ -1075,7 +1277,11 @@
       
       <category>技术文档</category>
       
-      <category>命令工具</category>
+      <category>工程工具</category>
+      
+      <category>Linux命令</category>
+      
+      <category>lsof</category>
       
     </categories>
     
@@ -1103,6 +1309,10 @@
       <category>技术文档</category>
       
       <category>中间件</category>
+      
+      <category>ZooKeeper</category>
+      
+      <category>安装部署</category>
       
     </categories>
     
@@ -1133,6 +1343,10 @@
       
       <category>中间件</category>
       
+      <category>待整理</category>
+      
+      <category>空文档</category>
+      
     </categories>
     
     
@@ -1158,7 +1372,11 @@
       
       <category>技术文档</category>
       
-      <category>maven</category>
+      <category>工程工具</category>
+      
+      <category>Maven</category>
+      
+      <category>依赖管理</category>
       
     </categories>
     
@@ -1187,6 +1405,10 @@
       
       <category>中间件</category>
       
+      <category>Nacos</category>
+      
+      <category>配置监听</category>
+      
     </categories>
     
     
@@ -1214,7 +1436,11 @@
       
       <category>技术文档</category>
       
-      <category>docker</category>
+      <category>工程工具</category>
+      
+      <category>Docker</category>
+      
+      <category>Docker Compose</category>
       
     </categories>
     
@@ -1241,7 +1467,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>线程上下文</category>
+      
+      <category>InheritableThreadLocal</category>
       
     </categories>
     
@@ -1268,7 +1498,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>Bean生命周期</category>
+      
+      <category>BeanPostProcessor</category>
       
     </categories>
     
@@ -1297,6 +1533,10 @@
       
       <category>开源学习</category>
       
+      <category>Netty</category>
+      
+      <category>ChannelHandler</category>
+      
     </categories>
     
     
@@ -1324,7 +1564,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>注解元数据</category>
+      
+      <category>后处理器</category>
       
     </categories>
     
@@ -1351,7 +1597,11 @@
       
       <category>技术文档</category>
       
-      <category>git</category>
+      <category>工程工具</category>
+      
+      <category>Git</category>
+      
+      <category>文件跟踪</category>
       
     </categories>
     
@@ -1380,6 +1630,10 @@
       
       <category>中间件</category>
       
+      <category>RPC</category>
+      
+      <category>自动配置</category>
+      
     </categories>
     
     
@@ -1407,7 +1661,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>生命周期扩展</category>
+      
+      <category>启动时机</category>
       
     </categories>
     
@@ -1434,7 +1694,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>线程协作</category>
+      
+      <category>CyclicBarrier</category>
       
     </categories>
     
@@ -1461,7 +1725,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>Java内存模型</category>
+      
+      <category>volatile</category>
       
     </categories>
     
@@ -1488,7 +1756,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>锁与同步器</category>
+      
+      <category>信号量</category>
       
     </categories>
     
@@ -1515,7 +1787,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>AQS</category>
+      
+      <category>源码解析</category>
       
     </categories>
     
@@ -1542,7 +1818,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>自旋优化</category>
+      
+      <category>Thread.onSpinWait</category>
       
     </categories>
     
@@ -1569,7 +1849,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>CAS</category>
+      
+      <category>ABA问题</category>
       
     </categories>
     
@@ -1596,7 +1880,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>锁与同步器</category>
+      
+      <category>基本原理</category>
       
     </categories>
     
@@ -1623,7 +1911,11 @@
       
       <category>技术文档</category>
       
-      <category>分布式技术</category>
+      <category>分布式系统</category>
+      
+      <category>MIT 6.824</category>
+      
+      <category>GFS</category>
       
     </categories>
     
@@ -1652,7 +1944,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>Java</category>
+      
+      <category>Classpath与资源加载</category>
+      
+      <category>Spring Boot配置</category>
       
     </categories>
     
@@ -1673,7 +1969,11 @@
       
       <category>技术文档</category>
       
-      <category>并发设计</category>
+      <category>并发编程</category>
+      
+      <category>异步编程</category>
+      
+      <category>CompletableFuture</category>
       
     </categories>
     
@@ -1700,7 +2000,11 @@
       
       <category>技术文档</category>
       
-      <category>adengine</category>
+      <category>业务系统</category>
+      
+      <category>AdEngine</category>
+      
+      <category>IMC缓存</category>
       
     </categories>
     
@@ -1727,7 +2031,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>事件机制</category>
+      
+      <category>ContextRefreshedEvent</category>
       
     </categories>
     
@@ -1754,7 +2064,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>Web接口</category>
+      
+      <category>全局异常处理</category>
       
     </categories>
     
@@ -1781,7 +2097,11 @@
       
       <category>技术文档</category>
       
-      <category>adengine</category>
+      <category>业务系统</category>
+      
+      <category>AdEngine</category>
+      
+      <category>初始化流程</category>
       
     </categories>
     
@@ -1808,7 +2128,11 @@
       
       <category>技术文档</category>
       
-      <category>git</category>
+      <category>工程工具</category>
+      
+      <category>Git</category>
+      
+      <category>分支管理</category>
       
     </categories>
     
@@ -1837,6 +2161,12 @@
       
       <category>开源学习</category>
       
+      <category>Redis</category>
+      
+      <category>Spring集成</category>
+      
+      <category>连接池</category>
+      
     </categories>
     
     
@@ -1864,7 +2194,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>Java</category>
+      
+      <category>Lombok</category>
+      
+      <category>Builder</category>
       
     </categories>
     
@@ -1886,6 +2220,12 @@
       <category>技术文档</category>
       
       <category>开源学习</category>
+      
+      <category>Redis</category>
+      
+      <category>Spring集成</category>
+      
+      <category>连接工厂</category>
       
     </categories>
     
@@ -1916,6 +2256,12 @@
       
       <category>开源学习</category>
       
+      <category>Redis</category>
+      
+      <category>Spring集成</category>
+      
+      <category>Lua脚本</category>
+      
     </categories>
     
     
@@ -1943,7 +2289,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>工程实践</category>
+      
+      <category>日志</category>
+      
+      <category>配置</category>
       
     </categories>
     
@@ -1964,7 +2314,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>Web接口</category>
+      
+      <category>参数绑定</category>
       
     </categories>
     
@@ -1991,7 +2347,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>Java</category>
+      
+      <category>泛型</category>
+      
+      <category>类型见证</category>
       
     </categories>
     
@@ -2012,7 +2372,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Boot</category>
+      
+      <category>Web接口</category>
+      
+      <category>请求体绑定</category>
       
     </categories>
     
@@ -2039,7 +2405,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>Java</category>
+      
+      <category>语言基础</category>
+      
+      <category>static</category>
       
     </categories>
     
@@ -2060,7 +2430,11 @@
       
       <category>技术文档</category>
       
-      <category>基础文档</category>
+      <category>数据库</category>
+      
+      <category>MySQL</category>
+      
+      <category>标识符规则</category>
       
     </categories>
     
@@ -2082,6 +2456,10 @@
       <category>技术文档</category>
       
       <category>中间件</category>
+      
+      <category>Nacos</category>
+      
+      <category>Docker部署</category>
       
     </categories>
     
@@ -2110,7 +2488,13 @@
       
       <category>技术文档</category>
       
-      <category>springboot</category>
+      <category>Spring</category>
+      
+      <category>Spring Framework</category>
+      
+      <category>配置管理</category>
+      
+      <category>Java Config</category>
       
     </categories>
     

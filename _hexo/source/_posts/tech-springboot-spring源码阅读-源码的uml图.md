@@ -3,7 +3,10 @@ title: '源码的uml图'
 date: '2025-09-27 11:14'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - '源码阅读'
+  - 'UML结构图'
 tags:
   - 'springboot'
   - 'spring源码阅读'

@@ -3,7 +3,9 @@ title: 'git 取消管理某个文件'
 date: '2025-09-12 18:01'
 categories:
   - '技术文档'
-  - 'git'
+  - '工程工具'
+  - 'Git'
+  - '文件跟踪'
 tags:
   - 'git'
 ---

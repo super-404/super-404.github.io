@@ -3,7 +3,10 @@ title: 'ContextRefreshedEvent'
 date: '2025-09-03 21:24'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Framework'
+  - '事件机制'
+  - 'ContextRefreshedEvent'
 tags:
   - 'springboot'
 ---

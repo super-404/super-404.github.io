@@ -3,7 +3,10 @@ title: 'META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoco
 date: '2025-09-27 13:40'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - '源码阅读'
+  - '扩展加载'
 tags:
   - 'springboot'
   - 'spring源码阅读'

@@ -3,7 +3,10 @@ title: '加载spring.factory'
 date: '2025-09-27 15:03'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - '源码阅读'
+  - 'spring.factories加载'
 tags:
   - 'springboot'
   - 'spring源码阅读'

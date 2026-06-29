@@ -3,7 +3,10 @@ title: '核心配置类详解'
 date: '2025-08-22 19:39'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Framework'
+  - '配置管理'
+  - 'Java Config'
 tags:
   - 'springboot'
 ---

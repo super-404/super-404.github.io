@@ -3,7 +3,9 @@ title: '排除依赖'
 date: '2025-09-24 11:04'
 categories:
   - '技术文档'
-  - 'maven'
+  - '工程工具'
+  - 'Maven'
+  - '依赖管理'
 tags:
   - 'maven'
 ---

@@ -3,7 +3,10 @@ title: '@RequestBody'
 date: '2025-08-23 16:46'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - 'Web接口'
+  - '请求体绑定'
 tags:
   - 'springboot'
 ---

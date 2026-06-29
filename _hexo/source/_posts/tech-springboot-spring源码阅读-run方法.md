@@ -3,7 +3,10 @@ title: 'run方法'
 date: '2025-09-27 17:17'
 categories:
   - '技术文档'
-  - 'springboot'
+  - 'Spring'
+  - 'Spring Boot'
+  - '源码阅读'
+  - 'run方法'
 tags:
   - 'springboot'
   - 'spring源码阅读'

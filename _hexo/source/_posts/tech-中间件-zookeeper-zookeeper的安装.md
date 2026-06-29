@@ -4,6 +4,8 @@ date: '2025-09-26 10:25'
 categories:
   - '技术文档'
   - '中间件'
+  - 'ZooKeeper'
+  - '安装部署'
 tags:
   - '中间件'
   - 'zookeeper'

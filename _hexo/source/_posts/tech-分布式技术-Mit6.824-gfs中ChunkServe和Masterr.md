@@ -3,7 +3,9 @@ title: '如何理解GFS中Master节点和Chunk 服务器'
 date: '2025-09-06 15:18'
 categories:
   - '技术文档'
-  - '分布式技术'
+  - '分布式系统'
+  - 'MIT 6.824'
+  - 'GFS'
 tags:
   - '分布式技术'
   - 'Mit6.824'

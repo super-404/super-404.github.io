@@ -4,6 +4,9 @@ date: '2025-09-01 14:33'
 categories:
   - '技术文档'
   - '开源学习'
+  - 'Redis'
+  - 'Spring集成'
+  - '连接工厂'
 tags:
   - '开源学习'
   - 'redis'

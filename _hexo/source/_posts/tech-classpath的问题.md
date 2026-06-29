@@ -3,7 +3,9 @@ title: '使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐)'
 date: '2025-09-05 15:27'
 categories:
   - '技术文档'
-  - '基础文档'
+  - 'Java'
+  - 'Classpath与资源加载'
+  - 'Spring Boot配置'
 tags:
 ---
 

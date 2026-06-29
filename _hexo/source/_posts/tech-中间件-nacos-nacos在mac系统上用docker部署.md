@@ -4,6 +4,8 @@ date: '2025-08-22 19:40'
 categories:
   - '技术文档'
   - '中间件'
+  - 'Nacos'
+  - 'Docker部署'
 tags:
   - '中间件'
   - 'nacos'
