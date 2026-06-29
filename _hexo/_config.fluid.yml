@@ -1,0 +1,80 @@
+navbar:
+  blog_title: super-404
+  menu:
+    - { key: 'home', link: '/', icon: 'iconfont icon-home-fill' }
+    - { key: 'archive', link: '/archives/', icon: 'iconfont icon-archive-fill' }
+    - { key: 'category', link: '/categories/', icon: 'iconfont icon-category-fill' }
+    - { name: '技术文档', link: '/categories/技术文档/', icon: 'iconfont icon-bookmark-fill' }
+    - { key: 'tag', link: '/tags/', icon: 'iconfont icon-tags-fill' }
+    - { key: 'about', link: '/about/', icon: 'iconfont icon-user-fill' }
+
+index:
+  banner_img: /img/default.png
+  slogan:
+    enable: true
+    text: 我们一直在求有所得，但却每一分每一秒都在错过。
+
+post:
+  banner_img: /img/default.png
+  comments:
+    enable: false
+  copyright:
+    enable: true
+    license: CC BY 4.0
+    license_url: https://creativecommons.org/licenses/by/4.0/
+
+archive:
+  banner_img: /img/default.png
+
+category:
+  banner_img: /img/default.png
+
+tag:
+  banner_img: /img/default.png
+
+about:
+  banner_img: /img/default.png
+  avatar: /img/avatar.png
+  name: Fluid
+  intro: An elegant theme for Hexo
+
+links:
+  banner_img: /img/default.png
+
+page:
+  banner_img: /img/default.png
+
+footer:
+  content: ''
+  beian:
+    enable: false
+
+search:
+  enable: true
+  path: /local-search.xml
+  field: post
+  content: true
+
+lazyload:
+  enable: true
+  loading_img: /img/loading.gif
+
+web_analytics:
+  enable: false
+
+code:
+  copy_btn: true
+
+toc:
+  enable: true
+
+dark_mode:
+  enable: true
+  default: auto
+
+fun_features:
+  typing:
+    enable: true
+    typeSpeed: 70
+    cursorChar: '_'
+    loop: false

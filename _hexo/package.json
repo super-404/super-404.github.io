@@ -1,0 +1,31 @@
+{
+  "name": "super-404-github-io-hexo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "hexo clean && hexo generate",
+    "publish": "npm run generate && rsync -a --delete --exclude .git --exclude _hexo public/ ../",
+    "import:tech-docs": "node tools/import-docs.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "hexo": {
+    "version": "6.3.0"
+  },
+  "dependencies": {
+    "css": "^3.0.0",
+    "hexo": "^6.3.0",
+    "hexo-cli": "^4.3.1",
+    "hexo-generator-archive": "^2.0.0",
+    "hexo-generator-category": "^2.0.0",
+    "hexo-generator-index": "^3.0.0",
+    "hexo-generator-search": "^2.4.3",
+    "hexo-generator-tag": "^2.0.0",
+    "hexo-renderer-marked": "^6.3.0",
+    "hexo-renderer-stylus": "^3.0.1",
+    "hexo-theme-fluid": "^1.9.4"
+  }
+}
