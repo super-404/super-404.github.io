@@ -1,73 +1,904 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="[TOC] ContextRefreshedEvent 是 Spring框架中的一个核心事件类，表示Spring应用上下文已经完全初始化并刷新完成。 事件含义ContextRefreshedEvent 在以下时机被触发：  ✅ Spring容器完成所有bean的实例化 ✅ 所有bean的依赖注入完成 ✅ 所有bean的后处理器执行完毕 ✅ 单例bean的初始化方法执行完成  事件触发时机12&#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ContextRefreshedEvent">
+<meta property="og:url" content="https://super-404.github.io/2025/09/03/tech-springboot-ContextRefreshedEvent/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC] ContextRefreshedEvent 是 Spring框架中的一个核心事件类，表示Spring应用上下文已经完全初始化并刷新完成。 事件含义ContextRefreshedEvent 在以下时机被触发：  ✅ Spring容器完成所有bean的实例化 ✅ 所有bean的依赖注入完成 ✅ 所有bean的后处理器执行完毕 ✅ 单例bean的初始化方法执行完成  事件触发时机12&#x2F;&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-03T13:24:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="springboot">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>ContextRefreshedEvent - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ContextRefreshedEvent"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-03 21:24" pubdate>
+          2025年9月3日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          105 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ContextRefreshedEvent</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>[TOC]</p>
+<p><code>ContextRefreshedEvent</code> 是 <strong>Spring框架中的一个核心事件类</strong>，表示Spring应用上下文已经完全初始化并刷新完成。</p>
+<h2 id="事件含义"><a href="#事件含义" class="headerlink" title="事件含义"></a>事件含义</h2><p><code>ContextRefreshedEvent</code> 在以下时机被触发：</p>
+<ul>
+<li>✅ <strong>Spring容器完成所有bean的实例化</strong></li>
+<li>✅ <strong>所有bean的依赖注入完成</strong></li>
+<li>✅ <strong>所有bean的后处理器执行完毕</strong></li>
+<li>✅ <strong>单例bean的初始化方法执行完成</strong></li>
+</ul>
+<h2 id="事件触发时机"><a href="#事件触发时机" class="headerlink" title="事件触发时机"></a>事件触发时机</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在Spring容器刷新完成后发布此事件</span><br>applicationContext.refresh(); <span class="hljs-comment">// 内部会发布ContextRefreshedEvent</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="典型使用场景"><a href="#典型使用场景" class="headerlink" title="典型使用场景"></a>典型使用场景</h2><h3 id="1-应用启动初始化（如这段代码）"><a href="#1-应用启动初始化（如这段代码）" class="headerlink" title="1. 应用启动初始化（如这段代码）"></a>1. 应用启动初始化（如这段代码）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ContextRefreshedEvent event)</span> &#123;<br>    <span class="hljs-comment">// 确保所有bean都就绪后再执行初始化</span><br>    luceneIndexService.rebuildAllIndex();<br>    slotCodeService.init();<br>    <span class="hljs-comment">// ...其他初始化操作</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-缓存预热"><a href="#2-缓存预热" class="headerlink" title="2. 缓存预热"></a>2. 缓存预热</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ContextRefreshedEvent event)</span> &#123;<br>    <span class="hljs-comment">// 预热缓存数据</span><br>    cacheService.warmUp();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-资源检查"><a href="#3-资源检查" class="headerlink" title="3. 资源检查"></a>3. 资源检查</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ContextRefreshedEvent event)</span> &#123;<br>    <span class="hljs-comment">// 检查外部依赖是否可用</span><br>    databaseHealthCheck();<br>    redisHealthCheck();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="与其他Spring事件的区别"><a href="#与其他Spring事件的区别" class="headerlink" title="与其他Spring事件的区别"></a>与其他Spring事件的区别</h2><table>
+<thead>
+<tr>
+<th>事件类型</th>
+<th>触发时机</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ContextRefreshedEvent</strong></td>
+<td><strong>容器完全刷新完成</strong></td>
+<td><strong>初始化业务逻辑、预热缓存</strong></td>
+</tr>
+<tr>
+<td>ContextStartedEvent</td>
+<td>容器启动时</td>
+<td>启动特定服务</td>
+</tr>
+<tr>
+<td>ContextStoppedEvent</td>
+<td>容器停止时</td>
+<td>清理资源</td>
+</tr>
+<tr>
+<td>ContextClosedEvent</td>
+<td>容器关闭时</td>
+<td>最终清理操作</td>
+</tr>
+</tbody></table>
+<h2 id="重要特点"><a href="#重要特点" class="headerlink" title="重要特点"></a>重要特点</h2><ol>
+<li><strong>可能多次触发</strong>：在有些Spring配置中（如父子容器），可能会收到多个此事件</li>
+<li><strong>线程安全</strong>：确保在容器完全就绪后执行</li>
+<li><strong>依赖保证</strong>：可以安全地调用任何bean，因为所有依赖都已注入完成</li>
+</ol>
+<h2 id="实际应用示例"><a href="#实际应用示例" class="headerlink" title="实际应用示例"></a>实际应用示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyInitializer</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ApplicationListener</span>&lt;ContextRefreshedEvent&gt; &#123;<br>    <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> MyService myService;<br>    <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ContextRefreshedEvent event)</span> &#123;<br>        <span class="hljs-comment">// 这里可以安全地使用myService，因为它已经完成初始化</span><br>        myService.initializeData();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在你的代码中，使用<code>ContextRefreshedEvent</code>确保了广告引擎的所有组件都已经初始化完成，然后再执行索引重建、管道配置等关键操作。</p>
+<p>在Spring Boot中，<code>ContextRefreshedEvent</code>的触发是通过<strong>精密的启动流程和事件发布机制</strong>实现的。以下是详细的触发过程：</p>
+<h2 id="核心触发链路"><a href="#核心触发链路" class="headerlink" title="核心触发链路"></a>核心触发链路</h2><pre><code class=" mermaid">graph TD
+    A[SpringApplication.run] --&gt; B[创建ApplicationContext]
+    B --&gt; C[prepareContext准备上下文]
+    C --&gt; D[refreshContext刷新上下文]
+    D --&gt; E[AbstractApplicationContext.refresh]
+    E --&gt; F[执行13个标准刷新步骤]
+    F --&gt; G[finishRefresh完成刷新]
+    G --&gt; H[publishEvent发布ContextRefreshedEvent]
+    H --&gt; I[ApplicationListener接收事件]
+</code></pre>
+
+<h2 id="具体的触发源码路径"><a href="#具体的触发源码路径" class="headerlink" title="具体的触发源码路径"></a>具体的触发源码路径</h2><h3 id="1-Spring-Boot启动入口"><a href="#1-Spring-Boot启动入口" class="headerlink" title="1. Spring Boot启动入口"></a>1. Spring Boot启动入口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// SpringApplication.java</span><br><span class="hljs-keyword">public</span> ConfigurableApplicationContext <span class="hljs-title function_">run</span><span class="hljs-params">(String... args)</span> &#123;<br>    <span class="hljs-comment">// ... 前期准备</span><br>    context = createApplicationContext();<br>    <span class="hljs-comment">// ... 上下文准备</span><br>    refreshContext(context); <span class="hljs-comment">// 这里触发刷新!</span><br>    <span class="hljs-comment">// ... 后续处理</span><br>    <span class="hljs-keyword">return</span> context;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-刷新上下文关键方法"><a href="#2-刷新上下文关键方法" class="headerlink" title="2. 刷新上下文关键方法"></a>2. 刷新上下文关键方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// AbstractApplicationContext.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">refresh</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> BeansException, IllegalStateException &#123;<br>    <span class="hljs-keyword">synchronized</span> (<span class="hljs-built_in">this</span>.startupShutdownMonitor) &#123;<br>        <span class="hljs-comment">// 准备工作</span><br>        prepareRefresh();<br>        <br>        <span class="hljs-comment">// 获取刷新后的BeanFactory</span><br>        <span class="hljs-type">ConfigurableListableBeanFactory</span> <span class="hljs-variable">beanFactory</span> <span class="hljs-operator">=</span> obtainFreshBeanFactory();<br>        <br>        <span class="hljs-comment">// 准备BeanFactory</span><br>        prepareBeanFactory(beanFactory);<br>        <br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 后处理BeanFactory</span><br>            postProcessBeanFactory(beanFactory);<br>            <br>            <span class="hljs-comment">// 调用BeanFactory后处理器</span><br>            invokeBeanFactoryPostProcessors(beanFactory);<br>            <br>            <span class="hljs-comment">// 注册Bean后处理器</span><br>            registerBeanPostProcessors(beanFactory);<br>            <br>            <span class="hljs-comment">// 初始化消息源</span><br>            initMessageSource();<br>            <br>            <span class="hljs-comment">// 初始化事件广播器</span><br>            initApplicationEventMulticaster();<br>            <br>            <span class="hljs-comment">// 初始化特殊Bean</span><br>            onRefresh();<br>            <br>            <span class="hljs-comment">// 注册监听器</span><br>            registerListeners();<br>            <br>            <span class="hljs-comment">// 完成BeanFactory初始化</span><br>            finishBeanFactoryInitialization(beanFactory);<br>            <br>            <span class="hljs-comment">// 完成刷新 - 这里发布ContextRefreshedEvent!</span><br>            finishRefresh();<br>        &#125;<br>        <span class="hljs-keyword">catch</span> (BeansException ex) &#123;<br>            <span class="hljs-comment">// ... 异常处理</span><br>            <span class="hljs-keyword">throw</span> ex;<br>        &#125;<br>        <span class="hljs-keyword">finally</span> &#123;<br>            <span class="hljs-comment">// 重置缓存</span><br>            resetCommonCaches();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-精准发布事件的核心代码"><a href="#3-精准发布事件的核心代码" class="headerlink" title="3. 精准发布事件的核心代码"></a>3. 精准发布事件的核心代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// AbstractApplicationContext.java</span><br><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">finishRefresh</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">// 清除资源缓存</span><br>    clearResourceCaches();<br>    <br>    <span class="hljs-comment">// 初始化生命周期处理器</span><br>    initLifecycleProcessor();<br>    <br>    <span class="hljs-comment">// 传播刷新事件</span><br>    getLifecycleProcessor().onRefresh();<br>    <br>    <span class="hljs-comment">// 精准发布ContextRefreshedEvent!</span><br>    publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ContextRefreshedEvent</span>(<span class="hljs-built_in">this</span>));<br>    <br>    <span class="hljs-comment">// 激活MBean注册（如果适用）</span><br>    LiveBeansView.registerApplicationContext(<span class="hljs-built_in">this</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="为什么说是”精准”触发？"><a href="#为什么说是”精准”触发？" class="headerlink" title="为什么说是”精准”触发？"></a>为什么说是”精准”触发？</h2><h3 id="1-时机精准"><a href="#1-时机精准" class="headerlink" title="1. 时机精准"></a>1. 时机精准</h3><p>事件在<strong>所有初始化步骤完成后</strong>发布：</p>
+<ul>
+<li>✅ 所有Bean定义加载完成</li>
+<li>✅ 所有Bean实例化完成  </li>
+<li>✅ 所有依赖注入完成</li>
+<li>✅ 所有Bean后处理器执行完成</li>
+<li>✅ 所有生命周期回调执行完成</li>
+</ul>
+<h3 id="2-顺序精准"><a href="#2-顺序精准" class="headerlink" title="2. 顺序精准"></a>2. 顺序精准</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 严格的执行顺序保证</span><br>finishBeanFactoryInitialization(beanFactory); <span class="hljs-comment">// 1. 完成所有Bean初始化</span><br>finishRefresh();                              <span class="hljs-comment">// 2. 完成刷新</span><br>publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ContextRefreshedEvent</span>(<span class="hljs-built_in">this</span>)); <span class="hljs-comment">// 3. 发布事件</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-线程安全"><a href="#3-线程安全" class="headerlink" title="3. 线程安全"></a>3. 线程安全</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">synchronized</span> (<span class="hljs-built_in">this</span>.startupShutdownMonitor) &#123;<br>    <span class="hljs-comment">// 整个刷新过程在同步块中，确保线程安全</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="事件发布机制"><a href="#事件发布机制" class="headerlink" title="事件发布机制"></a>事件发布机制</h2><h3 id="1-事件发布"><a href="#1-事件发布" class="headerlink" title="1. 事件发布"></a>1. 事件发布</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// AbstractApplicationContext.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">publishEvent</span><span class="hljs-params">(ApplicationEvent event)</span> &#123;<br>    publishEvent(event, <span class="hljs-literal">null</span>);<br>&#125;<br><br><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">publishEvent</span><span class="hljs-params">(Object event, <span class="hljs-meta">@Nullable</span> ResolvableType eventType)</span> &#123;<br>    <span class="hljs-comment">// 获取事件广播器</span><br>    <span class="hljs-type">ApplicationEventMulticaster</span> <span class="hljs-variable">multicaster</span> <span class="hljs-operator">=</span> getApplicationEventMulticaster();<br>    <span class="hljs-comment">//  multicaster.multicastEvent(applicationEvent, eventType);</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-事件广播"><a href="#2-事件广播" class="headerlink" title="2. 事件广播"></a>2. 事件广播</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// SimpleApplicationEventMulticaster.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">multicastEvent</span><span class="hljs-params">(ApplicationEvent event, <span class="hljs-meta">@Nullable</span> ResolvableType eventType)</span> &#123;<br>    <span class="hljs-type">ResolvableType</span> <span class="hljs-variable">type</span> <span class="hljs-operator">=</span> (eventType != <span class="hljs-literal">null</span> ? eventType : resolveDefaultEventType(event));<br>    <br>    <span class="hljs-comment">// 获取所有匹配的监听器</span><br>    <span class="hljs-keyword">for</span> (ApplicationListener&lt;?&gt; listener : getApplicationListeners(event, type)) &#123;<br>        <span class="hljs-comment">// 异步或同步执行监听器</span><br>        invokeListener(listener, event);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Spring-Boot的增强"><a href="#Spring-Boot的增强" class="headerlink" title="Spring Boot的增强"></a>Spring Boot的增强</h2><p>Spring Boot在基础上增加了：</p>
+<h3 id="1-条件化配置"><a href="#1-条件化配置" class="headerlink" title="1. 条件化配置"></a>1. 条件化配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 确保所有@Conditional条件满足后才继续初始化</span><br><span class="hljs-meta">@ConditionalOnClass(...)</span><br><span class="hljs-meta">@ConditionalOnProperty(...)</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-自动配置"><a href="#2-自动配置" class="headerlink" title="2. 自动配置"></a>2. 自动配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 自动配置完成后才发布事件</span><br><span class="hljs-meta">@AutoConfigureAfter(...)</span><br><span class="hljs-meta">@AutoConfigureBefore(...)</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-健康检查"><a href="#3-健康检查" class="headerlink" title="3. 健康检查"></a>3. 健康检查</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 确保应用健康状态就绪</span><br><span class="hljs-type">HealthIndicator</span> <span class="hljs-variable">healthIndicator</span> <span class="hljs-operator">=</span> context.getBean(HealthIndicator.class);<br></code></pre></td></tr></table></figure>
+
+<p>这种精密的触发机制确保了<code>ContextRefreshedEvent</code>在<strong>最合适的时机</strong>被发布，让你的初始化代码能够安全地执行。</p>
+<p>你的代码能够精准收到<code>ContextRefreshedEvent</code>而不是泛化的<code>ApplicationEvent</code>，是因为Spring框架提供了<strong>精确的事件类型匹配机制</strong>。以下是详细的原理：</p>
+<h2 id="核心机制：事件类型过滤"><a href="#核心机制：事件类型过滤" class="headerlink" title="核心机制：事件类型过滤"></a>核心机制：事件类型过滤</h2><p>Spring的事件系统会<strong>根据监听器的泛型类型</strong>进行精确匹配：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 你的代码 - 只接收ContextRefreshedEvent</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AdEngineInitProcessor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ApplicationListener</span>&lt;ContextRefreshedEvent&gt; &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ContextRefreshedEvent event)</span> &#123;<br>        <span class="hljs-comment">// 这里只会收到ContextRefreshedEvent</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 对比：接收所有ApplicationEvent</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GenericListener</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ApplicationListener</span>&lt;ApplicationEvent&gt; &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ApplicationEvent event)</span> &#123;<br>        <span class="hljs-comment">// 这里会收到所有类型的事件</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Spring内部的事件分发流程"><a href="#Spring内部的事件分发流程" class="headerlink" title="Spring内部的事件分发流程"></a>Spring内部的事件分发流程</h2><pre><code class=" mermaid">graph TD
+    A[发布ContextRefreshedEvent] --&gt; B[事件广播器ApplicationEventMulticaster]
+    B --&gt; C[获取所有ApplicationListener]
+    C --&gt; D[遍历每个监听器]
+    D --&gt; E&#123;检查事件类型匹配&#125;
+    E --&gt;|匹配| F[调用你的onApplicationEvent方法]
+    E --&gt;|不匹配| G[跳过该监听器]
+</code></pre>
+
+<h2 id="源码级别的类型匹配"><a href="#源码级别的类型匹配" class="headerlink" title="源码级别的类型匹配"></a>源码级别的类型匹配</h2><h3 id="1-事件广播核心代码"><a href="#1-事件广播核心代码" class="headerlink" title="1. 事件广播核心代码"></a>1. 事件广播核心代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// SimpleApplicationEventMulticaster.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">multicastEvent</span><span class="hljs-params">(ApplicationEvent event, <span class="hljs-meta">@Nullable</span> ResolvableType eventType)</span> &#123;<br>    <span class="hljs-comment">// 解析事件类型</span><br>    <span class="hljs-type">ResolvableType</span> <span class="hljs-variable">type</span> <span class="hljs-operator">=</span> (eventType != <span class="hljs-literal">null</span> ? eventType : resolveDefaultEventType(event));<br>    <br>    <span class="hljs-comment">// 获取所有匹配的监听器 - 这里进行类型过滤!</span><br>    <span class="hljs-keyword">for</span> (ApplicationListener&lt;?&gt; listener : getApplicationListeners(event, type)) &#123;<br>        invokeListener(listener, event);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-类型匹配的关键方法"><a href="#2-类型匹配的关键方法" class="headerlink" title="2. 类型匹配的关键方法"></a>2. 类型匹配的关键方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// AbstractApplicationEventMulticaster.java</span><br><span class="hljs-keyword">protected</span> Collection&lt;ApplicationListener&lt;?&gt;&gt; getApplicationListeners(<br>        ApplicationEvent event, ResolvableType eventType) &#123;<br>    <br>    <span class="hljs-comment">// 这里会根据事件的ResolvableType进行精确匹配</span><br>    <span class="hljs-comment">// 你的ApplicationListener&lt;ContextRefreshedEvent&gt;只会匹配ContextRefreshedEvent</span><br>    <span class="hljs-keyword">return</span> retrieveApplicationListeners(eventType, event.getSource().getClass());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-泛型类型解析"><a href="#3-泛型类型解析" class="headerlink" title="3. 泛型类型解析"></a>3. 泛型类型解析</h3><p>Spring使用<code>ResolvableType</code>来解析泛型信息：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 你的监听器泛型信息会被解析为：</span><br><span class="hljs-type">ResolvableType</span> <span class="hljs-variable">listenerType</span> <span class="hljs-operator">=</span> ResolvableType.forClass(AdEngineInitProcessor)<br>    .as(ApplicationListener.class)<br>    .getGeneric(); <span class="hljs-comment">// 这里得到ContextRefreshedEvent.class</span><br><br><span class="hljs-comment">// 事件类型解析：</span><br><span class="hljs-type">ResolvableType</span> <span class="hljs-variable">eventType</span> <span class="hljs-operator">=</span> ResolvableType.forInstance(event); <span class="hljs-comment">// ContextRefreshedEvent实例</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="为什么是精确匹配？"><a href="#为什么是精确匹配？" class="headerlink" title="为什么是精确匹配？"></a>为什么是精确匹配？</h2><h3 id="1-泛型类型参数决定匹配"><a href="#1-泛型类型参数决定匹配" class="headerlink" title="1. 泛型类型参数决定匹配"></a>1. 泛型类型参数决定匹配</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 只会匹配ContextRefreshedEvent及其子类</span><br>ApplicationListener&lt;ContextRefreshedEvent&gt;<br><br><span class="hljs-comment">// 会匹配所有ApplicationEvent及其子类  </span><br>ApplicationListener&lt;ApplicationEvent&gt;<br><br><span class="hljs-comment">// 会匹配所有事件</span><br>ApplicationListener&lt;?&gt; 或 ApplicationListener<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-继承关系不影响匹配"><a href="#2-继承关系不影响匹配" class="headerlink" title="2. 继承关系不影响匹配"></a>2. 继承关系不影响匹配</h3><p>即使<code>ContextRefreshedEvent</code>继承自<code>ApplicationContextEvent</code>，而后者又继承自<code>ApplicationEvent</code>，Spring仍然会进行精确的类型匹配。</p>
+<h2 id="实际匹配过程示例"><a href="#实际匹配过程示例" class="headerlink" title="实际匹配过程示例"></a>实际匹配过程示例</h2><p>当发布<code>ContextRefreshedEvent</code>时：</p>
+<ol>
+<li><strong>事件类型</strong>：<code>ContextRefreshedEvent</code></li>
+<li><strong>你的监听器泛型</strong>：<code>ContextRefreshedEvent</code></li>
+<li><strong>匹配结果</strong>：✅ 精确匹配，触发你的代码</li>
+</ol>
+<p>如果发布其他事件（如<code>ContextStartedEvent</code>）：</p>
+<ol>
+<li><strong>事件类型</strong>：<code>ContextStartedEvent</code>  </li>
+<li><strong>你的监听器泛型</strong>：<code>ContextRefreshedEvent</code></li>
+<li><strong>匹配结果</strong>：❌ 类型不匹配，不会触发</li>
+</ol>
+<h2 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h2><p>你可以在代码中添加调试信息来验证：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ContextRefreshedEvent event)</span> &#123;<br>    LogUtils.info(<span class="hljs-string">&quot;收到事件: &quot;</span> + event.getClass().getName());<br>    LogUtils.info(<span class="hljs-string">&quot;事件源: &quot;</span> + event.getSource().getClass().getName());<br>    <br>    <span class="hljs-comment">// 只会输出ContextRefreshedEvent相关信息</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>你的代码能够精准接收<code>ContextRefreshedEvent</code>是因为：</p>
+<ol>
+<li><strong>泛型类型声明</strong>：<code>ApplicationListener&lt;ContextRefreshedEvent&gt;</code>明确了只接收这种事件</li>
+<li><strong>Spring的类型匹配系统</strong>：在事件分发时进行精确的泛型类型匹配</li>
+<li><strong>编译时类型安全</strong>：泛型确保了类型安全，避免错误的事件处理</li>
+</ol>
+<p>这种设计使得Spring的事件系统既灵活又类型安全，不同功能的监听器可以专注于处理特定类型的事件。</p>
+<p>这段代码是Spring框架中事件发布机制的核心部分，负责高效地获取匹配特定事件类型的应用监听器。我来详细解析其实现逻辑：</p>
+<h2 id="getApplicationListeners"><a href="#getApplicationListeners" class="headerlink" title="getApplicationListeners"></a>getApplicationListeners</h2><p>这是一个保护方法，用于获取匹配特定事件类型的所有<code>ApplicationListener</code>，通过缓存机制提高性能。</p>
+<h2 id="核心组件解析"><a href="#核心组件解析" class="headerlink" title="核心组件解析"></a>核心组件解析</h2><h3 id="1-参数说明"><a href="#1-参数说明" class="headerlink" title="1. 参数说明"></a>1. 参数说明</h3><ul>
+<li><code>ApplicationEvent event</code>: 要传播的事件对象</li>
+<li><code>ResolvableType eventType</code>: 事件类型（支持泛型解析）</li>
+<li>返回：匹配的监听器集合</li>
+</ul>
+<h3 id="2-缓存键设计"><a href="#2-缓存键设计" class="headerlink" title="2. 缓存键设计"></a>2. 缓存键设计</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ListenerCacheKey</span> <span class="hljs-variable">cacheKey</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListenerCacheKey</span>(eventType, sourceType);<br></code></pre></td></tr></table></figure>
+<p>使用事件类型+事件源类型的组合作为缓存键，确保不同事件源的相同事件类型可以分别缓存。</p>
+<h2 id="核心逻辑流程"><a href="#核心逻辑流程" class="headerlink" title="核心逻辑流程"></a>核心逻辑流程</h2><h3 id="1-缓存查找阶段"><a href="#1-缓存查找阶段" class="headerlink" title="1. 缓存查找阶段"></a>1. 缓存查找阶段</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">CachedListenerRetriever</span> <span class="hljs-variable">existingRetriever</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.retrieverCache.get(cacheKey);<br></code></pre></td></tr></table></figure>
+<p>首先尝试从并发HashMap中获取已缓存的监听器检索器。</p>
+<h3 id="2-缓存未命中处理"><a href="#2-缓存未命中处理" class="headerlink" title="2. 缓存未命中处理"></a>2. 缓存未命中处理</h3><p>当缓存不存在时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.beanClassLoader == <span class="hljs-literal">null</span> ||<br>    (ClassUtils.isCacheSafe(event.getClass(), <span class="hljs-built_in">this</span>.beanClassLoader) &amp;&amp;<br>     (sourceType == <span class="hljs-literal">null</span> || ClassUtils.isCacheSafe(sourceType, <span class="hljs-built_in">this</span>.beanClassLoader)))) &#123;<br>    <span class="hljs-comment">// 创建新的缓存条目</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>缓存安全性检查</strong>：确保事件类和源类在当前类加载器环境下是缓存安全的，避免类加载器泄漏问题。</p>
+<h3 id="3-线程安全的缓存填充"><a href="#3-线程安全的缓存填充" class="headerlink" title="3. 线程安全的缓存填充"></a>3. 线程安全的缓存填充</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">newRetriever = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CachedListenerRetriever</span>();<br>existingRetriever = <span class="hljs-built_in">this</span>.retrieverCache.putIfAbsent(cacheKey, newRetriever);<br></code></pre></td></tr></table></figure>
+<p>使用<code>putIfAbsent()</code>确保多线程环境下的原子性操作，避免重复创建缓存条目。</p>
+<h3 id="4-缓存命中处理"><a href="#4-缓存命中处理" class="headerlink" title="4. 缓存命中处理"></a>4. 缓存命中处理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (existingRetriever != <span class="hljs-literal">null</span>) &#123;<br>    Collection&lt;ApplicationListener&lt;?&gt;&gt; result = existingRetriever.getApplicationListeners();<br>    <span class="hljs-keyword">if</span> (result != <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> result; <span class="hljs-comment">// 直接返回缓存结果</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果缓存存在且已填充数据，直接返回结果，极大提升性能。</p>
+<h3 id="5-降级处理"><a href="#5-降级处理" class="headerlink" title="5. 降级处理"></a>5. 降级处理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">return</span> retrieveApplicationListeners(eventType, sourceType, newRetriever);<br></code></pre></td></tr></table></figure>
+<p>当缓存未命中或正在填充时，调用实际检索方法。</p>
+<h2 id="设计亮点"><a href="#设计亮点" class="headerlink" title="设计亮点"></a>设计亮点</h2><h3 id="1-性能优化"><a href="#1-性能优化" class="headerlink" title="1. 性能优化"></a>1. 性能优化</h3><ul>
+<li><strong>缓存机制</strong>：避免每次事件发布都重新扫描和匹配监听器</li>
+<li><strong>懒加载</strong>：缓存条目在首次需要时创建</li>
+<li><strong>线程安全</strong>：使用并发容器和原子操作</li>
+</ul>
+<h3 id="2-内存安全"><a href="#2-内存安全" class="headerlink" title="2. 内存安全"></a>2. 内存安全</h3><ul>
+<li><strong>类加载器感知</strong>：检查类的缓存安全性，防止内存泄漏</li>
+<li><strong>缓存键设计</strong>：细粒度的缓存策略，避免不必要的缓存膨胀</li>
+</ul>
+<h3 id="3-并发处理"><a href="#3-并发处理" class="headerlink" title="3. 并发处理"></a>3. 并发处理</h3><ul>
+<li><strong>putIfAbsent模式</strong>：经典的线程安全缓存填充模式</li>
+<li><strong>空结果处理</strong>：正确处理并发环境下缓存正在填充的情况</li>
+</ul>
+<h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><p>这段代码在Spring事件发布机制中被调用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// AbstractApplicationContext.publishEvent()</span><br><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">publishEvent</span><span class="hljs-params">(Object event, <span class="hljs-meta">@Nullable</span> ResolvableType eventType)</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    getApplicationListeners(event, type); <span class="hljs-comment">// 调用该方法</span><br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p>这是一个典型的高性能缓存实现，展示了Spring框架如何：</p>
+<ol>
+<li>通过缓存提升频繁操作性能</li>
+<li>处理多线程并发访问</li>
+<li>确保类加载器环境安全</li>
+<li>提供优雅的降级机制</li>
+</ol>
+<p>这种设计模式在Spring内部广泛使用，是理解框架性能优化和并发处理的重要范例。</p>
+<p>这个<code>retrieveApplicationListeners</code>方法是Spring事件监听器检索的核心实现，负责实际获取和过滤匹配特定事件类型的监听器。我来详细解析其实现逻辑：</p>
+<h2 id="retrieveApplicationListeners"><a href="#retrieveApplicationListeners" class="headerlink" title="retrieveApplicationListeners"></a>retrieveApplicationListeners</h2><p>这是一个私有方法，负责：</p>
+<ol>
+<li>从所有注册的监听器中筛选支持特定事件类型的监听器</li>
+<li>处理编程方式注册和Bean方式注册的监听器</li>
+<li>为缓存目的构建过滤后的监听器集合</li>
+</ol>
+<h2 id="核心逻辑流程-1"><a href="#核心逻辑流程-1" class="headerlink" title="核心逻辑流程"></a>核心逻辑流程</h2><h3 id="1-初始化数据结构"><a href="#1-初始化数据结构" class="headerlink" title="1. 初始化数据结构"></a>1. 初始化数据结构</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;ApplicationListener&lt;?&gt;&gt; allListeners = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>Set&lt;ApplicationListener&lt;?&gt;&gt; filteredListeners = (retriever != <span class="hljs-literal">null</span> ? <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashSet</span>&lt;&gt;() : <span class="hljs-literal">null</span>);<br>Set&lt;String&gt; filteredListenerBeans = (retriever != <span class="hljs-literal">null</span> ? <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashSet</span>&lt;&gt;() : <span class="hljs-literal">null</span>);<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>allListeners</code>: 最终返回的所有匹配监听器</li>
+<li><code>filteredListeners</code>: 用于缓存的编程方式注册的监听器</li>
+<li><code>filteredListenerBeans</code>: 用于缓存的Bean方式注册的监听器名称</li>
+</ul>
+<h3 id="2-获取所有已注册的监听器"><a href="#2-获取所有已注册的监听器" class="headerlink" title="2. 获取所有已注册的监听器"></a>2. 获取所有已注册的监听器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">synchronized</span> (<span class="hljs-built_in">this</span>.defaultRetriever) &#123;<br>    listeners = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashSet</span>&lt;&gt;(<span class="hljs-built_in">this</span>.defaultRetriever.applicationListeners);<br>    listenerBeans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashSet</span>&lt;&gt;(<span class="hljs-built_in">this</span>.defaultRetriever.applicationListenerBeans);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>线程安全</strong>：使用同步块确保在获取监听器列表时的线程安全。</p>
+<h3 id="3-处理编程方式注册的监听器"><a href="#3-处理编程方式注册的监听器" class="headerlink" title="3. 处理编程方式注册的监听器"></a>3. 处理编程方式注册的监听器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span> (ApplicationListener&lt;?&gt; listener : listeners) &#123;<br>    <span class="hljs-keyword">if</span> (supportsEvent(listener, eventType, sourceType)) &#123;<br>        <span class="hljs-keyword">if</span> (retriever != <span class="hljs-literal">null</span>) &#123;<br>            filteredListeners.add(listener); <span class="hljs-comment">// 添加到缓存</span><br>        &#125;<br>        allListeners.add(listener); <span class="hljs-comment">// 添加到结果</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>直接检查每个监听器是否支持该事件类型。</p>
+<h3 id="4-处理Bean方式注册的监听器（核心复杂逻辑）"><a href="#4-处理Bean方式注册的监听器（核心复杂逻辑）" class="headerlink" title="4. 处理Bean方式注册的监听器（核心复杂逻辑）"></a>4. 处理Bean方式注册的监听器（核心复杂逻辑）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (!listenerBeans.isEmpty()) &#123;<br>    <span class="hljs-type">ConfigurableBeanFactory</span> <span class="hljs-variable">beanFactory</span> <span class="hljs-operator">=</span> getBeanFactory();<br>    <span class="hljs-keyword">for</span> (String listenerBeanName : listenerBeans) &#123;<br>        <span class="hljs-comment">// 复杂处理逻辑...</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-1-支持事件的Bean处理"><a href="#4-1-支持事件的Bean处理" class="headerlink" title="4.1 支持事件的Bean处理"></a>4.1 支持事件的Bean处理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (supportsEvent(beanFactory, listenerBeanName, eventType)) &#123;<br>    ApplicationListener&lt;?&gt; listener = beanFactory.getBean(listenerBeanName, ApplicationListener.class);<br>    <span class="hljs-keyword">if</span> (!allListeners.contains(listener) &amp;&amp; supportsEvent(listener, eventType, sourceType)) &#123;<br>        <span class="hljs-comment">// 去重检查并添加到相应集合</span><br>        <span class="hljs-keyword">if</span> (beanFactory.isSingleton(listenerBeanName)) &#123;<br>            filteredListeners.add(listener); <span class="hljs-comment">// 单例→直接缓存实例</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            filteredListenerBeans.add(listenerBeanName); <span class="hljs-comment">// 非单例→缓存Bean名称</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>重要设计</strong>：</p>
+<ul>
+<li>单例Bean：直接缓存实例对象</li>
+<li>非单例Bean：缓存Bean名称，每次从工厂获取</li>
+</ul>
+<h4 id="4-2-不支持事件的Bean处理"><a href="#4-2-不支持事件的Bean处理" class="headerlink" title="4.2 不支持事件的Bean处理"></a>4.2 不支持事件的Bean处理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-type">Object</span> <span class="hljs-variable">listener</span> <span class="hljs-operator">=</span> beanFactory.getSingleton(listenerBeanName);<br>    <span class="hljs-keyword">if</span> (retriever != <span class="hljs-literal">null</span>) &#123;<br>        filteredListeners.remove(listener); <span class="hljs-comment">// 从缓存中移除</span><br>    &#125;<br>    allListeners.remove(listener); <span class="hljs-comment">// 从结果中移除</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>处理原本支持但现在不支持的事件监听器（可能由于Bean定义元数据变化）。</p>
+<h4 id="4-3-异常处理"><a href="#4-3-异常处理" class="headerlink" title="4.3 异常处理"></a>4.3 异常处理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">catch</span> (NoSuchBeanDefinitionException ex) &#123;<br>    <span class="hljs-comment">// Singleton listener instance (without backing bean definition) disappeared -</span><br>    <span class="hljs-comment">// probably in the middle of the destruction phase</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>优雅处理Bean在销毁阶段消失的情况。</p>
+<h3 id="5-排序和缓存填充"><a href="#5-排序和缓存填充" class="headerlink" title="5. 排序和缓存填充"></a>5. 排序和缓存填充</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java">AnnotationAwareOrderComparator.sort(allListeners); <span class="hljs-comment">// 按Order注解排序</span><br><span class="hljs-keyword">if</span> (retriever != <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-keyword">if</span> (filteredListenerBeans.isEmpty()) &#123;<br>        retriever.applicationListeners = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashSet</span>&lt;&gt;(allListeners);<br>        retriever.applicationListenerBeans = filteredListenerBeans;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        retriever.applicationListeners = filteredListeners;<br>        retriever.applicationListenerBeans = filteredListenerBeans;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>缓存策略</strong>：根据是否有非单例Bean决定缓存结构。</p>
+<h2 id="设计亮点-1"><a href="#设计亮点-1" class="headerlink" title="设计亮点"></a>设计亮点</h2><h3 id="1-双重检查机制"><a href="#1-双重检查机制" class="headerlink" title="1. 双重检查机制"></a>1. 双重检查机制</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">supportsEvent(beanFactory, listenerBeanName, eventType) <span class="hljs-comment">// 基于BeanDefinition检查</span><br>&amp;&amp; supportsEvent(listener, eventType, sourceType)       <span class="hljs-comment">// 基于实际实例检查</span><br></code></pre></td></tr></table></figure>
+<p>确保监听器确实支持该事件类型。</p>
+<h3 id="2-缓存优化策略"><a href="#2-缓存优化策略" class="headerlink" title="2. 缓存优化策略"></a>2. 缓存优化策略</h3><ul>
+<li><strong>单例Bean</strong>：缓存实例，避免重复查找</li>
+<li><strong>非单例Bean</strong>：缓存Bean名称，支持原型scope</li>
+<li><strong>去重处理</strong>：防止编程方式和Bean方式注册的重复监听器</li>
+</ul>
+<h3 id="3-线程安全设计"><a href="#3-线程安全设计" class="headerlink" title="3. 线程安全设计"></a>3. 线程安全设计</h3><ul>
+<li>同步块保护默认检索器的访问</li>
+<li>并发安全的集合操作</li>
+</ul>
+<h3 id="4-容错处理"><a href="#4-容错处理" class="headerlink" title="4. 容错处理"></a>4. 容错处理</h3><ul>
+<li>Bean不存在时的优雅降级</li>
+<li>销毁阶段的异常处理</li>
+</ul>
+<h3 id="5-性能考虑"><a href="#5-性能考虑" class="headerlink" title="5. 性能考虑"></a>5. 性能考虑</h3><ul>
+<li>懒加载：只在需要时创建Bean实例</li>
+<li>缓存友好：为后续事件发布优化性能</li>
+</ul>
+<h2 id="典型应用场景-1"><a href="#典型应用场景-1" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><p>这个方法在：</p>
+<ol>
+<li>首次发布某种类型事件时被调用</li>
+<li>缓存未命中时</li>
+<li>监听器集合发生变化时</li>
+</ol>
+<h2 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h2><p>这是一个高度优化的监听器检索实现，展示了Spring框架如何：</p>
+<ol>
+<li><strong>处理复杂性</strong>：协调编程方式和声明式注册的监听器</li>
+<li><strong>保证性能</strong>：通过智能缓存策略减少Bean工厂查找</li>
+<li><strong>确保正确性</strong>：双重检查机制验证监听器支持性</li>
+<li><strong>维护线程安全</strong>：在并发环境下安全操作</li>
+<li><strong>提供弹性</strong>：优雅处理各种边界情况</li>
+</ol>
+<p>这种设计模式体现了Spring框架在性能、安全性和功能性之间的精细平衡。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/springboot/" class="category-chain-item">springboot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/springboot/">#springboot</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ContextRefreshedEvent</div>
+      <div>https://super-404.github.io/2025/09/03/tech-springboot-ContextRefreshedEvent/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/04/tech-adengine-imcAction/" title="imc-cache 的作用">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">imc-cache 的作用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/02/tech-springboot-RestControllerAdvice%E8%A7%A3%E9%87%8A/" title="RestControllerAdvice解释">
+                        <span class="hidden-mobile">RestControllerAdvice解释</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

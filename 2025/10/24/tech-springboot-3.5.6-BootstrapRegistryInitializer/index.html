@@ -1,73 +1,997 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="非常好 👍 你的翻译和理解已经非常准确了，我可以帮你再进一步细化解释 BootstrapRegistryInitializer 的设计意图、调用时机和典型应用场景，让你能在阅读 Spring Boot 源码或自定义启动逻辑时更清晰地掌握它的用途。  🧩 一、接口本质1234@FunctionalInterfacepublic interface BootstrapRegistryInitial">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BootstrapRegistryInitializer">
+<meta property="og:url" content="https://super-404.github.io/2025/10/24/tech-springboot-3.5.6-BootstrapRegistryInitializer/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="非常好 👍 你的翻译和理解已经非常准确了，我可以帮你再进一步细化解释 BootstrapRegistryInitializer 的设计意图、调用时机和典型应用场景，让你能在阅读 Spring Boot 源码或自定义启动逻辑时更清晰地掌握它的用途。  🧩 一、接口本质1234@FunctionalInterfacepublic interface BootstrapRegistryInitial">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-24T07:27:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="springboot">
+<meta property="article:tag" content="3.5.6">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>BootstrapRegistryInitializer - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="BootstrapRegistryInitializer"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-24 15:27" pubdate>
+          2025年10月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          79 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">BootstrapRegistryInitializer</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>非常好 👍 你的翻译和理解已经非常准确了，我可以帮你再进一步<strong>细化解释 BootstrapRegistryInitializer 的设计意图、调用时机和典型应用场景</strong>，让你能在阅读 Spring Boot 源码或自定义启动逻辑时更清晰地掌握它的用途。</p>
+<hr>
+<h3 id="🧩-一、接口本质"><a href="#🧩-一、接口本质" class="headerlink" title="🧩 一、接口本质"></a>🧩 一、接口本质</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@FunctionalInterface</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">BootstrapRegistryInitializer</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">(BootstrapRegistry registry)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这是一个 <strong>函数式接口</strong>，意味着它只有一个抽象方法（<code>initialize</code>），可以通过 <strong>Lambda 表达式</strong> 或 <strong>方法引用</strong> 来实现。</p>
+<p>它的作用是：</p>
+<blockquote>
+<p>在 Spring Boot 应用的 <strong>引导阶段（bootstrap phase）</strong>，也就是 <code>ApplicationContext</code> 创建之前，对 <strong>BootstrapRegistry</strong> 进行初始化或注册额外的对象。</p>
+</blockquote>
+<hr>
+<h3 id="⚙️-二、BootstrapRegistry-是什么？"><a href="#⚙️-二、BootstrapRegistry-是什么？" class="headerlink" title="⚙️ 二、BootstrapRegistry 是什么？"></a>⚙️ 二、BootstrapRegistry 是什么？</h3><p><code>BootstrapRegistry</code> 是 Spring Boot 启动流程中的一个<strong>轻量级注册容器</strong>，主要用于：</p>
+<ul>
+<li>保存启动过程（bootstrap phase）中需要的对象；</li>
+<li>允许在 <code>ApplicationContext</code> 创建之前访问或注册资源；</li>
+<li>提供对象的延迟创建或环境依赖创建（通过 <code>BootstrapContext</code>）。</li>
+</ul>
+<p><strong>类比理解</strong>：</p>
+<blockquote>
+<p><code>BootstrapRegistry</code> 类似于一个“启动阶段的 BeanFactory”，在真正的 <code>ApplicationContext</code> 出现前暂时保存关键组件。</p>
+</blockquote>
+<hr>
+<h3 id="🕒-三、调用时机"><a href="#🕒-三、调用时机" class="headerlink" title="🕒 三、调用时机"></a>🕒 三、调用时机</h3><p>调用时机大致如下：</p>
+<ol>
+<li><p>你通过：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">SpringApplication</span> <span class="hljs-variable">app</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpringApplication</span>(MyApp.class);<br>app.addBootstrapRegistryInitializer(registry -&gt; &#123;<br>    <span class="hljs-comment">// 注册一些对象或配置</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>注册一个 <code>BootstrapRegistryInitializer</code>。</p>
+</li>
+<li><p>当应用启动时，Spring Boot 在创建 <code>BootstrapContext</code> 之前会遍历这些初始化器，调用它们的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">initialize(BootstrapRegistry registry)<br></code></pre></td></tr></table></figure>
+
+<p>方法。</p>
+</li>
+<li><p>在 <code>initialize()</code> 中你可以向注册表中添加对象、工厂、配置等，供后续阶段使用。</p>
+</li>
+</ol>
+<hr>
+<h3 id="💡-四、典型使用场景"><a href="#💡-四、典型使用场景" class="headerlink" title="💡 四、典型使用场景"></a>💡 四、典型使用场景</h3><hr>
+<h3 id="1-最简单-—-用-lambda-显式接受-BootstrapContext"><a href="#1-最简单-—-用-lambda-显式接受-BootstrapContext" class="headerlink" title="1) 最简单 — 用 lambda 显式接受 BootstrapContext"></a>1) 最简单 — 用 lambda 显式接受 <code>BootstrapContext</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">app.addBootstrapRegistryInitializer(registry -&gt; &#123;<br>    registry.register(MyEarlyInitializer.class,<br>                      ctx -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>()); <span class="hljs-comment">// ctx 是 BootstrapContext</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>这种方式最直观：<code>ctx</code> 会被传入，你可以在 supplier 内部使用 <code>ctx</code>（如果需要的话）。<code>InstanceSupplier.get</code> 接受 <code>BootstrapContext</code>，所以 lambda <code>ctx -&gt; ...</code> 能匹配。(<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/api/java/org/springframework/boot/BootstrapRegistry.InstanceSupplier.html?utm_source=chatgpt.com">Home</a>)</p>
+<hr>
+<h3 id="2-用-BootstrapRegistry-InstanceSupplier-from-Supplier-把无参-Supplier-包装成-InstanceSupplier"><a href="#2-用-BootstrapRegistry-InstanceSupplier-from-Supplier-把无参-Supplier-包装成-InstanceSupplier" class="headerlink" title="2) 用 BootstrapRegistry.InstanceSupplier.from(Supplier) 把无参 Supplier 包装成 InstanceSupplier"></a>2) 用 <code>BootstrapRegistry.InstanceSupplier.from(Supplier)</code> 把无参 <code>Supplier</code> 包装成 <code>InstanceSupplier</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.boot.BootstrapRegistry;<br><br>app.addBootstrapRegistryInitializer(registry -&gt; &#123;<br>    registry.register(MyEarlyInitializer.class,<br>        BootstrapRegistry.InstanceSupplier.from(MyEarlyInitializer::<span class="hljs-keyword">new</span>));<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>如果你的实例创建<strong>不需要</strong> <code>BootstrapContext</code>（只是简单 new），这个工厂方法很方便。<code>from</code> 会把 <code>Supplier&lt;T&gt;</code> 转成 <code>InstanceSupplier&lt;T&gt;</code>。(<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/api/java/org/springframework/boot/BootstrapRegistry.InstanceSupplier.html?utm_source=chatgpt.com">Home</a>)</p>
+<hr>
+<h3 id="3-如果你的构造器本身需要-BootstrapContext，直接用带参构造的引用"><a href="#3-如果你的构造器本身需要-BootstrapContext，直接用带参构造的引用" class="headerlink" title="3) 如果你的构造器本身需要 BootstrapContext，直接用带参构造的引用"></a>3) 如果你的构造器本身需要 <code>BootstrapContext</code>，直接用带参构造的引用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyEarlyInitializer</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyEarlyInitializer</span><span class="hljs-params">(BootstrapContext context)</span> &#123;<br>        <span class="hljs-comment">// 可以使用 context.get(SomeType.class) 获取其他 bootstrap 实例</span><br>    &#125;<br>&#125;<br>...<br>registry.register(MyEarlyInitializer.class, MyEarlyInitializer::<span class="hljs-keyword">new</span>);<br></code></pre></td></tr></table></figure>
+
+<p>如果你把构造器定义为 <code>MyEarlyInitializer(BootstrapContext)</code>，那么 <code>MyEarlyInitializer::new</code> 将匹配 <code>InstanceSupplier.get(BootstrapContext)</code> 的签名，从而直接通过编译。(<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/api/java/org/springframework/boot/BootstrapRegistry.InstanceSupplier.html?utm_source=chatgpt.com">Home</a>)</p>
+<hr>
+<h3 id="4-在-supplier-中从-BootstrapContext-读取依赖"><a href="#4-在-supplier-中从-BootstrapContext-读取依赖" class="headerlink" title="4) 在 supplier 中从 BootstrapContext 读取依赖"></a>4) 在 supplier 中从 <code>BootstrapContext</code> 读取依赖</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">app.addBootstrapRegistryInitializer(registry -&gt; &#123;<br>    registry.register(MyEarlyInitializer.class, ctx -&gt; &#123;<br>        <span class="hljs-type">ConfigServiceClient</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> ctx.get(ConfigServiceClient.class); <span class="hljs-comment">// 从 bootstrap context 取依赖</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>(client);<br>    &#125;);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>如果你的初始化器依赖于其他在 bootstrap 阶段注册的对象（例如远程配置客户端），在 supplier 中通过 <code>ctx.get(...)</code> 获取即可。<code>BootstrapContext</code> 提供 <code>get(Class)</code> &#x2F; <code>getOrElseSupply(...)</code> 等方法。(<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/api/java/org/springframework/boot/BootstrapContext.html">Home</a>)</p>
+<hr>
+<h3 id="额外小提示"><a href="#额外小提示" class="headerlink" title="额外小提示"></a>额外小提示</h3><ul>
+<li>如果你只需要在 <strong>未注册时才注册</strong>，可以用 <code>registerIfAbsent(...)</code>。(<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/api/java/org/springframework/boot/BootstrapRegistry.html">Home</a>)</li>
+<li>注意导入 <code>org.springframework.boot.BootstrapRegistry</code>（或用全限定名）；方法引用类型推断有时会让错误信息看起来晦涩，但按上面三种修复任一都会解决。</li>
+</ul>
+<hr>
+<p>如果你贴出你当前的 <code>addBootstrapRegistryInitializer(...)</code> 代码片段（或 <code>MyEarlyInitializer</code> 的构造器），我可以<strong>直接改写为能通过编译的版本</strong>并说明为什么更好 —— 我已经把最常见的三种修复都给你了，你可以先试试哪一种最适合你的场景。🙂</p>
+<ol>
+<li><p><strong>自定义环境加载逻辑（Environment Post-processing）</strong><br> 在 <code>ApplicationContext</code> 创建前，注册一个能根据不同环境加载配置的组件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">app.addBootstrapRegistryInitializer(registry -&gt; &#123;<br>      registry.register(MyEarlyInitializer.class,<br>                      ctx -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>()); <span class="hljs-comment">// ctx 是 BootstrapContext</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>延迟对象初始化（Lazy initialization）</strong><br> 注册一个工厂，而不是立即创建对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">registry.registerIfAbsent(DataSource.class, ctx -&gt; createBootstrapDataSource());<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>与 ConfigData API 交互</strong><br> Spring Boot 2.4 引入的 ConfigData（新的配置加载机制）使用 BootstrapRegistry 来在非常早期加载配置文件或外部源。</p>
+</li>
+</ol>
+<hr>
+<h3 id="🧠-五、在源码层面的作用链"><a href="#🧠-五、在源码层面的作用链" class="headerlink" title="🧠 五、在源码层面的作用链"></a>🧠 五、在源码层面的作用链</h3><p>在 <code>SpringApplication.run()</code> 内部调用链中：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs livescript">SpringApplication.run<span class="hljs-function"><span class="hljs-params">()</span></span><br><span class="hljs-function">    -&gt;</span> prepareEnvironment<span class="hljs-function"><span class="hljs-params">()</span></span><br><span class="hljs-function">    -&gt;</span> prepareContext<span class="hljs-function"><span class="hljs-params">()</span></span><br><span class="hljs-function">    -&gt;</span> load<span class="hljs-function"><span class="hljs-params">()</span></span><br><span class="hljs-function">    -&gt;</span> refreshContext()<br></code></pre></td></tr></table></figure>
+
+<p>在 <code>prepareEnvironment()</code> 阶段之前，就会触发：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-built_in">this</span>.bootstrapRegistryInitializers.forEach(initializer -&gt; initializer.initialize(bootstrapRegistry));<br></code></pre></td></tr></table></figure>
+
+<p>此时，<code>ApplicationContext</code> 还没有创建，所以该接口的目标就是：</p>
+<blockquote>
+<p>提前注册能影响配置、环境或上下文创建的关键组件。</p>
+</blockquote>
+<hr>
+<h3 id="🧩-六、总结类比"><a href="#🧩-六、总结类比" class="headerlink" title="🧩 六、总结类比"></a>🧩 六、总结类比</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>阶段</th>
+<th>功能</th>
+<th>对应接口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>BootstrapRegistryInitializer</strong></td>
+<td>启动前</td>
+<td>初始化引导注册表</td>
+<td>提供启动期扩展点</td>
+</tr>
+<tr>
+<td><strong>ApplicationContextInitializer</strong></td>
+<td>上下文创建前</td>
+<td>初始化上下文</td>
+<td>配置 BeanFactory 等</td>
+</tr>
+<tr>
+<td><strong>BeanFactoryPostProcessor</strong></td>
+<td>Bean 创建前</td>
+<td>修改 Bean 定义</td>
+<td>操作 BeanDefinition</td>
+</tr>
+<tr>
+<td><strong>BeanPostProcessor</strong></td>
+<td>Bean 创建后</td>
+<td>修改 Bean 实例</td>
+<td>操作 Bean 对象</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="✅-总结一句话"><a href="#✅-总结一句话" class="headerlink" title="✅ 总结一句话"></a>✅ 总结一句话</h3><blockquote>
+<p><code>BootstrapRegistryInitializer</code> 是 Spring Boot 启动早期（在 <code>ApplicationContext</code> 还没创建前）运行的回调接口，允许开发者在“引导阶段”注册或配置必要的组件，为后续应用上下文的创建打基础。</p>
+</blockquote>
+<hr>
+<p>是否希望我结合 Spring Boot 启动流程图（包括 <code>BootstrapRegistry</code>、<code>ApplicationContextInitializer</code>、<code>ConfigDataLoader</code> 等之间的调用关系）帮你画一个启动阶段示意图？这样你可以直观看到它在启动链条中的位置。</p>
+<p>非常好的问题 👍，这行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">registry.register(MyEarlyInitializer.class, ctx -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>());<br></code></pre></td></tr></table></figure>
+
+<p>确实不是往你常见的 <strong>Spring ApplicationContext</strong>（也就是 Bean 容器）里注册对象，而是注册到 <strong>Spring Boot 启动阶段专用的注册容器</strong> ——<br> 👉 <code>BootstrapRegistry</code>。</p>
+<hr>
+<h2 id="🧩-一、它注册到哪里？"><a href="#🧩-一、它注册到哪里？" class="headerlink" title="🧩 一、它注册到哪里？"></a>🧩 一、它注册到哪里？</h2><p>它注册到的是：</p>
+<blockquote>
+<p><code>org.springframework.boot.BootstrapRegistry</code><br> 也就是 Spring Boot 在启动早期阶段维护的一个临时<strong>引导级注册表（Bootstrap Registry）</strong>。</p>
+</blockquote>
+<p>简单说，它不是 Spring 的 <code>BeanFactory</code> 或 <code>ApplicationContext</code>，<br> 而是 <strong>Spring Boot 启动流程的一个“早期上下文”</strong>，专门为启动阶段（还没创建 ApplicationContext）保存对象。</p>
+<hr>
+<h2 id="⚙️-二、BootstrapRegistry-是什么？-1"><a href="#⚙️-二、BootstrapRegistry-是什么？-1" class="headerlink" title="⚙️ 二、BootstrapRegistry 是什么？"></a>⚙️ 二、BootstrapRegistry 是什么？</h2><p><code>BootstrapRegistry</code> 是 Spring Boot 从 <strong>2.4</strong> 引入的，用于替代早期 Spring Cloud 的 <code>bootstrap context</code>。</p>
+<p>它是一个<strong>轻量级注册容器</strong>，用于在应用启动早期（如加载配置、创建环境、准备上下文之前）注册和管理一些对象。</p>
+<p>当 Spring Boot 启动流程进行到一定阶段时，它会将这个 <code>BootstrapRegistry</code> 转换为一个只读的 <code>BootstrapContext</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BootstrapContext</span> <span class="hljs-variable">bootstrapContext</span> <span class="hljs-operator">=</span> bootstrapRegistry.asBootstrapContext();<br></code></pre></td></tr></table></figure>
+
+<p>这个 <code>bootstrapContext</code> 会在后续的启动过程中被传入各种初始化器、配置加载器、环境后处理器中。</p>
+<hr>
+<h2 id="🧠-三、那注册进去的对象有什么用？"><a href="#🧠-三、那注册进去的对象有什么用？" class="headerlink" title="🧠 三、那注册进去的对象有什么用？"></a>🧠 三、那注册进去的对象有什么用？</h2><p>通过 <code>registry.register(...)</code> 注册的对象不会成为 Spring Bean，<br> 而是存放在这个早期注册表中，在 <strong>ApplicationContext 创建前</strong> 可以被其他引导组件访问。</p>
+<p>注册的对象可以被：</p>
+<ul>
+<li><code>BootstrapContext</code> 使用；</li>
+<li><code>ApplicationContextInitializer</code>、<code>EnvironmentPostProcessor</code> 等早期阶段逻辑访问；</li>
+<li>某些 Spring Boot 内部组件在创建 <code>ApplicationContext</code> 前调用。</li>
+</ul>
+<hr>
+<h2 id="📦-四、举个例子（完整流程）"><a href="#📦-四、举个例子（完整流程）" class="headerlink" title="📦 四、举个例子（完整流程）"></a>📦 四、举个例子（完整流程）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">SpringApplication</span> <span class="hljs-variable">app</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpringApplication</span>(MyApp.class);<br>app.addBootstrapRegistryInitializer(registry -&gt; &#123;<br>    <span class="hljs-comment">// 注册早期初始化对象</span><br>    registry.register(MyEarlyInitializer.class, ctx -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>());<br>&#125;);<br>app.run(args);<br></code></pre></td></tr></table></figure>
+
+<p>运行时内部流程大致如下：</p>
+<ol>
+<li><p>Spring Boot 创建一个空的 <code>BootstrapRegistry</code>；</p>
+</li>
+<li><p>调用你注册的 <code>BootstrapRegistryInitializer.initialize(registry)</code>；</p>
+</li>
+<li><p>执行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">registry.register(MyEarlyInitializer.class, ctx -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>());<br></code></pre></td></tr></table></figure>
+
+<p>于是把一个工厂（Supplier）放进注册表；</p>
+</li>
+<li><p>在后续启动阶段中（如环境准备、上下文初始化前），其他组件可以通过：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">bootstrapContext.get(MyEarlyInitializer.class)<br></code></pre></td></tr></table></figure>
+
+<p>来获取同一个实例。</p>
+</li>
+<li><p>最后 <code>BootstrapContext</code> 生命周期结束后（即应用上下文启动完毕），Spring Boot 会自动关闭它，释放资源。</p>
+</li>
+</ol>
+<hr>
+<h2 id="🧩-五、对比普通-Bean-注册"><a href="#🧩-五、对比普通-Bean-注册" class="headerlink" title="🧩 五、对比普通 Bean 注册"></a>🧩 五、对比普通 Bean 注册</h2><table>
+<thead>
+<tr>
+<th>特征</th>
+<th>BootstrapRegistry.register</th>
+<th>ApplicationContext.registerBean</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所在阶段</td>
+<td><strong>应用启动前</strong>（引导阶段）</td>
+<td><strong>上下文创建后</strong>（Bean 阶段）</td>
+</tr>
+<tr>
+<td>存储容器</td>
+<td><code>BootstrapRegistry</code></td>
+<td><code>BeanFactory</code> &#x2F; <code>ApplicationContext</code></td>
+</tr>
+<tr>
+<td>生命周期</td>
+<td>仅存在于启动阶段</td>
+<td>持续到应用关闭</td>
+</tr>
+<tr>
+<td>作用</td>
+<td>注册启动时所需对象（如配置加载器、客户端、环境工具等）</td>
+<td>注册常规业务 Bean</td>
+</tr>
+<tr>
+<td>访问方式</td>
+<td><code>BootstrapContext.get(Class)</code></td>
+<td><code>@Autowired</code>、<code>ApplicationContext.getBean()</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧩-六、典型用途"><a href="#🧩-六、典型用途" class="headerlink" title="🧩 六、典型用途"></a>🧩 六、典型用途</h2><p>你会在以下场景看到它的使用：</p>
+<ol>
+<li><strong>注册远程配置中心客户端（如 Spring Cloud Config、Consul、Vault）</strong></li>
+<li><strong>初始化还不能依赖 ApplicationContext 的组件</strong></li>
+<li><strong>在 <code>EnvironmentPostProcessor</code> 或 <code>ConfigDataLoader</code> 中提前使用对象</strong></li>
+<li><strong>注册启动时需要关闭的资源（如外部连接）</strong></li>
+</ol>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">registry.registerIfAbsent(ConfigServiceClient.class, ctx -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConfigServiceClient</span>(<span class="hljs-string">&quot;https://config-server&quot;</span>));<br></code></pre></td></tr></table></figure>
+
+<p>然后在你的环境后处理器中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyEnvPostProcessor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">EnvironmentPostProcessor</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">postProcessEnvironment</span><span class="hljs-params">(ConfigurableEnvironment environment, SpringApplication application)</span> &#123;<br>        <span class="hljs-type">BootstrapContext</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> application.getBootstrapContext();<br>        <span class="hljs-type">ConfigServiceClient</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> context.get(ConfigServiceClient.class);<br>        Map&lt;String, Object&gt; props = client.fetchConfigs();<br>        environment.getPropertySources().addFirst(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MapPropertySource</span>(<span class="hljs-string">&quot;remote&quot;</span>, props));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样，就能实现在 <strong>Spring Context 初始化之前加载外部配置</strong>。</p>
+<hr>
+<h2 id="✅-总结一句话-1"><a href="#✅-总结一句话-1" class="headerlink" title="✅ 总结一句话"></a>✅ 总结一句话</h2><blockquote>
+<p><code>registry.register(...)</code> 是把对象注册到 <strong>Spring Boot 启动阶段的引导注册表（BootstrapRegistry）</strong>，<br> 这些对象仅在应用启动早期阶段可用，用于配置加载、环境初始化等高级扩展，不会进入 Spring 的 Bean 容器。</p>
+</blockquote>
+<hr>
+<p>如果你想，我可以帮你画一张图 👇<br> 展示从 <code>BootstrapRegistry → BootstrapContext → ApplicationContext</code> 的生命周期转换关系，让你清楚看到注册对象的流向。<br> 是否需要？</p>
+<p>✅ 非常棒的追问！你说得完全正确：<br> <code>BootstrapRegistryInitializer.initialize(...)</code> 的确只是<strong>触发初始化器本身</strong>，<br> 但此时 <strong><code>InstanceSupplier&lt;T&gt;</code>（也就是 <code>ctx -&gt; new MyEarlyInitializer()</code> 这一段）</strong> 并不会立刻执行。</p>
+<p>下面我来详细解释「两次触发」机制，也就是<br> 👉 <strong>什么时候触发 <code>BootstrapRegistryInitializer</code></strong><br> 👉 <strong>什么时候触发你注册的 <code>InstanceSupplier&lt;T&gt;</code></strong></p>
+<hr>
+<h2 id="🧭-一、核心概念区分"><a href="#🧭-一、核心概念区分" class="headerlink" title="🧭 一、核心概念区分"></a>🧭 一、核心概念区分</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>角色</th>
+<th>何时触发</th>
+<th>生命周期阶段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong><code>BootstrapRegistryInitializer</code></strong></td>
+<td>注册引导期对象的“注册器”</td>
+<td>启动早期阶段</td>
+<td><code>SpringApplication.createBootstrapContext()</code></td>
+</tr>
+<tr>
+<td><strong><code>InstanceSupplier&lt;T&gt;</code></strong></td>
+<td>真正创建实例的“供应器”</td>
+<td>当对象第一次被请求时</td>
+<td>引导期或上下文构建期</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="⚙️-二、执行顺序（源码层面）"><a href="#⚙️-二、执行顺序（源码层面）" class="headerlink" title="⚙️ 二、执行顺序（源码层面）"></a>⚙️ 二、执行顺序（源码层面）</h2><p>假设你写了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">app.addBootstrapRegistryInitializer(registry -&gt; &#123;<br>    registry.register(MyEarlyInitializer.class,<br>                      ctx -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>());<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>我们来跟踪实际调用：</p>
+<h3 id="1-在创建-BootstrapContext-时："><a href="#1-在创建-BootstrapContext-时：" class="headerlink" title="(1) 在创建 BootstrapContext 时："></a>(1) 在创建 <code>BootstrapContext</code> 时：</h3><p>Spring Boot 调用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">initializer.initialize(bootstrapContext);<br></code></pre></td></tr></table></figure>
+
+<p>于是执行你的 lambda：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">registry.register(MyEarlyInitializer.class, ctx -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>());<br></code></pre></td></tr></table></figure>
+
+<p>此时只是把：</p>
+<blockquote>
+<p>key &#x3D; MyEarlyInitializer.class<br> value &#x3D; InstanceSupplier&lt; MyEarlyInitializer &gt;（即 ctx -&gt; new MyEarlyInitializer()）</p>
+</blockquote>
+<p><strong>保存到了注册表中</strong>，还没有 new 对象。</p>
+<p>也就是说——<br> 🔹 <code>MyEarlyInitializer::new</code> 还没执行。<br> 🔹 只是“注册了一个如何创建它的办法”。</p>
+<hr>
+<h3 id="2-之后，当有人调用："><a href="#2-之后，当有人调用：" class="headerlink" title="(2) 之后，当有人调用："></a>(2) 之后，当有人调用：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">bootstrapContext.get(MyEarlyInitializer.class)<br></code></pre></td></tr></table></figure>
+
+<p>或者在某处访问它（例如另一个组件依赖它），Spring Boot 才会：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 伪代码</span><br>InstanceSupplier&lt;T&gt; supplier = registry.getSupplier(MyEarlyInitializer.class);<br><span class="hljs-type">T</span> <span class="hljs-variable">instance</span> <span class="hljs-operator">=</span> supplier.get(bootstrapContext); <span class="hljs-comment">// ✅ 此时才触发 ctx -&gt; new MyEarlyInitializer()</span><br></code></pre></td></tr></table></figure>
+
+<p>这时才真正执行你的 <code>ctx -&gt; new MyEarlyInitializer()</code>，<br> 实例被创建，并（可选）缓存到 <code>BootstrapContext</code> 里。</p>
+<hr>
+<h2 id="🧠-三、所以关键点是："><a href="#🧠-三、所以关键点是：" class="headerlink" title="🧠 三、所以关键点是："></a>🧠 三、所以关键点是：</h2><blockquote>
+<p><code>initialize()</code> 阶段只是“登记创建逻辑”，<br> 真正的“创建对象”是 <strong>惰性触发（lazy）</strong> 的，<br> 只有第一次通过 <code>BootstrapContext</code> 访问时才发生。</p>
+</blockquote>
+<hr>
+<h2 id="🧩-四、举个例子验证（打印日志）"><a href="#🧩-四、举个例子验证（打印日志）" class="headerlink" title="🧩 四、举个例子验证（打印日志）"></a>🧩 四、举个例子验证（打印日志）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">app.addBootstrapRegistryInitializer(registry -&gt; &#123;<br>    System.out.println(<span class="hljs-string">&quot;==&gt; 初始化器触发&quot;</span>);<br>    registry.register(MyEarlyInitializer.class, ctx -&gt; &#123;<br>        System.out.println(<span class="hljs-string">&quot;==&gt; InstanceSupplier 被调用&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEarlyInitializer</span>();<br>    &#125;);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>运行日志大致如下：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; 初始化器触发        ✅ BootstrapRegistryInitializer.initialize 被调用<br>（中间经过一堆启动步骤...）<br><span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; InstanceSupplier 被调用 ✅ 当第一次 get(MyEarlyInitializer.class) 时才执行<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📦-五、触发-InstanceSupplier-的来源"><a href="#📦-五、触发-InstanceSupplier-的来源" class="headerlink" title="📦 五、触发 InstanceSupplier 的来源"></a>📦 五、触发 InstanceSupplier 的来源</h2><p>在实际应用中，InstanceSupplier 可能在以下情况下被调用：</p>
+<table>
+<thead>
+<tr>
+<th>触发来源</th>
+<th>场景示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1️⃣ 你手动从 <code>BootstrapContext</code> 获取</td>
+<td><code>bootstrapContext.get(MyEarlyInitializer.class)</code></td>
+</tr>
+<tr>
+<td>2️⃣ Spring Boot 内部逻辑需要它</td>
+<td>例如配置加载器、ConfigDataLoader 访问远程配置客户端</td>
+</tr>
+<tr>
+<td>3️⃣ 后续的 <code>ApplicationContextInitializer</code> 调用了 <code>bootstrapContext</code></td>
+<td></td>
+</tr>
+<tr>
+<td>4️⃣ <code>BootstrapContext</code> 关闭时清理缓存（触发销毁逻辑）</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧩-六、总结对比表"><a href="#🧩-六、总结对比表" class="headerlink" title="🧩 六、总结对比表"></a>🧩 六、总结对比表</h2><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>执行时机</th>
+<th>目的</th>
+<th>何时创建目标实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>BootstrapRegistryInitializer</code></td>
+<td>启动初期（调用 <code>run()</code> 时）</td>
+<td>注册创建逻辑</td>
+<td>不创建实例</td>
+</tr>
+<tr>
+<td><code>InstanceSupplier&lt;T&gt;</code></td>
+<td>被首次访问时</td>
+<td>创建实例</td>
+<td>延迟执行</td>
+</tr>
+</tbody></table>
+<hr>
+<p>✅ <strong>一句话总结：</strong></p>
+<blockquote>
+<p><code>BootstrapRegistryInitializer</code> 是“登记表”；<br> <code>InstanceSupplier</code> 是“工厂”；<br> 工厂只有在别人来取对象时才启动生产线。</p>
+</blockquote>
+<hr>
+<p>如果你愿意，我可以帮你画一张时序图（Spring Boot 启动 → 注册 → 获取 → 创建实例），<br> 标明每个阶段执行了哪些接口（BootstrapRegistryInitializer、InstanceSupplier、ApplicationContextInitializer 等）。<br> 是否希望我画出来？</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/springboot/" class="category-chain-item">springboot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/springboot/">#springboot</a>
+      
+        <a href="/tags/3-5-6/">#3.5.6</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>BootstrapRegistryInitializer</div>
+      <div>https://super-404.github.io/2025/10/24/tech-springboot-3.5.6-BootstrapRegistryInitializer/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/12/03/tech-Disruptor%E6%A1%86%E6%9E%B6%E8%AF%A6%E8%A7%A3/" title="核心原代码">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">核心原代码</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/22/tech-springboot-%E7%B1%BB%E7%9A%84%E6%B3%A8%E5%86%8C-ImportBeanDefinitionRegistrar/" title="🌱 一、是什么">
+                        <span class="hidden-mobile">🌱 一、是什么</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

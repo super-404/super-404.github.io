@@ -1,73 +1,740 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="好的，我们来深入理解 Spring 的 ResourceLoader 机制，这是 Spring 框架中资源抽象的核心。 1. ResourceLoader 的核心作用ResourceLoader 是 Spring 资源加载的策略接口，它定义了一个统一的资源访问抽象，屏蔽了资源来源的差异。 设计目标 统一访问：无论资源在文件系统、类路径、网络还是其他地方，都用相同的方式访问 协议抽象：通过前缀（如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="application.properties">
+<meta property="og:url" content="https://super-404.github.io/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-ResourceLoader/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="好的，我们来深入理解 Spring 的 ResourceLoader 机制，这是 Spring 框架中资源抽象的核心。 1. ResourceLoader 的核心作用ResourceLoader 是 Spring 资源加载的策略接口，它定义了一个统一的资源访问抽象，屏蔽了资源来源的差异。 设计目标 统一访问：无论资源在文件系统、类路径、网络还是其他地方，都用相同的方式访问 协议抽象：通过前缀（如">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-27T05:50:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="springboot">
+<meta property="article:tag" content="spring源码阅读">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>application.properties - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="application.properties"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-27 13:50" pubdate>
+          2025年9月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">application.properties</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>好的，我们来深入理解 Spring 的 <code>ResourceLoader</code> 机制，这是 Spring 框架中资源抽象的核心。</p>
+<h2 id="1-ResourceLoader-的核心作用"><a href="#1-ResourceLoader-的核心作用" class="headerlink" title="1. ResourceLoader 的核心作用"></a>1. ResourceLoader 的核心作用</h2><p><code>ResourceLoader</code> 是 Spring 资源加载的<strong>策略接口</strong>，它定义了一个统一的资源访问抽象，<strong>屏蔽了资源来源的差异</strong>。</p>
+<h3 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h3><ul>
+<li><strong>统一访问</strong>：无论资源在文件系统、类路径、网络还是其他地方，都用相同的方式访问</li>
+<li><strong>协议抽象</strong>：通过前缀（如 <code>classpath:</code>, <code>file:</code>）来标识资源位置</li>
+<li><strong>懒加载</strong>：获取的是资源的”句柄”（Resource对象），不是立即加载内容</li>
+</ul>
+<h2 id="2-Location（资源位置）详解"><a href="#2-Location（资源位置）详解" class="headerlink" title="2. Location（资源位置）详解"></a>2. Location（资源位置）详解</h2><h3 id="Location-的本质"><a href="#Location-的本质" class="headerlink" title="Location 的本质"></a>Location 的本质</h3><p>Location 是一个<strong>字符串</strong>，表示资源的”地址”。它支持多种格式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 不同的 location 示例</span><br><span class="hljs-string">&quot;classpath:application.yml&quot;</span>           <span class="hljs-comment">// 类路径资源</span><br><span class="hljs-string">&quot;file:/etc/app/config.properties&quot;</span>     <span class="hljs-comment">// 文件系统绝对路径</span><br><span class="hljs-string">&quot;file:./config/app.properties&quot;</span>        <span class="hljs-comment">// 文件系统相对路径</span><br><span class="hljs-string">&quot;https://config.server.com/app.yml&quot;</span>   <span class="hljs-comment">// URL 网络资源</span><br><span class="hljs-string">&quot;WEB-INF/web.xml&quot;</span>                     <span class="hljs-comment">// 无前缀（由具体实现解析）</span><br><span class="hljs-string">&quot;custom://my-resource&quot;</span>                <span class="hljs-comment">// 自定义协议</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Location-的前缀协议"><a href="#Location-的前缀协议" class="headerlink" title="Location 的前缀协议"></a>Location 的前缀协议</h3><table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>classpath:</code></td>
+<td><code>classpath:app.xml</code></td>
+<td>从类路径加载</td>
+</tr>
+<tr>
+<td><code>file:</code></td>
+<td><code>file:/home/config.xml</code></td>
+<td>从文件系统加载</td>
+</tr>
+<tr>
+<td><code>http://</code> &#x2F; <code>https://</code></td>
+<td><code>https://example.com/config</code></td>
+<td>从网络 URL 加载</td>
+</tr>
+<tr>
+<td>(无前缀)</td>
+<td><code>WEB-INF/web.xml</code></td>
+<td>由具体实现决定，通常是相对路径</td>
+</tr>
+</tbody></table>
+<h2 id="3-ResourceLoader-的获取机制"><a href="#3-ResourceLoader-的获取机制" class="headerlink" title="3. ResourceLoader 的获取机制"></a>3. ResourceLoader 的获取机制</h2><h3 id="核心方法：getResource-String-location"><a href="#核心方法：getResource-String-location" class="headerlink" title="核心方法：getResource(String location)"></a>核心方法：<code>getResource(String location)</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Resource <span class="hljs-title function_">getResource</span><span class="hljs-params">(String location)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>这个方法<strong>不立即加载资源内容</strong>，而是返回一个 <code>Resource</code> 对象（资源句柄）。</p>
+<h3 id="获取流程"><a href="#获取流程" class="headerlink" title="获取流程"></a>获取流程</h3><pre><code class=" mermaid">graph TD
+    A[调用 getResource &lt;br&gt; locatoin ] --&gt; B&#123;解析location前缀&#125;;
+    B --&gt;|classpath:| C[ClassPathResource];
+    B --&gt;|file:| D[FileSystemResource];
+    B --&gt;|http://| E[UrlResource];
+    B --&gt;|无前缀| F[默认策略&lt;br&gt;通常为ClassPathResource];
+    C --&gt; G[返回Resource对象];
+    D --&gt; G;
+    E --&gt; G;
+    F --&gt; G;
+</code></pre>
+
+<h2 id="4-实际使用示例"><a href="#4-实际使用示例" class="headerlink" title="4. 实际使用示例"></a>4. 实际使用示例</h2><h3 id="示例1：基本使用"><a href="#示例1：基本使用" class="headerlink" title="示例1：基本使用"></a>示例1：基本使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ResourceLoader</span> <span class="hljs-variable">loader</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultResourceLoader</span>();<br><br><span class="hljs-comment">// 获取资源句柄（不加载内容）</span><br><span class="hljs-type">Resource</span> <span class="hljs-variable">classpathResource</span> <span class="hljs-operator">=</span> loader.getResource(<span class="hljs-string">&quot;classpath:application.yml&quot;</span>);<br><span class="hljs-type">Resource</span> <span class="hljs-variable">fileResource</span> <span class="hljs-operator">=</span> loader.getResource(<span class="hljs-string">&quot;file:/etc/app/config.properties&quot;</span>);<br><span class="hljs-type">Resource</span> <span class="hljs-variable">urlResource</span> <span class="hljs-operator">=</span> loader.getResource(<span class="hljs-string">&quot;https://example.com/config.json&quot;</span>);<br><br><span class="hljs-comment">// 真正检查资源是否存在</span><br><span class="hljs-type">boolean</span> <span class="hljs-variable">exists</span> <span class="hljs-operator">=</span> classpathResource.exists();<br><br><span class="hljs-comment">// 真正获取资源内容</span><br><span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> classpathResource.getInputStream();<br></code></pre></td></tr></table></figure>
+
+<h3 id="示例2：在-Spring-Boot-中的应用"><a href="#示例2：在-Spring-Boot-中的应用" class="headerlink" title="示例2：在 Spring Boot 中的应用"></a>示例2：在 Spring Boot 中的应用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyApp</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ApplicationRunner</span> &#123;<br>    <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ResourceLoader resourceLoader; <span class="hljs-comment">// Spring 会自动注入</span><br>    <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">(ApplicationArguments args)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// 加载配置文件</span><br>        <span class="hljs-type">Resource</span> <span class="hljs-variable">configResource</span> <span class="hljs-operator">=</span> resourceLoader.getResource(<span class="hljs-string">&quot;classpath:application.yml&quot;</span>);<br>        <span class="hljs-keyword">if</span> (configResource.exists()) &#123;<br>            <span class="hljs-comment">// 读取配置内容</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">content</span> <span class="hljs-operator">=</span> StreamUtils.copyToString(<br>                configResource.getInputStream(), StandardCharsets.UTF_8);<br>            System.out.println(<span class="hljs-string">&quot;Config content: &quot;</span> + content);<br>        &#125;<br>        <br>        <span class="hljs-comment">// 加载模板文件</span><br>        <span class="hljs-type">Resource</span> <span class="hljs-variable">templateResource</span> <span class="hljs-operator">=</span> resourceLoader.getResource(<span class="hljs-string">&quot;file:./templates/welcome.html&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-Resource-接口的重要方法"><a href="#5-Resource-接口的重要方法" class="headerlink" title="5. Resource 接口的重要方法"></a>5. Resource 接口的重要方法</h2><p>获取到 <code>Resource</code> 对象后，你可以调用以下方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Resource</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">InputStreamSource</span> &#123;<br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">exists</span><span class="hljs-params">()</span>;        <span class="hljs-comment">// 资源是否存在</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">isReadable</span><span class="hljs-params">()</span>;    <span class="hljs-comment">// 资源是否可读</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">isOpen</span><span class="hljs-params">()</span>;        <span class="hljs-comment">// 资源是否已打开</span><br>    URL <span class="hljs-title function_">getURL</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException;           <span class="hljs-comment">// 获取URL</span><br>    File <span class="hljs-title function_">getFile</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException;         <span class="hljs-comment">// 获取File对象</span><br>    <span class="hljs-type">long</span> <span class="hljs-title function_">contentLength</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException;   <span class="hljs-comment">// 获取内容长度</span><br>    <span class="hljs-type">long</span> <span class="hljs-title function_">lastModified</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException;    <span class="hljs-comment">// 最后修改时间</span><br>    Resource <span class="hljs-title function_">createRelative</span><span class="hljs-params">(String relativePath)</span> <span class="hljs-keyword">throws</span> IOException; <span class="hljs-comment">// 创建相对资源</span><br>    String <span class="hljs-title function_">getFilename</span><span class="hljs-params">()</span>;    <span class="hljs-comment">// 获取文件名</span><br>    String <span class="hljs-title function_">getDescription</span><span class="hljs-params">()</span>; <span class="hljs-comment">// 获取描述信息</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="6-Spring-环境中的高级用法"><a href="#6-Spring-环境中的高级用法" class="headerlink" title="6. Spring 环境中的高级用法"></a>6. Spring 环境中的高级用法</h2><h3 id="资源路径通配符"><a href="#资源路径通配符" class="headerlink" title="资源路径通配符"></a>资源路径通配符</h3><p>Spring 提供了更强大的 <code>ResourcePatternResolver</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ResourcePatternResolver</span> <span class="hljs-variable">resolver</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PathMatchingResourcePatternResolver</span>();<br><br><span class="hljs-comment">// 加载所有匹配的资源</span><br>Resource[] resources = resolver.getResources(<span class="hljs-string">&quot;classpath*:META-INF/spring.factories&quot;</span>);<br>Resource[] templates = resolver.getResources(<span class="hljs-string">&quot;file:./templates/*.html&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="在配置中使用"><a href="#在配置中使用" class="headerlink" title="在配置中使用"></a>在配置中使用</h3><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># application.properties</span><br><span class="hljs-attr">app.config.location</span>=<span class="hljs-string">classpath:config/app.properties</span><br><span class="hljs-attr">app.template.location</span>=<span class="hljs-string">file:./templates/</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppConfig</span> &#123;<br>    <br>    <span class="hljs-meta">@Value(&quot;$&#123;app.config.location&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> Resource configResource; <span class="hljs-comment">// 直接注入Resource</span><br>    <br>    <span class="hljs-meta">@Value(&quot;classpath:default-config.yml&quot;)</span> <br>    <span class="hljs-keyword">private</span> Resource defaultConfig;<br>    <br>    <span class="hljs-meta">@Value(&quot;file:$&#123;user.home&#125;/app-data/&quot;)</span><br>    <span class="hljs-keyword">private</span> Resource dataDirectory;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="7-自定义-ResourceLoader"><a href="#7-自定义-ResourceLoader" class="headerlink" title="7. 自定义 ResourceLoader"></a>7. 自定义 ResourceLoader</h2><h3 id="创建自定义实现"><a href="#创建自定义实现" class="headerlink" title="创建自定义实现"></a>创建自定义实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DatabaseResourceLoader</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">DefaultResourceLoader</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Resource <span class="hljs-title function_">getResource</span><span class="hljs-params">(String location)</span> &#123;<br>        <span class="hljs-keyword">if</span> (location.startsWith(<span class="hljs-string">&quot;db:&quot;</span>)) &#123;<br>            <span class="hljs-comment">// 处理自定义的数据库资源协议</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">query</span> <span class="hljs-operator">=</span> location.substring(<span class="hljs-string">&quot;db:&quot;</span>.length());<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DatabaseResource</span>(query);<br>        &#125;<br>        <span class="hljs-comment">// 其他情况使用默认处理</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.getResource(location);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用自定义加载器</span><br><span class="hljs-type">ResourceLoader</span> <span class="hljs-variable">loader</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DatabaseResourceLoader</span>();<br><span class="hljs-type">Resource</span> <span class="hljs-variable">dbResource</span> <span class="hljs-operator">=</span> loader.getResource(<span class="hljs-string">&quot;db:select * from config where app=&#x27;myapp&#x27;&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="8-总结"><a href="#8-总结" class="headerlink" title="8. 总结"></a>8. 总结</h2><h3 id="ResourceLoader-的核心价值"><a href="#ResourceLoader-的核心价值" class="headerlink" title="ResourceLoader 的核心价值"></a>ResourceLoader 的核心价值</h3><ol>
+<li><strong>抽象统一</strong>：提供统一的资源访问接口</li>
+<li><strong>协议支持</strong>：通过前缀支持多种资源协议</li>
+<li><strong>懒加载</strong>：<code>getResource()</code> 只返回句柄，不立即加载内容</li>
+<li><strong>扩展性强</strong>：可以轻松添加自定义资源协议</li>
+</ol>
+<h3 id="关键理解点"><a href="#关键理解点" class="headerlink" title="关键理解点"></a>关键理解点</h3><ul>
+<li><strong>Location 是字符串</strong>：描述资源位置的地址</li>
+<li><strong>Resource 是句柄</strong>：代表资源，但不包含内容</li>
+<li><strong>真正的内容获取</strong>：通过 <code>Resource.getInputStream()</code> 实现</li>
+<li><strong>Spring Boot 集成</strong>：自动配置，可通过 <code>@Autowired</code> 注入使用</li>
+</ul>
+<p>这种设计使得 Spring 应用能够以一致的方式处理各种来源的资源，大大提高了代码的灵活性和可移植性。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/springboot/" class="category-chain-item">springboot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/springboot/">#springboot</a>
+      
+        <a href="/tags/spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">#spring源码阅读</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>application.properties</div>
+      <div>https://super-404.github.io/2025/09/27/tech-springboot-spring源码阅读-ResourceLoader/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E5%8A%A0%E8%BD%BDspring.factory/" title="加载spring.factory">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">加载spring.factory</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-Spring%20Boot%20%E4%B8%AD%E7%94%A8%E4%BA%8E%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%89%A9%E5%B1%95%E7%BB%84%E4%BB%B6/" title="META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)">
+                        <span class="hidden-mobile">META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

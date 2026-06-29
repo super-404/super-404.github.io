@@ -1,73 +1,777 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="好的，我们来详细解析这段 Spring Boot 中用于加载和实例化扩展组件的核心代码。这是 Spring Boot 自动配置和扩展机制的基石。 方法功能getSpringFactoriesInstances 是一个泛型方法，它的核心作用是：从 META-INF&#x2F;spring.factories 文件中加载指定类型的工厂实现类名，然后通过反射实例化这些类，最后进行排序并返回实例集合。 简单来说，它">
+<meta property="og:type" content="article">
+<meta property="og:title" content="META-INF&#x2F;spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)">
+<meta property="og:url" content="https://super-404.github.io/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-Spring%20Boot%20%E4%B8%AD%E7%94%A8%E4%BA%8E%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%89%A9%E5%B1%95%E7%BB%84%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="好的，我们来详细解析这段 Spring Boot 中用于加载和实例化扩展组件的核心代码。这是 Spring Boot 自动配置和扩展机制的基石。 方法功能getSpringFactoriesInstances 是一个泛型方法，它的核心作用是：从 META-INF&#x2F;spring.factories 文件中加载指定类型的工厂实现类名，然后通过反射实例化这些类，最后进行排序并返回实例集合。 简单来说，它">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-27T05:40:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="springboot">
+<meta property="article:tag" content="spring源码阅读">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-27 13:40" pubdate>
+          2025年9月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>好的，我们来详细解析这段 Spring Boot 中用于加载和实例化扩展组件的核心代码。这是 Spring Boot 自动配置和扩展机制的基石。</p>
+<h3 id="方法功能"><a href="#方法功能" class="headerlink" title="方法功能"></a>方法功能</h3><p><strong><code>getSpringFactoriesInstances</code></strong> 是一个泛型方法，它的核心作用是：<strong>从 <code>META-INF/spring.factories</code> 文件中加载指定类型的工厂实现类名，然后通过反射实例化这些类，最后进行排序并返回实例集合。</strong></p>
+<h2 id="简单来说，它就是-Spring-Boot-“约定优于配置”-的灵魂，负责自动发现和组装各种组件（如监听器、初始化器等）。"><a href="#简单来说，它就是-Spring-Boot-“约定优于配置”-的灵魂，负责自动发现和组装各种组件（如监听器、初始化器等）。" class="headerlink" title="简单来说，它就是 Spring Boot “约定优于配置” 的灵魂，负责自动发现和组装各种组件（如监听器、初始化器等）。"></a>简单来说，它就是 Spring Boot <strong>“约定优于配置”</strong> 的灵魂，负责自动发现和组装各种组件（如监听器、初始化器等）。</h2><h3 id="代码逐行解析"><a href="#代码逐行解析" class="headerlink" title="代码逐行解析"></a>代码逐行解析</h3><h4 id="1-获取类加载器"><a href="#1-获取类加载器" class="headerlink" title="1. 获取类加载器"></a>1. 获取类加载器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ClassLoader</span> <span class="hljs-variable">classLoader</span> <span class="hljs-operator">=</span> getClassLoader();<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>目的</strong>：获取当前应用的类加载器（ClassLoader）。这是后续进行类加载和反射实例化的基础。</li>
+</ul>
+<h4 id="2-加载工厂类名（核心步骤）"><a href="#2-加载工厂类名（核心步骤）" class="headerlink" title="2. 加载工厂类名（核心步骤）"></a>2. 加载工厂类名（核心步骤）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Set&lt;String&gt; names = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashSet</span>&lt;&gt;(SpringFactoriesLoader.loadFactoryNames(type, classLoader));<br></code></pre></td></tr></table></figure>
+<p>这是整个方法中最关键的一步。</p>
+<ul>
+<li><p><strong><code>SpringFactoriesLoader.loadFactoryNames(type, classLoader)</code></strong>:</p>
+<ul>
+<li><strong><code>type</code></strong>: 要加载的接口或抽象类的类型（如 <code>ApplicationContextInitializer.class</code>, <code>ApplicationListener.class</code>）。</li>
+<li><strong>工作原理</strong>：这个方法会扫描整个类路径下所有的 <code>META-INF/spring.factories</code> 文件。这个文件是一个属性文件，格式如下：  <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)</span><br><span class="hljs-attr">org.springframework.context.ApplicationContextInitializer</span>=<span class="hljs-string">\</span><br><span class="hljs-string">com.example.MyInitializer,\</span><br><span class="hljs-string">org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer</span><br><br><span class="hljs-attr">org.springframework.boot.ApplicationRunner</span>=<span class="hljs-string">\</span><br><span class="hljs-string">com.example.MyApplicationRunner</span><br></code></pre></td></tr></table></figure></li>
+<li><strong>返回值</strong>：一个包含所有找到的<strong>完整类名</strong>的 <code>List&lt;String&gt;</code>。</li>
+</ul>
+</li>
+<li><p><strong><code>new LinkedHashSet&lt;&gt;(...)</code></strong>:</p>
+<ul>
+<li><strong>目的</strong>：将列表转换为 <code>LinkedHashSet</code>。这有两个重要作用：<ol>
+<li><strong>去重</strong>：防止从不同的 JAR 包中加载到相同的实现类。</li>
+<li><strong>保持顺序</strong>：<code>LinkedHashSet</code> 会保留元素被添加的顺序，这对应了 <code>spring.factories</code> 文件中定义的顺序。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-反射创建实例"><a href="#3-反射创建实例" class="headerlink" title="3. 反射创建实例"></a>3. 反射创建实例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;T&gt; instances = createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);<br></code></pre></td></tr></table></figure>
+<p>这一步将上一步获取的类名字符串，变成真正的 Java 对象。</p>
+<ul>
+<li><strong><code>createSpringFactoriesInstances</code> 方法内部会</strong>：<ol>
+<li>遍历上一步得到的类名集合 <code>names</code>。</li>
+<li>对于每个类名，使用 <code>ClassUtils.forName(className, classLoader)</code> 动态加载这个类。</li>
+<li>通过反射 <code>clazz.getDeclaredConstructor(parameterTypes)</code> 获取类的构造函数。</li>
+<li>使用 <code>constructor.newInstance(args)</code> 传入参数 <code>args</code> 来创建实例。</li>
+</ol>
+</li>
+<li>**<code>parameterTypes</code> 和 <code>args</code>**：允许传入构造参数。例如，在创建 <code>SpringApplication</code> 时，加载 <code>ApplicationListener</code> 可能会传入 <code>SpringApplication</code> 实例本身作为参数。</li>
+</ul>
+<h4 id="4-排序实例"><a href="#4-排序实例" class="headerlink" title="4. 排序实例"></a>4. 排序实例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">AnnotationAwareOrderComparator.sort(instances);<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>目的</strong>：对实例化好的对象列表进行排序。</li>
+<li>**<code>AnnotationAwareOrderComparator</code>**：是一个强大的比较器，它支持多种排序规则：<ol>
+<li><strong><code>@Order</code> 注解</strong>：检查类上的 <code>@Order(1)</code> 注解，数字越小优先级越高。</li>
+<li><strong><code>Ordered</code> 接口</strong>：检查类是否实现了 <code>Ordered</code> 接口，并调用 <code>getOrder()</code> 方法。</li>
+<li><strong><code>@Priority</code> 注解</strong>（JSR-250 标准）。</li>
+</ol>
+</li>
+<li><strong>重要性</strong>：排序确保了这些扩展组件（如监听器、初始化器）的执行顺序是确定的，这对于启动流程的正确性至关重要。例如，某些监听器必须在其他监听器之前执行。</li>
+</ul>
+<h4 id="5-返回结果"><a href="#5-返回结果" class="headerlink" title="5. 返回结果"></a>5. 返回结果</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">return</span> instances;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>最终返回一个已经<strong>实例化、去重、排序好</strong>的指定类型的对象集合。</li>
+</ul>
+<hr>
+<h3 id="工作流程图示"><a href="#工作流程图示" class="headerlink" title="工作流程图示"></a>工作流程图示</h3><pre><code class=" mermaid">sequenceDiagram
+    participant A as SpringApplication
+    participant B as SpringFactoriesLoader
+    participant C as createSpringFactoriesInstances
+    participant D as AnnotationAwareOrderComparator
+
+    A-&gt;&gt;B: loadFactoryNames(type, classLoader)
+    Note over B: 扫描所有Jar包的&lt;br/&gt;META-INF/spring.factories
+    B-&gt;&gt;A: 返回类名List (e.g., [&quot;com.XListener&quot;, &quot;com.YListener&quot;])
+    
+    A-&gt;&gt;A: new LinkedHashSet&lt;&gt;(List) // 去重保序
+    A-&gt;&gt;C: createSpringFactoriesInstances(names)
+    loop 对于每个类名
+        C-&gt;&gt;C: Class.forName(className)
+        C-&gt;&gt;C: constructor.newInstance(args)
+        C-&gt;&gt;A: 返回实例
+    end
+    A-&gt;&gt;D: sort(instances)
+    Note over D: 根据@Order, Ordered接口等排序
+    D-&gt;&gt;A: 返回排序后的List
+    A-&gt;&gt;A: return instances
+</code></pre>
+
+<h3 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h3><p>在 <code>SpringApplication</code> 的初始化过程中，这个方法被多次调用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 设置初始化器 (ApplicationContextInitializer)</span><br>setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));<br><br><span class="hljs-comment">// 设置监听器 (ApplicationListener)</span><br>setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));<br></code></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th align="left">步骤</th>
+<th align="left">核心对象&#x2F;概念</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1. 获取类加载器</td>
+<td align="left"><code>ClassLoader</code></td>
+<td align="left">提供类加载能力</td>
+</tr>
+<tr>
+<td align="left">2. <strong>加载类名</strong></td>
+<td align="left"><code>SpringFactoriesLoader</code>, <code>META-INF/spring.factories</code></td>
+<td align="left"><strong>发现</strong>扩展实现（自动配置的基石）</td>
+</tr>
+<tr>
+<td align="left">3. 创建实例</td>
+<td align="left">反射 (<code>Constructor.newInstance</code>)</td>
+<td align="left"><strong>实例化</strong>扩展类</td>
+</tr>
+<tr>
+<td align="left">4. <strong>排序</strong></td>
+<td align="left"><code>AnnotationAwareOrderComparator</code>, <code>@Order</code></td>
+<td align="left"><strong>控制</strong>扩展类的执行顺序</td>
+</tr>
+<tr>
+<td align="left">5. 返回</td>
+<td align="left"><code>Collection&lt;T&gt;</code></td>
+<td align="left">返回可直接使用的组件集合</td>
+</tr>
+</tbody></table>
+<p>这个方法完美体现了 Spring Boot 的三大设计理念：</p>
+<ol>
+<li><strong>约定优于配置</strong>：通过固定的 <code>spring.factories</code> 文件位置和格式自动发现组件。</li>
+<li><strong>开箱即用</strong>：Spring Boot 内置了大量 <code>spring.factories</code> 配置，提供了默认行为。</li>
+<li><strong>易于扩展</strong>：用户只需在自己的 Jar 包的 <code>spring.factories</code> 文件中添加配置，即可轻松扩展框架功能。</li>
+</ol>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/springboot/" class="category-chain-item">springboot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/springboot/">#springboot</a>
+      
+        <a href="/tags/spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">#spring源码阅读</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)</div>
+      <div>https://super-404.github.io/2025/09/27/tech-springboot-spring源码阅读-Spring Boot 中用于加载和实例化扩展组件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-ResourceLoader/" title="application.properties">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">application.properties</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-springboot%E5%BA%94%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/" title="springboot应用类型判断">
+                        <span class="hidden-mobile">springboot应用类型判断</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

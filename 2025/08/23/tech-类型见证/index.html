@@ -1,73 +1,722 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="好的，这是一个非常棒的深度问题！ApiResponse.&lt;User&gt;builder() 这种写法确实有点特殊，它涉及到 Java 泛型中的 “类型见证（Type Witness）”。 下面我为你详细解释它的写法、原理和为什么需要它。1. 这是什么写法？这种写法叫做 类型见证（Type Witness）。  ApiResponse：是我们的泛型类。 .：访问其静态方法。 &lt;User">
+<meta property="og:type" content="article">
+<meta property="og:title" content="类型见证">
+<meta property="og:url" content="https://super-404.github.io/2025/08/23/tech-%E7%B1%BB%E5%9E%8B%E8%A7%81%E8%AF%81/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="好的，这是一个非常棒的深度问题！ApiResponse.&lt;User&gt;builder() 这种写法确实有点特殊，它涉及到 Java 泛型中的 “类型见证（Type Witness）”。 下面我为你详细解释它的写法、原理和为什么需要它。1. 这是什么写法？这种写法叫做 类型见证（Type Witness）。  ApiResponse：是我们的泛型类。 .：访问其静态方法。 &lt;User">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-23T08:47:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>类型见证 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="类型见证"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-23 16:47" pubdate>
+          2025年8月23日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">类型见证</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>好的，这是一个非常棒的深度问题！<code>ApiResponse.&lt;User&gt;builder()</code> 这种写法确实有点特殊，它涉及到 Java 泛型中的 <strong>“类型见证（Type Witness）”</strong>。</p>
+<h2 id="下面我为你详细解释它的写法、原理和为什么需要它。"><a href="#下面我为你详细解释它的写法、原理和为什么需要它。" class="headerlink" title="下面我为你详细解释它的写法、原理和为什么需要它。"></a>下面我为你详细解释它的写法、原理和为什么需要它。</h2><h3 id="1-这是什么写法？"><a href="#1-这是什么写法？" class="headerlink" title="1. 这是什么写法？"></a>1. 这是什么写法？</h3><p>这种写法叫做 <strong>类型见证（Type Witness）</strong>。</p>
+<ul>
+<li><code>ApiResponse</code>：是我们的泛型类。</li>
+<li><code>.</code>：访问其静态方法。</li>
+<li><code>&lt;User&gt;</code>：<strong>类型见证</strong>。它显式地告诉编译器：“请将接下来调用的泛型方法的类型参数 <code>T</code> 确定为 <code>User</code> 类型”。</li>
+<li><code>builder()</code>：是 Lombok 为我们生成的静态泛型方法。</li>
+</ul>
+<h2 id="所以，ApiResponse-builder-的整体意思是：-调用-ApiResponse-类的-builder-方法，并明确指定其泛型类型-T-为-User-。"><a href="#所以，ApiResponse-builder-的整体意思是：-调用-ApiResponse-类的-builder-方法，并明确指定其泛型类型-T-为-User-。" class="headerlink" title="所以，ApiResponse.&lt;User&gt;builder() 的整体意思是：**调用 ApiResponse 类的 builder() 方法，并明确指定其泛型类型 T 为 User**。"></a>所以，<code>ApiResponse.&lt;User&gt;builder()</code> 的整体意思是：**调用 <code>ApiResponse</code> 类的 <code>builder()</code> 方法，并明确指定其泛型类型 <code>T</code> 为 <code>User</code>**。</h2><h3 id="2-为什么需要它？-原理深度解析"><a href="#2-为什么需要它？-原理深度解析" class="headerlink" title="2. 为什么需要它？(原理深度解析)"></a>2. 为什么需要它？(原理深度解析)</h3><p>要理解为什么需要它，我们得先看看 Lombok 为 <code>@Builder</code> 生成的代码到底是什么样的。</p>
+<h4 id="生成的代码（概念模型）"><a href="#生成的代码（概念模型）" class="headerlink" title="生成的代码（概念模型）"></a>生成的代码（概念模型）</h4><p>当你定义一个泛型类并使用 <code>@Builder</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Builder</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApiResponse</span>&lt;T&gt; &#123;<br>    <span class="hljs-keyword">private</span> T data;<br>    <span class="hljs-comment">// ... 其他字段</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Lombok 会生成一个静态的 <code>builder()</code> 方法。<strong>关键点在于，这个静态方法本身也是一个泛型方法</strong>，它有一个自己的类型参数（通常也叫 <code>T</code>），这个参数用于最终构建外部类的 <code>T</code>。</p>
+<p>生成的代码<strong>类似于</strong>这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApiResponse</span>&lt;T&gt; &#123;<br>    <span class="hljs-keyword">private</span> T data;<br><br>    <span class="hljs-comment">// Lombok 生成的静态内部建造者类</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApiResponseBuilder</span>&lt;T&gt; &#123;<br>        <span class="hljs-keyword">private</span> T data;<br><br>        <span class="hljs-keyword">public</span> ApiResponseBuilder&lt;T&gt; <span class="hljs-title function_">data</span><span class="hljs-params">(T data)</span> &#123;<br>            <span class="hljs-built_in">this</span>.data = data;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> ApiResponse&lt;T&gt; <span class="hljs-title function_">build</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiResponse</span>&lt;&gt;(<span class="hljs-built_in">this</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// ！！！核心在这里：这是一个泛型静态方法 ！！！</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; ApiResponseBuilder&lt;T&gt; <span class="hljs-title function_">builder</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiResponseBuilder</span>&lt;T&gt;();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>请注意 <code>public static &lt;T&gt; ApiResponseBuilder&lt;T&gt; builder()</code> 这一行。这里的 <code>&lt;T&gt;</code> 是方法自己的泛型参数。</p>
+<h4 id="遇到的问题：类型推断失败"><a href="#遇到的问题：类型推断失败" class="headerlink" title="遇到的问题：类型推断失败"></a>遇到的问题：类型推断失败</h4><p>现在，我们想创建一个 <code>ApiResponse&lt;User&gt;</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 我们的目标：得到一个 ApiResponseBuilder&lt;User&gt;</span><br>ApiResponseBuilder&lt;User&gt; builder = ApiResponse.builder();<br></code></pre></td></tr></table></figure>
+
+<p>但是编译器会遇到一个难题（类型擦除）：</p>
+<ol>
+<li><code>ApiResponse.builder()</code> 调用的是一个泛型方法 <code>static &lt;T&gt; ApiResponseBuilder&lt;T&gt; builder()</code>。</li>
+<li>编译器需要推断出这个方法的类型参数 <code>T</code> 到底是什么。</li>
+<li>在这个语句中，<code>ApiResponse.builder()</code> 的返回值被赋值给了 <code>ApiResponseBuilder&lt;User&gt;</code> 类型的变量 <code>builder</code>。编译器<strong>通常可以根据目标类型（Target Type）进行反向推断</strong>，推断出 <code>T</code> 应该是 <code>User</code>。</li>
+</ol>
+<p><strong>然而，在更复杂的链式调用中，这种推断可能会失败：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 复杂的链式调用</span><br>ApiResponse&lt;User&gt; response = ApiResponse.builder() <span class="hljs-comment">// 编译器在这里无法推断出T是User</span><br>                                        .data(user) <span class="hljs-comment">// 直到这里，它才知道T应该是User的类型</span><br>                                        .build();<br></code></pre></td></tr></table></figure>
+<p>问题在于，在调用 <code>.builder()</code> 的那一刻，编译器还没有看到后面的 <code>.data(user)</code>，它没有任何信息来推断 <code>T</code> 的类型。因此，它只能将 <code>T</code> 推断为最宽泛的 <code>Object</code>。</p>
+<p>这会导致 <code>.data()</code> 方法期望一个 <code>Object</code> 参数，而你传入一个 <code>User</code> 对象虽然没问题，但会丢失类型信息，有时会导致令人困惑的编译警告或错误。</p>
+<h4 id="解决方案：类型见证（Type-Witness）"><a href="#解决方案：类型见证（Type-Witness）" class="headerlink" title="解决方案：类型见证（Type Witness）"></a>解决方案：类型见证（Type Witness）</h4><p>为了解决这个“编译器无法在链式调用开始时进行类型推断”的问题，我们使用<strong>类型见证</strong>来<strong>显式地</strong>告诉编译器类型参数应该是什么。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 使用类型见证：在方法调用前显式指定泛型类型</span><br>ApiResponse&lt;User&gt; response = ApiResponse.&lt;User&gt;builder() <span class="hljs-comment">// 明确告诉编译器：T就是User！</span><br>                                        .data(user) <span class="hljs-comment">// 因此，.data() 方法现在期望一个User参数</span><br>                                        .build(); <span class="hljs-comment">// .build() 返回 ApiResponse&lt;User&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="这样做的巨大好处是：1-类型安全：整个链式调用过程中的所有方法（如-data-）的参数类型都立即被确定为-User，而不是-Object。2-更好的IDE支持：你的IDE（如-IntelliJ-IDEA）能够提供更准确的代码补全和参数类型提示。3-避免编译警告：消除了因类型推断不明确而可能产生的“unchecked”警告。"><a href="#这样做的巨大好处是：1-类型安全：整个链式调用过程中的所有方法（如-data-）的参数类型都立即被确定为-User，而不是-Object。2-更好的IDE支持：你的IDE（如-IntelliJ-IDEA）能够提供更准确的代码补全和参数类型提示。3-避免编译警告：消除了因类型推断不明确而可能产生的“unchecked”警告。" class="headerlink" title="这样做的巨大好处是：1.  类型安全：整个链式调用过程中的所有方法（如 .data()）的参数类型都立即被确定为 User，而不是 Object。2.  更好的IDE支持：你的IDE（如 IntelliJ IDEA）能够提供更准确的代码补全和参数类型提示。3.  避免编译警告：消除了因类型推断不明确而可能产生的“unchecked”警告。"></a>这样做的<strong>巨大好处</strong>是：<br>1.  <strong>类型安全</strong>：整个链式调用过程中的所有方法（如 <code>.data()</code>）的参数类型都立即被确定为 <code>User</code>，而不是 <code>Object</code>。<br>2.  <strong>更好的IDE支持</strong>：你的IDE（如 IntelliJ IDEA）能够提供更准确的代码补全和参数类型提示。<br>3.  <strong>避免编译警告</strong>：消除了因类型推断不明确而可能产生的“unchecked”警告。</h2><h3 id="3-什么时候必须用？什么时候可以省略？"><a href="#3-什么时候必须用？什么时候可以省略？" class="headerlink" title="3. 什么时候必须用？什么时候可以省略？"></a>3. 什么时候必须用？什么时候可以省略？</h3><h4 id="可以省略的情况（编译器能成功推断时）："><a href="#可以省略的情况（编译器能成功推断时）：" class="headerlink" title="可以省略的情况（编译器能成功推断时）："></a>可以省略的情况（编译器能成功推断时）：</h4><ol>
+<li><strong>直接赋值</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 编译器可以从左侧的目标类型 ApiResponse&lt;User&gt; 推断出 builder() 的 T 是 User</span><br>ApiResponse&lt;User&gt; response = ApiResponse.builder().data(user).build();<br></code></pre></td></tr></table></figure></li>
+<li><strong>方法参数</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 编译器可以从方法参数类型 ApiResponse&lt;User&gt; 推断出来</span><br>someMethodThatExpectsApiResponse(ApiResponse.builder().data(user).build());<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="建议使用（或必须使用）的情况："><a href="#建议使用（或必须使用）的情况：" class="headerlink" title="建议使用（或必须使用）的情况："></a>建议使用（或必须使用）的情况：</h4><ol>
+<li><strong>链式调用中间态</strong>：如果你不需要立即赋值，而是先获取 <code>Builder</code> 对象进行操作。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 必须使用类型见证，否则 builder 的类型是 ApiResponseBuilder&lt;Object&gt;</span><br>ApiResponse.ApiResponseBuilder&lt;User&gt; builder = ApiResponse.&lt;User&gt;builder();<br><br><span class="hljs-comment">// ... 一些逻辑 ...</span><br><span class="hljs-keyword">if</span> (someCondition) &#123;<br>    builder.data(user1);<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    builder.data(user2);<br>&#125;<br>ApiResponse&lt;User&gt; response = builder.build();<br></code></pre></td></tr></table></figure></li>
+<li><strong>编译器推断失败时</strong>：当代码比较复杂，编译器无法正确推断类型时，使用类型见证可以解决编译错误或警告。</li>
+<li><strong>追求代码清晰度和安全性</strong>：即使编译器能推断出来，显式地写出 <code>&lt;User&gt;</code> 也让代码的意图更加清晰，是一种良好的编程实践。<strong>在很多优秀的代码库中，为了绝对清晰和安全，即使可以省略也会写上类型见证。</strong></li>
+</ol>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th align="left">方面</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>语法名称</strong></td>
+<td align="left"><strong>类型见证（Type Witness）</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>写法</strong></td>
+<td align="left"><code>ClassName.&lt;Type&gt;methodName()</code></td>
+</tr>
+<tr>
+<td align="left"><strong>目的</strong></td>
+<td align="left"><strong>显式指定</strong>泛型方法的类型参数，帮助编译器进行类型推断。</td>
+</tr>
+<tr>
+<td align="left"><strong>原理</strong></td>
+<td align="left">Lombok 生成的 <code>builder()</code> 是一个泛型方法 <code>static &lt;T&gt; Builder&lt;T&gt; builder()</code>。类型见证直接确定了这个方法本身的类型参数 <code>T</code>。</td>
+</tr>
+<tr>
+<td align="left"><strong>好处</strong></td>
+<td align="left">增强类型安全，改善IDE支持，避免编译警告，使代码意图更清晰。</td>
+</tr>
+<tr>
+<td align="left"><strong>使用场景</strong></td>
+<td align="left">链式调用开头、编译器推断失败时，或任何时候你想让代码更加明确和健壮。</td>
+</tr>
+</tbody></table>
+<p>所以，<code>ApiResponse.&lt;User&gt;builder()</code> 是一种<strong>显式地、精确地控制泛型类型</strong>的高级写法，体现了你对 Java 泛型机制的深入理解，是编写高质量、类型安全代码的推荐做法。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%9F%BA%E7%A1%80%E6%96%87%E6%A1%A3/" class="category-chain-item">基础文档</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>类型见证</div>
+      <div>https://super-404.github.io/2025/08/23/tech-类型见证/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/25/tech-springboot-@Params/" title="@Params">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">@Params</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/23/tech-springboot-@RequestBody/" title="@RequestBody">
+                        <span class="hidden-mobile">@RequestBody</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

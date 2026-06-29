@@ -1,73 +1,857 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="如何理解GFS中Master节点和Chunk 服务器当然，这是一个关于GFS中Master节点和Chunk服务器角色的非常核心的问题。理解它们的关系和各自职责是理解GFS设计精髓的关键。 我们可以用一个图书馆的比喻来直观地理解：  Master节点 就像是图书馆的中央索引系统或总管理员。 Chunk服务器 就像是图书馆里一个个的书架，上面实际存放着书籍。 数据文件 就是一本书。 Chunk（数据块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何理解GFS中Master节点和Chunk 服务器">
+<meta property="og:url" content="https://super-404.github.io/2025/09/06/tech-%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF-Mit6.824-gfs%E4%B8%ADChunkServe%E5%92%8CMasterr/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如何理解GFS中Master节点和Chunk 服务器当然，这是一个关于GFS中Master节点和Chunk服务器角色的非常核心的问题。理解它们的关系和各自职责是理解GFS设计精髓的关键。 我们可以用一个图书馆的比喻来直观地理解：  Master节点 就像是图书馆的中央索引系统或总管理员。 Chunk服务器 就像是图书馆里一个个的书架，上面实际存放着书籍。 数据文件 就是一本书。 Chunk（数据块">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-06T07:18:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="分布式技术">
+<meta property="article:tag" content="Mit6.824">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>如何理解GFS中Master节点和Chunk 服务器 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="如何理解GFS中Master节点和Chunk 服务器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-06 15:18" pubdate>
+          2025年9月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">如何理解GFS中Master节点和Chunk 服务器</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="如何理解GFS中Master节点和Chunk-服务器"><a href="#如何理解GFS中Master节点和Chunk-服务器" class="headerlink" title="如何理解GFS中Master节点和Chunk 服务器"></a>如何理解GFS中Master节点和Chunk 服务器</h1><p>当然，这是一个关于GFS中Master节点和Chunk服务器角色的非常核心的问题。理解它们的关系和各自职责是理解GFS设计精髓的关键。</p>
+<p>我们可以用一个<strong>图书馆的比喻</strong>来直观地理解：</p>
+<ul>
+<li><strong>Master节点</strong> 就像是图书馆的<strong>中央索引系统</strong>或<strong>总管理员</strong>。</li>
+<li><strong>Chunk服务器</strong> 就像是图书馆里一个个的<strong>书架</strong>，上面实际存放着书籍。</li>
+<li><strong>数据文件</strong> 就是一本书。</li>
+<li><strong>Chunk（数据块）</strong> 就是这本书被分成的几个<strong>章节</strong>。</li>
+</ul>
+<h2 id="现在，我们来详细拆解它们的职责和如何协同工作。"><a href="#现在，我们来详细拆解它们的职责和如何协同工作。" class="headerlink" title="现在，我们来详细拆解它们的职责和如何协同工作。"></a>现在，我们来详细拆解它们的职责和如何协同工作。</h2><h3 id="一、Master节点：大脑和指挥中心"><a href="#一、Master节点：大脑和指挥中心" class="headerlink" title="一、Master节点：大脑和指挥中心"></a>一、Master节点：大脑和指挥中心</h3><p>Master节点是GFS集群的“大脑”，负责管理整个系统的元数据（Metadata），而不是实际的数据本身。这使其成为一个高度中心化的管理节点。它的主要职责包括：</p>
+<ol>
+<li><p><strong>元数据管理</strong></p>
+<ul>
+<li><strong>命名空间管理：</strong> 记录所有文件和目录的层次结构（就像记录图书馆里有哪些书和它们所在的类别）。</li>
+<li><strong>文件到Chunk的映射：</strong> 记录每个文件被分割成了哪些具体的Chunk（就像记录一本书分成了哪几章）。</li>
+<li><strong>Chunk位置信息：</strong> 知道每个Chunk副本存储在哪些Chunk服务器上（就像记录每一章的书分别放在哪几个书架上）。注意：Master并不持久化存储Chunk位置，而是通过启动时及运行时与Chunk服务器的心跳机制来获取并维护这个信息。</li>
+</ul>
+</li>
+<li><p><strong>系统协调与控制</strong></p>
+<ul>
+<li><strong>租约（Lease）管理：</strong> Master会授予某个Chunk服务器对一个Chunk的“租约”，使其成为该Chunk的<strong>主副本（Primary）</strong>。主副本负责协调对这个Chunk的所有数据变更操作（写入、追加），确保操作序列的顺序一致性。</li>
+<li><strong>垃圾回收（Garbage Collection）：</strong> 当文件被删除后，Master不会立即物理删除Chunk，而是先将其重命名为隐藏状态，并在后续的垃圾回收流程中清理不再被任何文件使用的Chunk。</li>
+<li><strong>Chunk副本管理：</strong> Master会定期检查每个Chunk的副本数量。如果某个Chunk的副本因服务器宕机或磁盘损坏而数量不足，Master会命令其他Chunk服务器从现有副本复制一份，以确保数据的可靠性。</li>
+<li><strong>Chunk迁移：</strong> 为了实现负载均衡，Master可能会指示Chunk服务器在不同机器之间拷贝Chunk副本。</li>
+</ul>
+</li>
+</ol>
+<h2 id="特点总结：-中心化：-所有元数据和控制决策都来自Master。-单一活性节点：-通常只有一个主Master节点在工作（虽然有Shadow节点做备份和只读访问），这简化了设计，但也成为了潜在的单点（需要通过精心设计来降低风险）。-轻量级：-由于不存储实际数据，Master的内存和CPU压力主要来自于元数据量和管理操作，而不是数据流量。"><a href="#特点总结：-中心化：-所有元数据和控制决策都来自Master。-单一活性节点：-通常只有一个主Master节点在工作（虽然有Shadow节点做备份和只读访问），这简化了设计，但也成为了潜在的单点（需要通过精心设计来降低风险）。-轻量级：-由于不存储实际数据，Master的内存和CPU压力主要来自于元数据量和管理操作，而不是数据流量。" class="headerlink" title="特点总结：*   中心化： 所有元数据和控制决策都来自Master。*   单一活性节点： 通常只有一个主Master节点在工作（虽然有Shadow节点做备份和只读访问），这简化了设计，但也成为了潜在的单点（需要通过精心设计来降低风险）。*   轻量级： 由于不存储实际数据，Master的内存和CPU压力主要来自于元数据量和管理操作，而不是数据流量。"></a><strong>特点总结：</strong><br>*   <strong>中心化：</strong> 所有元数据和控制决策都来自Master。<br>*   <strong>单一活性节点：</strong> 通常只有一个主Master节点在工作（虽然有Shadow节点做备份和只读访问），这简化了设计，但也成为了潜在的单点（需要通过精心设计来降低风险）。<br>*   <strong>轻量级：</strong> 由于不存储实际数据，Master的内存和CPU压力主要来自于元数据量和管理操作，而不是数据流量。</h2><h3 id="二、Chunk服务器：肌肉和劳动力"><a href="#二、Chunk服务器：肌肉和劳动力" class="headerlink" title="二、Chunk服务器：肌肉和劳动力"></a>二、Chunk服务器：肌肉和劳动力</h3><p>Chunk服务器是真正干“体力活”的节点，负责在本地磁盘上存储实际的数据块（Chunk）。它们是无状态的（从系统角度 view），非常容易扩展和替换。</p>
+<ol>
+<li><p><strong>数据存储</strong></p>
+<ul>
+<li>每个Chunk是一个固定大小的Linux文件（默认为64MB）。</li>
+<li>每个Chunk通常会有3个副本（可配置）存储在不同的Chunk服务器上，以防止单点故障。</li>
+</ul>
+</li>
+<li><p><strong>数据读写</strong></p>
+<ul>
+<li><strong>读取：</strong> 客户端从Master获取元数据，知道文件某个偏移量的数据在哪个Chunk的哪个副本上，然后直接联系该Chunk服务器读取数据。<strong>Master不参与实际的数据流</strong>，避免了瓶颈。</li>
+<li><strong>写入&#x2F;追加：</strong> 客户端依然从Master获取元信息和主副本的位置。然后，<strong>客户端将所有数据推送到所有的副本Chunk服务器上</strong>（数据流不经过Master！）。推送完成后，客户端再通知主副本。主副本为所有操作确定一个序列顺序，并通知所有次级副本（Secondaries）以相同的顺序执行操作，最后回复客户端操作成功与否。</li>
+</ul>
+</li>
+</ol>
+<h2 id="特点总结：-无状态：-Chunk服务器本身不维护复杂的元数据，只知道自己存储了哪些Chunk。-高吞吐：-设计目标就是高效地存储和提供大块数据。-易扩展：-要增加系统容量，只需简单地添加新的Chunk服务器并向Master注册即可。"><a href="#特点总结：-无状态：-Chunk服务器本身不维护复杂的元数据，只知道自己存储了哪些Chunk。-高吞吐：-设计目标就是高效地存储和提供大块数据。-易扩展：-要增加系统容量，只需简单地添加新的Chunk服务器并向Master注册即可。" class="headerlink" title="特点总结：*   无状态： Chunk服务器本身不维护复杂的元数据，只知道自己存储了哪些Chunk。*   高吞吐： 设计目标就是高效地存储和提供大块数据。*   易扩展： 要增加系统容量，只需简单地添加新的Chunk服务器并向Master注册即可。"></a><strong>特点总结：</strong><br>*   <strong>无状态：</strong> Chunk服务器本身不维护复杂的元数据，只知道自己存储了哪些Chunk。<br>*   <strong>高吞吐：</strong> 设计目标就是高效地存储和提供大块数据。<br>*   <strong>易扩展：</strong> 要增加系统容量，只需简单地添加新的Chunk服务器并向Master注册即可。</h2><h3 id="三、Master与Chunk服务器的协同工作流程（以写入为例）"><a href="#三、Master与Chunk服务器的协同工作流程（以写入为例）" class="headerlink" title="三、Master与Chunk服务器的协同工作流程（以写入为例）"></a>三、Master与Chunk服务器的协同工作流程（以写入为例）</h3><p>这个过程完美体现了两者的分工：</p>
+<ol>
+<li><strong>客户端</strong>向Master询问文件<code>X</code>在偏移量<code>Y</code>处的Chunk句柄和副本位置。</li>
+<li><strong>Master</strong>回复客户端：该Chunk的主副本在<code>ChunkServer A</code>，所有副本在<code>A, B, C</code>。</li>
+<li><strong>客户端</strong>将待写入的数据推送到所有副本服务器<code>A, B, C</code>。服务器会先将数据存入内部的缓冲区。</li>
+<li>数据推送完成后，<strong>客户端</strong>向主副本服务器<code>A</code>发送一个写命令。</li>
+<li><strong>主副本（A）</strong> 为这个操作分配一个连续的序列号（保证顺序），然后在自己本地执行写入，并命令所有次级副本（<code>B, C</code>）以相同的序列号执行写入。</li>
+<li><strong>次级副本（B, C）</strong> 执行写入操作后，回复主副本操作完成。</li>
+<li><strong>主副本（A）</strong> 收到所有次级副本的成功回复后，回复<strong>客户端</strong>写入成功。如果任何一个副本失败，主副本会向客户端报告失败，客户端通常会重试整个操作。</li>
+</ol>
+<h2 id="关键点：-Master只参与了前两步的元数据查询，之后的数据流和控制流完全由客户端和Chunk服务器群自行处理，这极大地减轻了Master的负担。"><a href="#关键点：-Master只参与了前两步的元数据查询，之后的数据流和控制流完全由客户端和Chunk服务器群自行处理，这极大地减轻了Master的负担。" class="headerlink" title="关键点： Master只参与了前两步的元数据查询，之后的数据流和控制流完全由客户端和Chunk服务器群自行处理，这极大地减轻了Master的负担。"></a><strong>关键点：</strong> Master只参与了前两步的元数据查询，之后的数据流和控制流完全由客户端和Chunk服务器群自行处理，这极大地减轻了Master的负担。</h2><h3 id="总结与对比"><a href="#总结与对比" class="headerlink" title="总结与对比"></a>总结与对比</h3><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">Master节点</th>
+<th align="left">Chunk服务器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>角色</strong></td>
+<td align="left">大脑、管理员、索引</td>
+<td align="left">肌肉、劳动力、书架</td>
+</tr>
+<tr>
+<td align="left"><strong>存储内容</strong></td>
+<td align="left"><strong>元数据</strong>（Metadata）</td>
+<td align="left"><strong>实际数据</strong>（Data Chunks）</td>
+</tr>
+<tr>
+<td align="left"><strong>核心功能</strong></td>
+<td align="left">管理命名空间、访问控制、副本位置、租约管理、垃圾回收</td>
+<td align="left">存储Chunk、处理客户端的读写请求</td>
+</tr>
+<tr>
+<td align="left"><strong>数据流</strong></td>
+<td align="left"><strong>不接触</strong>实际数据流</td>
+<td align="left"><strong>处理所有</strong>实际数据流</td>
+</tr>
+<tr>
+<td align="left"><strong>设计目标</strong></td>
+<td align="left">中心化管理、低元数据延迟、高可靠性</td>
+<td align="left">高数据吞吐、高可用性、易扩展</td>
+</tr>
+<tr>
+<td align="left"><strong>扩展性</strong></td>
+<td align="left">受限于元数据量（内存大小），较难扩展</td>
+<td align="left">通过简单增加机器线性扩展</td>
+</tr>
+</tbody></table>
+<p><strong>简单来说：Master知道一切（关于数据的信息），但什么都不碰（实际数据）；Chunk服务器什么都不知道（关于系统的全局信息），但拥有一切（实际数据）。</strong> 这种将<strong>控制流</strong>（经过Master）和<strong>数据流</strong>（不经过Master）分离的设计，是GFS能够高效处理海量数据的关键。</p>
+<h1 id="如果ChunkServer-A-联系不上怎么办"><a href="#如果ChunkServer-A-联系不上怎么办" class="headerlink" title="如果ChunkServer A 联系不上怎么办"></a>如果ChunkServer A 联系不上怎么办</h1><p>非常好的问题！这直接触及了GFS容错机制的核心。如果联系不上ChunkServer A（假设它是某个Chunk的主副本），系统会通过一套自动化的流程来恢复，整个过程对客户端几乎是透明的。</p>
+<p>下面详细解释一下会发生什么以及Master节点如何应对。</p>
+<h3 id="根本原因：心跳机制（Heartbeat）"><a href="#根本原因：心跳机制（Heartbeat）" class="headerlink" title="根本原因：心跳机制（Heartbeat）"></a>根本原因：心跳机制（Heartbeat）</h3><p>首先，要理解Master节点如何知道一个ChunkServer出了问题。答案是通过<strong>心跳机制</strong>。</p>
+<ol>
+<li><strong>定期汇报</strong>：每个Chunk服务器会定期（例如每秒一次）向Master节点发送心跳信息，报告自己的状态和存储的Chunk列表。</li>
+<li><strong>超时判定</strong>：Master节点会监控这些心跳。如果在一个指定的超时期限内（例如30秒）没有收到某个ChunkServer（比如ChunkServer A）的心跳，Master就会将其标记为<strong>宕机</strong>。</li>
+</ol>
+<h2 id="一旦Master认为ChunkServer-A失效，它会采取一系列措施，其核心目标是：确保数据的可用性和一致性。"><a href="#一旦Master认为ChunkServer-A失效，它会采取一系列措施，其核心目标是：确保数据的可用性和一致性。" class="headerlink" title="一旦Master认为ChunkServer A失效，它会采取一系列措施，其核心目标是：确保数据的可用性和一致性。"></a>一旦Master认为ChunkServer A失效，它会采取一系列措施，其核心目标是：<strong>确保数据的可用性和一致性</strong>。</h2><h3 id="Master节点会立即采取的行动："><a href="#Master节点会立即采取的行动：" class="headerlink" title="Master节点会立即采取的行动："></a>Master节点会立即采取的行动：</h3><h4 id="1-撤销所有租约（Revoke-Leases）"><a href="#1-撤销所有租约（Revoke-Leases）" class="headerlink" title="1. 撤销所有租约（Revoke Leases）"></a>1. 撤销所有租约（Revoke Leases）</h4><p>ChunkServer A上持有的所有作为<strong>主副本（Primary）</strong> 的租约将全部失效。这意味着，任何需要由主副本来协调的写操作（对于这些Chunk来说）都无法再进行，客户端会收到错误并重试。</p>
+<h4 id="2-重新复制丢失的副本（Re-replication）"><a href="#2-重新复制丢失的副本（Re-replication）" class="headerlink" title="2. 重新复制丢失的副本（Re-replication）"></a>2. 重新复制丢失的副本（Re-replication）</h4><p>Master检查ChunkServer A上存储的所有Chunk。对于每一个Chunk：</p>
+<ul>
+<li>Master会发现这些Chunk的可用副本数减少了（例如，从3个降到了2个）。</li>
+<li>为了保证数据的可靠性（通常要求3副本），Master会启动<strong>重新复制</strong>流程。</li>
+<li>Master会从现有存活的、数据最新的副本所在的Chunk服务器（比如ChunkServer B）上，选择一个，命令它将对应的Chunk数据拷贝到另一个健康的Chunk服务器上（比如ChunkServer D），直到副本数量恢复到目标值（3个）。</li>
+</ul>
+<h2 id="这个过程是并行的，Master会管理整个集群的重新复制负载，避免给任何一台服务器带来过大压力。"><a href="#这个过程是并行的，Master会管理整个集群的重新复制负载，避免给任何一台服务器带来过大压力。" class="headerlink" title="这个过程是并行的，Master会管理整个集群的重新复制负载，避免给任何一台服务器带来过大压力。"></a><strong>这个过程是并行的</strong>，Master会管理整个集群的重新复制负载，避免给任何一台服务器带来过大压力。</h2><h3 id="对客户端操作的影响和处理："><a href="#对客户端操作的影响和处理：" class="headerlink" title="对客户端操作的影响和处理："></a>对客户端操作的影响和处理：</h3><h4 id="场景一：客户端正要进行写操作"><a href="#场景一：客户端正要进行写操作" class="headerlink" title="场景一：客户端正要进行写操作"></a>场景一：客户端正要进行写操作</h4><ol>
+<li><strong>客户端</strong>首先向Master询问目标Chunk的主副本在哪里。</li>
+<li><strong>Master</strong>发现这个Chunk的主副本本来在A上，但A已经失联。此时，Master会<strong>不会</strong>告诉客户端主副本在A。</li>
+<li>Master知道这个Chunk的副本还在B和C上，但它们现在都是次级副本（Secondary），没有主副本，无法执行写操作。</li>
+<li>Master会<strong>延迟回复客户端的请求</strong>。它需要先为这个Chunk<strong>重新授予一个新的租约</strong>，指定一个新的主副本（比如从B和C中选一个状态最好的，比如B）。</li>
+<li>一旦Master成功指定ChunkServer B为新的主副本，它会将新的元信息（主副本是B，所有副本在B和C上）回复给客户端。</li>
+<li>客户端收到新信息后，会<strong>使用新的主副本B</strong>重新发起之前描述的写流程。</li>
+</ol>
+<p><strong>客户端看到的现象可能就是一次短暂的超时或错误，重试后操作成功。</strong> 这一切都由GFS客户端库自动处理。</p>
+<h4 id="场景二：客户端正在进行读操作"><a href="#场景二：客户端正在进行读操作" class="headerlink" title="场景二：客户端正在进行读操作"></a>场景二：客户端正在进行读操作</h4><ul>
+<li>读操作不需要通过主副本，客户端可以直接联系任何一个持有副本的ChunkServer。</li>
+<li>如果客户端首先尝试联系ChunkServer A读数据，会发现联系不上。</li>
+<li>客户端会<strong>自动重试</strong>，转而向Master提供的副本列表中的另一个服务器（例如ChunkServer B）请求数据。</li>
+<li>因此，读操作通常只会受到一次超时的影响，重试后即可成功。</li>
+</ul>
+<hr>
+<h3 id="ChunkServer-A恢复后会发生什么？"><a href="#ChunkServer-A恢复后会发生什么？" class="headerlink" title="ChunkServer A恢复后会发生什么？"></a>ChunkServer A恢复后会发生什么？</h3><ol>
+<li><strong>重新注册</strong>：ChunkServer A重启后，会向Master报告，并上报其本地存储的所有Chunk的列表。</li>
+<li><strong>元数据比对</strong>：Master会将A上报的Chunk列表与自己的元数据进行比对。</li>
+<li><strong>处理过期数据</strong>：Master会发现，在A宕机期间，某些Chunk可能已经接受了新的写操作（因为系统在其他副本上选出了新的主副本并继续工作）。这意味着A上的这些Chunk副本是<strong>过时的</strong>。</li>
+<li><strong>垃圾回收</strong>：Master会命令A删除这些过时的Chunk副本，以避免陈旧的副本被客户端读取。同时，Master可能会将A重新加入可用的服务器池，并可能将来某个时间将新的Chunk副本放在它上面（作为复制源或目标）。</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>GFS通过以下几种机制优雅地处理ChunkServer宕机问题：</p>
+<ol>
+<li><strong>心跳检测</strong>：快速发现节点故障。</li>
+<li><strong>冗余副本</strong>：数据有多个备份，单个节点丢失不影响数据本身。</li>
+<li><strong>租约机制</strong>：Master可以撤销旧主副本的权力并指定新主副本，恢复写能力。</li>
+<li><strong>重新复制</strong>：自动将副本数量恢复到安全水平，保持长期可靠性。</li>
+<li><strong>客户端重试</strong>：客户端库内置了容错逻辑，通过重试来应对临时故障。</li>
+</ol>
+<p>因此，<strong>联系不上ChunkServer A并不是一个致命问题</strong>，而只是一个GFS设计之初就预料到的、并通过分布式系统常规操作来自动处理的“常规故障事件”。整个系统能够在少量节点故障的情况下继续正常运行，这也是分布式文件系统的基本要求。</p>
+<h1 id="如果master-已经将ChunkServer-A-发送给了客户端，但是ChunkServer-A-联系不上会发生什么"><a href="#如果master-已经将ChunkServer-A-发送给了客户端，但是ChunkServer-A-联系不上会发生什么" class="headerlink" title="如果master 已经将ChunkServer A 发送给了客户端，但是ChunkServer A 联系不上会发生什么"></a>如果master 已经将ChunkServer A 发送给了客户端，但是ChunkServer A 联系不上会发生什么</h1><p>这个问题问得非常好，它触及了GFS在实际运行中处理瞬时故障和竞争条件的细节。这种情况完全有可能发生，因为Master节点维护的元信息（ChunkServer A是健康的）和网络的实时状态（ChunkServer A突然宕机或网络分区）之间存在一个短暂的时间窗口。</p>
+<h2 id="整个过程体现了GFS客户端设计的容错性和重试机制。以下是详细的处理流程："><a href="#整个过程体现了GFS客户端设计的容错性和重试机制。以下是详细的处理流程：" class="headerlink" title="整个过程体现了GFS客户端设计的容错性和重试机制。以下是详细的处理流程："></a>整个过程体现了GFS客户端设计的<strong>容错性</strong>和<strong>重试机制</strong>。以下是详细的处理流程：</h2><h3 id="核心原则：客户端不会完全信任Master给的信息"><a href="#核心原则：客户端不会完全信任Master给的信息" class="headerlink" title="核心原则：客户端不会完全信任Master给的信息"></a>核心原则：客户端不会完全信任Master给的信息</h3><p>Master提供的元数据信息（哪个ChunkServer是主副本、副本列表是什么）是一个“最佳已知状态”，但可能不是最新状态。GFS客户端库被设计为能够处理这些信息过时的情况。</p>
+<h3 id="事件发生顺序与处理流程"><a href="#事件发生顺序与处理流程" class="headerlink" title="事件发生顺序与处理流程"></a>事件发生顺序与处理流程</h3><ol>
+<li><p><strong>客户端获取元数据</strong>：</p>
+<ul>
+<li>客户端向Master询问文件某个偏移量对应的Chunk句柄和副本位置。</li>
+<li>Master回复：“Chunk句柄是<code>XYZ</code>，主副本在<code>ChunkServer A</code>，所有副本在<code>A, B, C</code>。”</li>
+<li>此时，在Master的认知里，A是健康的。</li>
+</ul>
+</li>
+<li><p><strong>客户端联系ChunkServer A失败</strong>：</p>
+<ul>
+<li>客户端尝试与ChunkServer A建立连接（例如，进行TCP连接或发送RPC请求）。</li>
+<li>请求失败，原因可能是：<ul>
+<li><strong>ChunkServer A刚刚宕机</strong>（在Master上次心跳检查之后）。</li>
+<li><strong>网络临时故障</strong> between 客户端和A。</li>
+<li><strong>ChunkServer A负载过高</strong>，无法响应。</li>
+</ul>
+</li>
+<li>客户端会遇到一个<strong>网络错误</strong>（如连接超时、连接拒绝等）。</li>
+</ul>
+</li>
+<li><p><strong>客户端的自动重试逻辑</strong>：</p>
+<ul>
+<li>客户端<strong>不会立即认为操作失败</strong>。它会自动进入重试流程：<ul>
+<li>a. <strong>重试同一个服务器</strong>：它可能会先尝试再次联系ChunkServer A（例如，重试一次，以排除瞬时网络抖动）。</li>
+<li>b. <strong>尝试其他副本</strong>：如果重试A再次失败，客户端会转而尝试Master提供的副本列表中的<strong>其他服务器</strong>（<code>B</code>或<code>C</code>）。</li>
+<li><strong>对于读操作</strong>：客户端可以直接从次级副本（Secondary）<code>B</code>或<code>C</code>读取数据。读操作会立即成功，用户只会感知到一次轻微的延迟。</li>
+<li><strong>对于写操作</strong>：这里情况更复杂一些。客户端不能直接写给次级副本，因为只有主副本能协调写操作。客户端会记录这次失败。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>向上汇报与重新获取元数据</strong>：</p>
+<ul>
+<li>如果客户端尝试了所有副本（包括重试A和尝试B、C）后，写操作仍然失败（因为它无法找到有效的主副本），或者它直接判断主副本A失效，它会<strong>将这次失败归因于接收了过期的元数据</strong>。</li>
+<li>客户端会<strong>回源到Master节点</strong>，向Master报告：“您之前告诉我的关于Chunk <code>XYZ</code>的信息似乎过时了，我无法联系上主副本A，操作失败了。”</li>
+<li>同时，客户端会<strong>请求Master提供该Chunk最新的元数据信息</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Master节点的响应</strong>：</p>
+<ul>
+<li>Master收到客户端的错误报告后，会触发自己的检查机制。它可能通过心跳发现ChunkServer A确实已经失联（如果还没发现的话）。</li>
+<li>Master会<strong>撤销</strong>之前授予给ChunkServer A的租约（Lease），因为它现在确信A已失效。</li>
+<li>Master会从剩余的健康副本（<code>B</code>和<code>C</code>）中<strong>选择一个作为新的主副本</strong>（比如<code>B</code>），并授予它新的租约。</li>
+<li>Master将<strong>最新的元数据</strong>回复给客户端：“Chunk <code>XYZ</code>的最新主副本是<code>ChunkServer B</code>，副本在<code>B, C</code>（A已经被移除）。”</li>
+</ul>
+</li>
+<li><p><strong>客户端重试操作</strong>：</p>
+<ul>
+<li>客户端拿到新的元数据后，<strong>使用新的主副本B</strong>，重新发起整个写操作流程（将数据推送到B和C，然后由B协调写入）。</li>
+<li>这次操作有很大概率会成功。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="总结与设计哲学"><a href="#总结与设计哲学" class="headerlink" title="总结与设计哲学"></a>总结与设计哲学</h3><p>这种情况下发生的事情，完美体现了GFS的设计理念：</p>
+<ol>
+<li><strong>简单中心化管理</strong>：Master是唯一的真相来源，即使这个真相可能短暂过时。</li>
+<li><strong>智能且容错的客户端</strong>：客户端库非常“聪明”，它不盲目相信Master的一次性回复。它具备<strong>故障探测</strong>和<strong>自动重试</strong>的能力，是系统容错的第一道防线。</li>
+<li><strong>报告反馈机制</strong>：客户端不仅是信息的接收者，也是信息的反馈者。它通过向Master报告失败，帮助Master更快地发现集群状态的变化，更新自己的元数据，从而加速系统的恢复。</li>
+<li><strong>冗余保障可用性</strong>：正是因为数据有多个副本（B和C），即使一个副本（A）完全失效，系统也能通过剩余的副本来恢复服务和数据，而不会造成数据丢失。</li>
+</ol>
+<p><strong>最终用户感知</strong>：对于读操作，可能只是一次轻微的延迟。对于写操作，用户会遇到一次操作失败（或超时），但当下一次重试（通常由应用程序或客户端库自动进行）时，操作就会成功。整个系统实现了<strong>最终一致性</strong>和<strong>高可用性</strong>。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/" class="category-chain-item">分布式技术</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/">#分布式技术</a>
+      
+        <a href="/tags/Mit6-824/">#Mit6.824</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>如何理解GFS中Master节点和Chunk 服务器</div>
+      <div>https://super-404.github.io/2025/09/06/tech-分布式技术-Mit6.824-gfs中ChunkServe和Masterr/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/06/tech-%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1-%E9%94%81%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" title="在多线程中一把锁有没有可能有多个线程同时拥有">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">在多线程中一把锁有没有可能有多个线程同时拥有</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/05/tech-classpath%E7%9A%84%E9%97%AE%E9%A2%98/" title="使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐)">
+                        <span class="hidden-mobile">使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

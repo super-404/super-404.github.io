@@ -1,73 +1,795 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="问得非常好！这是一个核心问题。ImportBeanDefinitionRegistrar 和 BeanPostProcessor 都是 Spring 的核心扩展点，但它们工作在完全不同的阶段，有着根本不同的职责。 你可以把它们理解为一家汽车制造厂（Spring IoC 容器）中两个不同部门的工程师：  ImportBeanDefinitionRegistrar 是 “设计部和零部件采购部” 的工程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不同的时机调用的个性化定义">
+<meta property="og:url" content="https://super-404.github.io/2025/09/11/tech-springboot-%E4%B8%8D%E5%90%8C%E7%9A%84%E6%97%B6%E6%9C%BA%E8%B0%83%E7%94%A8%E7%9A%84%E4%B8%AA%E6%80%A7%E5%8C%96%E5%AE%9A%E4%B9%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="问得非常好！这是一个核心问题。ImportBeanDefinitionRegistrar 和 BeanPostProcessor 都是 Spring 的核心扩展点，但它们工作在完全不同的阶段，有着根本不同的职责。 你可以把它们理解为一家汽车制造厂（Spring IoC 容器）中两个不同部门的工程师：  ImportBeanDefinitionRegistrar 是 “设计部和零部件采购部” 的工程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-11T08:52:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="springboot">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>不同的时机调用的个性化定义 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="不同的时机调用的个性化定义"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-11 16:52" pubdate>
+          2025年9月11日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          77 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">不同的时机调用的个性化定义</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>问得非常好！这是一个核心问题。<code>ImportBeanDefinitionRegistrar</code> 和 <code>BeanPostProcessor</code> 都是 Spring 的核心扩展点，但它们工作在<strong>完全不同的阶段</strong>，有着<strong>根本不同的职责</strong>。</p>
+<p>你可以把它们理解为一家汽车制造厂（Spring IoC 容器）中两个不同部门的工程师：</p>
+<ul>
+<li><strong><code>ImportBeanDefinitionRegistrar</code></strong> 是 <strong>“设计部和零部件采购部”</strong> 的工程师。</li>
+<li><strong><code>BeanPostProcessor</code></strong> 是 <strong>“装配线和质检装饰部”</strong> 的工程师。</li>
+</ul>
+<h2 id="下面我们从几个维度进行详细对比。"><a href="#下面我们从几个维度进行详细对比。" class="headerlink" title="下面我们从几个维度进行详细对比。"></a>下面我们从几个维度进行详细对比。</h2><h3 id="核心区别对比表"><a href="#核心区别对比表" class="headerlink" title="核心区别对比表"></a>核心区别对比表</h3><table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">ImportBeanDefinitionRegistrar</th>
+<th align="left">BeanPostProcessor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>工作阶段</strong></td>
+<td align="left"><strong>Bean定义加载期</strong></td>
+<td align="left"><strong>Bean实例化生命周期期</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>工作时机</strong></td>
+<td align="left">在容器启动初期，<strong>解析配置类</strong>时。</td>
+<td align="left">在容器<strong>创建每一个bean实例</strong>的过程中。</td>
+</tr>
+<tr>
+<td align="left"><strong>核心职责</strong></td>
+<td align="left"><strong>动态地注册</strong>新的Bean<strong>定义</strong>（Blueprint）。</td>
+<td align="left"><strong>修改或包装</strong>已经实例化好的Bean<strong>对象</strong>（Instance）。</td>
+</tr>
+<tr>
+<td align="left"><strong>操作目标</strong></td>
+<td align="left"><code>BeanDefinitionRegistry</code> (注册中心)</td>
+<td align="left">具体的、已经填充好属性的<strong>Bean对象</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>输出结果</strong></td>
+<td align="left">向容器添加新的<code>BeanDefinition</code>（配方）。</td>
+<td align="left">返回一个可能被修改或包装过的Bean对象。</td>
+</tr>
+<tr>
+<td align="left"><strong>类比</strong></td>
+<td align="left"><strong>设计并添加新的汽车零件图纸</strong>到工厂的图纸库。</td>
+<td align="left"><strong>对已经造好的零件进行喷漆、加装防滑套</strong>等后期处理。</td>
+</tr>
+<tr>
+<td align="left"><strong>影响力</strong></td>
+<td align="left"><strong>决定会不会有某个Bean</strong>存在于容器中。</td>
+<td align="left"><strong>决定Bean最终的样子和行为</strong>（比如是不是代理）。</td>
+</tr>
+<tr>
+<td align="left"><strong>调用频率</strong></td>
+<td align="left">在启动时，<strong>通常只执行一次</strong>。</td>
+<td align="left"><strong>每个Bean</strong>创建时都会调用<strong>两次</strong>（before&#x2F;after）。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="流程位置对比"><a href="#流程位置对比" class="headerlink" title="流程位置对比"></a>流程位置对比</h3><p>为了更好地理解，我们来看一下它们在 Spring 容器启动和 Bean 创建流程中的位置：</p>
+<p><strong>Spring 容器启动流程：</strong></p>
+<ol>
+<li><strong>加载配置</strong> -&gt; <strong>(<code>ImportBeanDefinitionRegistrar</code> 在这里工作！)</strong><ul>
+<li>解析 <code>@Configuration</code>, <code>@ComponentScan</code>…</li>
+<li>遇到 <code>@Import(MyRegistrar.class)</code>，调用 <code>MyRegistrar.registerBeanDefinitions(...)</code> 方法。</li>
+<li>该方法向 <code>BeanDefinitionRegistry</code> 中注册新的 Bean 定义。</li>
+</ul>
+</li>
+<li><strong>Bean定义注册完成</strong> -&gt; 所有Bean的“蓝图”都已就位。</li>
+<li><strong>实例化Bean</strong> -&gt; <strong>(<code>BeanPostProcessor</code> 在这里工作！)</strong><ul>
+<li>对于每一个 Bean，Spring 开始按照“蓝图”创建它：<ul>
+<li>实例化（调用构造函数）</li>
+<li>填充属性（依赖注入）</li>
+<li><code>BeanPostProcessor.postProcessBeforeInitialization()</code></li>
+<li>初始化（调用 <code>@PostConstruct</code>, <code>InitializingBean</code>）</li>
+<li><code>BeanPostProcessor.postProcessAfterInitialization()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Bean实例放入单例池</strong> -&gt; 应用程序可以使用完整的Bean了。</li>
+</ol>
+<h2 id="从流程可以看出，-ImportBeanDefinitionRegistrar-的工作远远早于-BeanPostProcessor-。前者负责“招兵”（定义有哪些兵），后者负责“练兵”（对每一个兵进行训练和装备）。"><a href="#从流程可以看出，-ImportBeanDefinitionRegistrar-的工作远远早于-BeanPostProcessor-。前者负责“招兵”（定义有哪些兵），后者负责“练兵”（对每一个兵进行训练和装备）。" class="headerlink" title="从流程可以看出，**ImportBeanDefinitionRegistrar 的工作远远早于 BeanPostProcessor**。前者负责“招兵”（定义有哪些兵），后者负责“练兵”（对每一个兵进行训练和装备）。"></a>从流程可以看出，**<code>ImportBeanDefinitionRegistrar</code> 的工作远远早于 <code>BeanPostProcessor</code>**。前者负责“招兵”（定义有哪些兵），后者负责“练兵”（对每一个兵进行训练和装备）。</h2><h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><p>假设我们有一个需求：为所有带有 <code>@MyLogger</code> 注解的类自动创建并注册一个 Bean，并且还要为这些 Bean 的方法调用添加日志打印功能。</p>
+<p><strong>1. <code>ImportBeanDefinitionRegistrar</code> 的角色：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 1. 实现ImportBeanDefinitionRegistrar，负责“扫描和注册”</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyLoggerRegistrar</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ImportBeanDefinitionRegistrar</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">registerBeanDefinitions</span><span class="hljs-params">(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry)</span> &#123;<br>        <span class="hljs-comment">// 利用ClassPathScanningCandidateComponentProvider扫描类路径</span><br>        <span class="hljs-comment">// 找到所有带有@MyLogger注解的类</span><br>        <span class="hljs-comment">// 为每一个找到的类，动态地创建一个BeanDefinition并注册到registry中</span><br>        <span class="hljs-comment">// 这样Spring之后就会知道要去实例化这些类了</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>它的工作：</strong> 确保带有 <code>@MyLogger</code> 的类会被 Spring 容器管理。<strong>（决定有没有）</strong></p>
+<p><strong>2. <code>BeanPostProcessor</code> 的角色：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 2. 实现BeanPostProcessor，负责“代理和增强”</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyLoggerPostProcessor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BeanPostProcessor</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">postProcessAfterInitialization</span><span class="hljs-params">(Object bean, String beanName)</span> &#123;<br>        <span class="hljs-comment">// 检查这个bean的类是否带有@MyLogger注解</span><br>        <span class="hljs-keyword">if</span> (bean.getClass().isAnnotationPresent(MyLogger.class)) &#123;<br>            <span class="hljs-comment">// 如果是，就为它创建一个JDK动态代理或CGLIB代理</span><br>            <span class="hljs-comment">// 在代理的方法中添加入口和出口日志打印逻辑</span><br>            <span class="hljs-keyword">return</span> createLoggingProxy(bean);<br>        &#125;<br>        <span class="hljs-keyword">return</span> bean;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>它的工作：</strong> 确保被 Spring 管理的、带有 <code>@MyLogger</code> 的 Bean，其方法在执行时会自动打印日志。<strong>（决定怎么样）</strong></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">ImportBeanDefinitionRegistrar</th>
+<th align="left">BeanPostProcessor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>本质</strong></td>
+<td align="left"><strong>Bean 的“注册者”</strong></td>
+<td align="left"><strong>Bean 的“加工者”</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>时机</strong></td>
+<td align="left"><strong>启动早期</strong>，配置解析阶段。</td>
+<td align="left"><strong>运行时</strong>，每个 Bean 的创建过程中。</td>
+</tr>
+<tr>
+<td align="left"><strong>作用</strong></td>
+<td align="left"><strong>扩展容器的Bean来源</strong>，向容器“介绍”新Bean。</td>
+<td align="left"><strong>扩展Bean的功能</strong>，修改或增强已有的Bean。</td>
+</tr>
+<tr>
+<td align="left"><strong>关系</strong></td>
+<td align="left"><strong>前者定义Bean，后者加工Bean</strong>。它们可以协同工作，但职责完全不同。</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>简单来说：</p>
+<ul>
+<li><strong>用 <code>ImportBeanDefinitionRegistrar</code> 来告诉 Spring：“嘿，请把这个新东西也管理起来。”</strong></li>
+<li><strong>用 <code>BeanPostProcessor</code> 来告诉 Spring：“嘿，在那个东西被使用之前，请先帮我把它包装&#x2F;修改一下。”</strong></li>
+</ul>
+<h2 id="代码完整实现："><a href="#代码完整实现：" class="headerlink" title="代码完整实现："></a>代码完整实现：</h2><hr>
+<h3 id="第一步：定义自定义注解-MyLogger"><a href="#第一步：定义自定义注解-MyLogger" class="headerlink" title="第一步：定义自定义注解 @MyLogger"></a>第一步：定义自定义注解 <code>@MyLogger</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.annotation;<br><br><span class="hljs-keyword">import</span> java.lang.annotation.ElementType;<br><span class="hljs-keyword">import</span> java.lang.annotation.Retention;<br><span class="hljs-keyword">import</span> java.lang.annotation.RetentionPolicy;<br><span class="hljs-keyword">import</span> java.lang.annotation.Target;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 标记需要自动注册并添加日志功能的类</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Target(ElementType.TYPE)</span><br><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> MyLogger &#123;<br>    String <span class="hljs-title function_">value</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&quot;&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="第二步：实现-ImportBeanDefinitionRegistrar-扫描和注册"><a href="#第二步：实现-ImportBeanDefinitionRegistrar-扫描和注册" class="headerlink" title="第二步：实现 ImportBeanDefinitionRegistrar (扫描和注册)"></a>第二步：实现 <code>ImportBeanDefinitionRegistrar</code> (扫描和注册)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.registrar;<br><br><span class="hljs-keyword">import</span> com.example.annotation.MyLogger;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.support.BeanDefinitionBuilder;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.support.BeanDefinitionRegistry;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.ClassPathBeanDefinitionScanner;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.ImportBeanDefinitionRegistrar;<br><span class="hljs-keyword">import</span> org.springframework.core.type.AnnotationMetadata;<br><span class="hljs-keyword">import</span> org.springframework.core.type.filter.AnnotationTypeFilter;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 扫描并注册所有带有 <span class="hljs-doctag">@MyLogger</span> 注解的类</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyLoggerRegistrar</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ImportBeanDefinitionRegistrar</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">registerBeanDefinitions</span><span class="hljs-params">(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry)</span> &#123;<br>        <span class="hljs-comment">// 创建类路径扫描器</span><br>        <span class="hljs-type">ClassPathBeanDefinitionScanner</span> <span class="hljs-variable">scanner</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassPathBeanDefinitionScanner</span>(registry, <span class="hljs-literal">false</span>);<br>        <br>        <span class="hljs-comment">// 添加过滤条件：只扫描带有 @MyLogger 注解的类</span><br>        scanner.addIncludeFilter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AnnotationTypeFilter</span>(MyLogger.class));<br>        <br>        <span class="hljs-comment">// 指定要扫描的包路径（这里简单起见，扫描所有包）</span><br>        <span class="hljs-comment">// 在实际项目中，可以通过注解元数据来获取要扫描的包</span><br>        String[] basePackages = &#123;<span class="hljs-string">&quot;com.example.services&quot;</span>, <span class="hljs-string">&quot;com.example.components&quot;</span>&#125;;<br>        <br>        <span class="hljs-comment">// 执行扫描并自动注册</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">beanCount</span> <span class="hljs-operator">=</span> scanner.scan(basePackages);<br>        System.out.println(<span class="hljs-string">&quot;MyLoggerRegistrar 扫描并注册了 &quot;</span> + beanCount + <span class="hljs-string">&quot; 个带有 @MyLogger 注解的Bean&quot;</span>);<br>        <br>        <span class="hljs-comment">// 同时注册后处理器（确保日志功能生效）</span><br>        <span class="hljs-keyword">if</span> (beanCount &gt; <span class="hljs-number">0</span> &amp;&amp; !registry.containsBeanDefinition(<span class="hljs-string">&quot;myLoggerPostProcessor&quot;</span>)) &#123;<br>            registry.registerBeanDefinition(<span class="hljs-string">&quot;myLoggerPostProcessor&quot;</span>, <br>                BeanDefinitionBuilder.genericBeanDefinition(MyLoggerPostProcessor.class).getBeanDefinition());<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="第三步：实现-BeanPostProcessor-创建代理和增强"><a href="#第三步：实现-BeanPostProcessor-创建代理和增强" class="headerlink" title="第三步：实现 BeanPostProcessor (创建代理和增强)"></a>第三步：实现 <code>BeanPostProcessor</code> (创建代理和增强)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.processor;<br><br><span class="hljs-keyword">import</span> com.example.annotation.MyLogger;<br><span class="hljs-keyword">import</span> org.springframework.beans.BeansException;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.config.BeanPostProcessor;<br><span class="hljs-keyword">import</span> org.springframework.cglib.proxy.Enhancer;<br><span class="hljs-keyword">import</span> org.springframework.cglib.proxy.MethodInterceptor;<br><span class="hljs-keyword">import</span> org.springframework.cglib.proxy.MethodProxy;<br><span class="hljs-keyword">import</span> org.springframework.util.ClassUtils;<br><br><span class="hljs-keyword">import</span> java.lang.reflect.Method;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 为带有 <span class="hljs-doctag">@MyLogger</span> 注解的Bean创建代理，添加日志功能</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyLoggerPostProcessor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BeanPostProcessor</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">postProcessAfterInitialization</span><span class="hljs-params">(Object bean, String beanName)</span> <span class="hljs-keyword">throws</span> BeansException &#123;<br>        Class&lt;?&gt; beanClass = bean.getClass();<br>        <br>        <span class="hljs-comment">// 检查Bean的类是否带有 @MyLogger 注解</span><br>        <span class="hljs-comment">// 注意：需要获取原始类，而不是CGLIB代理类</span><br>        Class&lt;?&gt; targetClass = ClassUtils.getUserClass(beanClass);<br>        <span class="hljs-keyword">if</span> (targetClass.isAnnotationPresent(MyLogger.class)) &#123;<br>            System.out.println(<span class="hljs-string">&quot;为Bean: &quot;</span> + beanName + <span class="hljs-string">&quot; 创建日志代理&quot;</span>);<br>            <br>            <span class="hljs-comment">// 使用CGLIB创建代理</span><br>            <span class="hljs-type">Enhancer</span> <span class="hljs-variable">enhancer</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Enhancer</span>();<br>            enhancer.setSuperclass(targetClass);<br>            enhancer.setCallback(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MethodInterceptor</span>() &#123;<br>                <span class="hljs-meta">@Override</span><br>                <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">intercept</span><span class="hljs-params">(Object obj, Method method, Object[] args, MethodProxy proxy)</span> <span class="hljs-keyword">throws</span> Throwable &#123;<br>                    <span class="hljs-comment">// 方法执行前打印日志</span><br>                    System.out.println(<span class="hljs-string">&quot;【LOG - BEFORE】调用方法: &quot;</span> + method.getName() + <span class="hljs-string">&quot; | 参数: &quot;</span> + java.util.Arrays.toString(args));<br>                    <br>                    <span class="hljs-type">long</span> <span class="hljs-variable">startTime</span> <span class="hljs-operator">=</span> System.currentTimeMillis();<br>                    Object result;<br>                    <span class="hljs-keyword">try</span> &#123;<br>                        <span class="hljs-comment">// 调用原始方法</span><br>                        result = proxy.invokeSuper(obj, args);<br>                        <span class="hljs-comment">// 方法成功执行后打印日志</span><br>                        <span class="hljs-type">long</span> <span class="hljs-variable">costTime</span> <span class="hljs-operator">=</span> System.currentTimeMillis() - startTime;<br>                        System.out.println(<span class="hljs-string">&quot;【LOG - AFTER】方法: &quot;</span> + method.getName() + <span class="hljs-string">&quot; 执行成功 | 耗时: &quot;</span> + costTime + <span class="hljs-string">&quot;ms | 结果: &quot;</span> + result);<br>                    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                        <span class="hljs-comment">// 方法执行异常时打印日志</span><br>                        System.out.println(<span class="hljs-string">&quot;【LOG - ERROR】方法: &quot;</span> + method.getName() + <span class="hljs-string">&quot; 执行异常: &quot;</span> + e.getMessage());<br>                        <span class="hljs-keyword">throw</span> e;<br>                    &#125;<br>                    <span class="hljs-keyword">return</span> result;<br>                &#125;<br>            &#125;);<br>            <br>            <span class="hljs-comment">// 创建代理实例</span><br>            <span class="hljs-keyword">return</span> enhancer.create();<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> bean;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">postProcessBeforeInitialization</span><span class="hljs-params">(Object bean, String beanName)</span> <span class="hljs-keyword">throws</span> BeansException &#123;<br>        <span class="hljs-comment">// 不需要前置处理，直接返回原始bean</span><br>        <span class="hljs-keyword">return</span> bean;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="第四步：创建示例服务类"><a href="#第四步：创建示例服务类" class="headerlink" title="第四步：创建示例服务类"></a>第四步：创建示例服务类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.services;<br><br><span class="hljs-keyword">import</span> com.example.annotation.MyLogger;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 示例服务类，带有 <span class="hljs-doctag">@MyLogger</span> 注解</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@MyLogger</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getUserById</span><span class="hljs-params">(Long id)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;正在查询用户: &quot;</span> + id);<br>        <span class="hljs-comment">// 模拟业务逻辑</span><br>        <span class="hljs-keyword">if</span> (id == <span class="hljs-number">1L</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;用户张三&quot;</span>;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (id == <span class="hljs-number">2L</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;用户李四&quot;</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;未知用户&quot;</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateUser</span><span class="hljs-params">(String userInfo)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;正在更新用户: &quot;</span> + userInfo);<br>        <span class="hljs-comment">// 模拟更新操作</span><br>        <span class="hljs-keyword">if</span> (userInfo.contains(<span class="hljs-string">&quot;error&quot;</span>)) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;更新用户失败&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="第五步：配置类（启用自动注册）"><a href="#第五步：配置类（启用自动注册）" class="headerlink" title="第五步：配置类（启用自动注册）"></a>第五步：配置类（启用自动注册）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.config;<br><br><span class="hljs-keyword">import</span> com.example.registrar.MyLoggerRegistrar;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Import;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 应用配置类，启用自定义的自动注册功能</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@Import(MyLoggerRegistrar.class)</span> <span class="hljs-comment">// 关键：导入我们的注册器</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppConfig</span> &#123;<br>    <span class="hljs-comment">// 其他配置可以在这里定义</span><br>    <span class="hljs-comment">// 不需要手动声明 @Bean，MyLoggerRegistrar 会自动处理</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="第六步：主应用程序测试"><a href="#第六步：主应用程序测试" class="headerlink" title="第六步：主应用程序测试"></a>第六步：主应用程序测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example;<br><br><span class="hljs-keyword">import</span> com.example.config.AppConfig;<br><span class="hljs-keyword">import</span> com.example.services.UserService;<br><span class="hljs-keyword">import</span> org.springframework.context.ApplicationContext;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Application</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">ApplicationContext</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);<br>        <br>        <span class="hljs-comment">// 获取自动注册并增强的UserService</span><br>        <span class="hljs-type">UserService</span> <span class="hljs-variable">userService</span> <span class="hljs-operator">=</span> context.getBean(UserService.class);<br>        System.out.println(<span class="hljs-string">&quot;UserService Bean类型: &quot;</span> + userService.getClass().getSimpleName());<br>        <br>        <span class="hljs-comment">// 测试日志功能</span><br>        System.out.println(<span class="hljs-string">&quot;\n=== 测试正常方法调用 ===&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userService.getUserById(<span class="hljs-number">1L</span>);<br>        System.out.println(<span class="hljs-string">&quot;获取到的用户: &quot;</span> + user);<br>        <br>        System.out.println(<span class="hljs-string">&quot;\n=== 测试异常情况 ===&quot;</span>);<br>        <span class="hljs-keyword">try</span> &#123;<br>            userService.updateUser(<span class="hljs-string">&quot;error test&quot;</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            System.out.println(<span class="hljs-string">&quot;捕获到预期异常: &quot;</span> + e.getMessage());<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="预期输出"><a href="#预期输出" class="headerlink" title="预期输出"></a>预期输出</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">MyLoggerRegistrar 扫描并注册了 1 个带有 @MyLogger 注解的Bean<br>为Bean: userService 创建日志代理<br>UserService Bean类型: UserService$$EnhancerByCGLIB<br><br><span class="hljs-section">=== 测试正常方法调用 ===</span><br>【LOG - BEFORE】调用方法: getUserById | 参数: [1]<br>正在查询用户: 1<br>【LOG - AFTER】方法: getUserById 执行成功 | 耗时: 2ms | 结果: 用户张三<br>获取到的用户: 用户张三<br><br><span class="hljs-section">=== 测试异常情况 ===</span><br>【LOG - BEFORE】调用方法: updateUser | 参数: [error test]<br>正在更新用户: error test<br>【LOG - ERROR】方法: updateUser 执行异常: 更新用户失败<br>捕获到预期异常: 更新用户失败<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>这个完整的示例展示了：</p>
+<ol>
+<li>**<code>MyLoggerRegistrar</code>**：在启动时扫描类路径，自动发现并注册所有带有 <code>@MyLogger</code> 注解的类。</li>
+<li>**<code>MyLoggerPostProcessor</code>**：在 Bean 实例化后，为这些已注册的 Bean 创建代理，添加统一的日志切面功能。</li>
+</ol>
+<p>两者协同工作，实现了<strong>完全自动化</strong>的组件注册和功能增强，无需任何手动配置。这正是 Spring Boot 自动配置和很多框架（如 MyBatis 的 <code>@MapperScan</code>）底层的工作原理。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/springboot/" class="category-chain-item">springboot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/springboot/">#springboot</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>不同的时机调用的个性化定义</div>
+      <div>https://super-404.github.io/2025/09/11/tech-springboot-不同的时机调用的个性化定义/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/11/tech-%E4%B8%AD%E9%97%B4%E4%BB%B6-RPC-rpc/" title="Auto Configure">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Auto Configure</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/09/tech-%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1-CyclicBarrier%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" title="CyclicBarrier的应用场景">
+                        <span class="hidden-mobile">CyclicBarrier的应用场景</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

@@ -1,73 +1,834 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="为什么要区分两种过期情况？📊 两种过期情况的判断123456789&#x2F;&#x2F; 情况1：过期超过5秒if (nowTime &gt; jobInfo.getTriggerNextTime() + PRE_READ_MS) &amp;#123;    &#x2F;&#x2F; 处理 misfire&amp;#125;&#x2F;&#x2F; 情况2：过期但小于5秒else if (nowTime &gt; jobInfo.getTriggerNextTime(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么要区分两种过期情况？">
+<meta property="og:url" content="https://super-404.github.io/2025/12/30/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-Xxl-job-%E8%BF%87%E6%9C%9F%E4%BB%BB%E5%8A%A1%E5%8C%BA%E5%88%86%E5%A4%84%E7%90%86%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="为什么要区分两种过期情况？📊 两种过期情况的判断123456789&#x2F;&#x2F; 情况1：过期超过5秒if (nowTime &gt; jobInfo.getTriggerNextTime() + PRE_READ_MS) &amp;#123;    &#x2F;&#x2F; 处理 misfire&amp;#125;&#x2F;&#x2F; 情况2：过期但小于5秒else if (nowTime &gt; jobInfo.getTriggerNextTime(">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-12-30T08:18:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="开源学习">
+<meta property="article:tag" content="Xxl-job">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>为什么要区分两种过期情况？ - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="为什么要区分两种过期情况？"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-30 16:18" pubdate>
+          2025年12月30日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">为什么要区分两种过期情况？</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="为什么要区分两种过期情况？"><a href="#为什么要区分两种过期情况？" class="headerlink" title="为什么要区分两种过期情况？"></a>为什么要区分两种过期情况？</h1><h2 id="📊-两种过期情况的判断"><a href="#📊-两种过期情况的判断" class="headerlink" title="📊 两种过期情况的判断"></a>📊 两种过期情况的判断</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 情况1：过期超过5秒</span><br><span class="hljs-keyword">if</span> (nowTime &gt; jobInfo.getTriggerNextTime() + PRE_READ_MS) &#123;<br>    <span class="hljs-comment">// 处理 misfire</span><br>&#125;<br><br><span class="hljs-comment">// 情况2：过期但小于5秒</span><br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nowTime &gt; jobInfo.getTriggerNextTime()) &#123;<br>    <span class="hljs-comment">// 立即触发</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="🎯-核心原因：区分”轻微延迟”和”严重过期”"><a href="#🎯-核心原因：区分”轻微延迟”和”严重过期”" class="headerlink" title="🎯 核心原因：区分”轻微延迟”和”严重过期”"></a>🎯 核心原因：区分”轻微延迟”和”严重过期”</h2><h3 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h3><figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bnf">过期时间 <span class="hljs-attribute">&lt; 5秒  → 轻微延迟（正常波动）</span><br><span class="hljs-attribute">过期时间 &gt;</span> 5秒  → 严重过期（系统问题）<br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="📈-详细对比分析"><a href="#📈-详细对比分析" class="headerlink" title="📈 详细对比分析"></a>📈 详细对比分析</h2><h3 id="情况1：过期超过5秒（严重过期）"><a href="#情况1：过期超过5秒（严重过期）" class="headerlink" title="情况1：过期超过5秒（严重过期）"></a>情况1：过期超过5秒（严重过期）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (nowTime &gt; jobInfo.getTriggerNextTime() + PRE_READ_MS) &#123;<br>    <span class="hljs-comment">// 1、misfire handle</span><br>    <span class="hljs-type">MisfireStrategyEnum</span> <span class="hljs-variable">misfireStrategyEnum</span> <span class="hljs-operator">=</span> <br>        MisfireStrategyEnum.match(jobInfo.getMisfireStrategy(), <br>                                  MisfireStrategyEnum.DO_NOTHING);<br>    misfireStrategyEnum.getMisfireHandler().handle(jobInfo.getId());<br>    <br>    <span class="hljs-comment">// 2、fresh next</span><br>    refreshNextTriggerTime(jobInfo, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>处理方式</strong>：</p>
+<ul>
+<li>✅ 根据 Misfire 策略处理（DO_NOTHING 或 FIRE_ONCE_NOW）</li>
+<li>✅ 更新下次执行时间</li>
+<li>❌ <strong>不立即触发</strong>（除非策略是 FIRE_ONCE_NOW）</li>
+</ul>
+<p><strong>原因</strong>：</p>
+<ol>
+<li><p><strong>系统问题</strong>：过期超过5秒通常表示系统有严重问题</p>
+<ul>
+<li>调度线程被阻塞</li>
+<li>系统重启</li>
+<li>数据库连接问题</li>
+<li>大量任务积压</li>
+</ul>
+</li>
+<li><p><strong>避免雪崩</strong>：如果立即执行所有过期任务，可能导致：</p>
+<ul>
+<li>系统负载突然增加</li>
+<li>执行器压力过大</li>
+<li>影响正常任务执行</li>
+</ul>
+</li>
+<li><p><strong>策略控制</strong>：让业务方决定是否执行过期任务</p>
+<ul>
+<li>重要任务：FIRE_ONCE_NOW（立即执行）</li>
+<li>普通任务：DO_NOTHING（跳过）</li>
+</ul>
+</li>
+</ol>
+<h3 id="情况2：过期但小于5秒（轻微延迟）"><a href="#情况2：过期但小于5秒（轻微延迟）" class="headerlink" title="情况2：过期但小于5秒（轻微延迟）"></a>情况2：过期但小于5秒（轻微延迟）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nowTime &gt; jobInfo.getTriggerNextTime()) &#123;<br>    <span class="hljs-comment">// 1、trigger direct</span><br>    trigger(jobInfo.getId(), TriggerTypeEnum.CRON, -<span class="hljs-number">1</span>, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>);<br>    <br>    <span class="hljs-comment">// 2、fresh next</span><br>    refreshNextTriggerTime(jobInfo, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>    <br>    <span class="hljs-comment">// 3、如果下次执行时间在5秒内，预读放入时间轮</span><br>    <span class="hljs-keyword">if</span> (jobInfo.getTriggerStatus() == RUNNING &amp;&amp; <br>        nowTime + PRE_READ_MS &gt; jobInfo.getTriggerNextTime()) &#123;<br>        pushTimeRing(ringSecond, jobInfo.getId());<br>        refreshNextTriggerTime(jobInfo, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(jobInfo.getTriggerNextTime()));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>处理方式</strong>：</p>
+<ul>
+<li>✅ <strong>立即触发</strong>（direct trigger）</li>
+<li>✅ 触发类型：CRON（正常调度）</li>
+<li>✅ 更新下次执行时间</li>
+<li>✅ 如果下次执行时间在5秒内，预读放入时间轮</li>
+</ul>
+<p><strong>原因</strong>：</p>
+<ol>
+<li><p><strong>正常波动</strong>：小于5秒的延迟通常是正常的</p>
+<ul>
+<li>数据库查询耗时（几百毫秒）</li>
+<li>处理其他任务耗时（1-2秒）</li>
+<li>网络延迟</li>
+<li>GC 暂停（短暂）</li>
+</ul>
+</li>
+<li><p><strong>保证时效性</strong>：立即执行还能保证任务的时效性</p>
+<ul>
+<li>数据统计任务：延迟几秒执行仍然有效</li>
+<li>定时任务：稍微延迟不影响业务</li>
+</ul>
+</li>
+<li><p><strong>避免遗漏</strong>：立即执行确保任务不会因为短暂延迟而丢失</p>
+</li>
+</ol>
+<hr>
+<h2 id="🔍-场景对比"><a href="#🔍-场景对比" class="headerlink" title="🔍 场景对比"></a>🔍 场景对比</h2><h3 id="场景1：轻微延迟（-5秒）"><a href="#场景1：轻微延迟（-5秒）" class="headerlink" title="场景1：轻微延迟（&lt; 5秒）"></a>场景1：轻微延迟（&lt; 5秒）</h3><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs dns">时间线：<br><span class="hljs-number">10</span>:<span class="hljs-number">30:20.000</span> - 任务<span class="hljs-keyword">A</span>应该执行<br><span class="hljs-number">10</span>:<span class="hljs-number">30:20.500</span> - 调度线程开始扫描<br><span class="hljs-number">10</span>:<span class="hljs-number">30:21.000</span> - 数据库查询完成<br><span class="hljs-number">10</span>:<span class="hljs-number">30:22.000</span> - 处理其他任务<br><span class="hljs-number">10</span>:<span class="hljs-number">30:22.500</span> - 处理到任务<span class="hljs-keyword">A</span>（过期<span class="hljs-number">2</span>.<span class="hljs-number">5</span>秒）<br><br>判断：nowTime(<span class="hljs-number">10</span>:<span class="hljs-number">30:22.500</span>) &gt; triggerNextTime(<span class="hljs-number">10</span>:<span class="hljs-number">30:20.000</span>)<br>     但 &lt; triggerNextTime + <span class="hljs-number">5000</span><br><br>处理：立即触发（CRON类型）<br>原因：轻微延迟，立即执行仍有效<br></code></pre></td></tr></table></figure>
+
+<h3 id="场景2：严重过期（-5秒）"><a href="#场景2：严重过期（-5秒）" class="headerlink" title="场景2：严重过期（&gt; 5秒）"></a>场景2：严重过期（&gt; 5秒）</h3><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs dns">时间线：<br><span class="hljs-number">10</span>:<span class="hljs-number">30:20.000</span> - 任务<span class="hljs-keyword">A</span>应该执行<br><span class="hljs-number">10</span>:<span class="hljs-number">30:20.500</span> - 调度线程开始扫描<br><span class="hljs-number">10</span>:<span class="hljs-number">30:22.000</span> - 数据库查询慢（耗时<span class="hljs-number">1</span>.<span class="hljs-number">5</span>秒）<br><span class="hljs-number">10</span>:<span class="hljs-number">30:25.000</span> - 处理大量其他任务<br><span class="hljs-number">10</span>:<span class="hljs-number">30:26.000</span> - 处理到任务<span class="hljs-keyword">A</span>（过期<span class="hljs-number">6</span>秒）<br><br>判断：nowTime(<span class="hljs-number">10</span>:<span class="hljs-number">30:26.000</span>) &gt; triggerNextTime(<span class="hljs-number">10</span>:<span class="hljs-number">30:20.000</span>) + <span class="hljs-number">5000</span><br><br>处理：根据 Misfire 策略<br>  - DO_NOTHING：跳过，记录日志<br>  - FIRE_ONCE_NOW：立即执行（MISFIRE类型）<br>原因：严重过期，可能是系统问题，需要策略控制<br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="💡-设计考量"><a href="#💡-设计考量" class="headerlink" title="💡 设计考量"></a>💡 设计考量</h2><h3 id="1-性能考虑"><a href="#1-性能考虑" class="headerlink" title="1. 性能考虑"></a>1. 性能考虑</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">轻微延迟（&lt; 5秒）：<br><span class="hljs-bullet">- </span>立即执行 → 系统负载增加有限<br><span class="hljs-bullet">- </span>任务时效性有保障<br><span class="hljs-bullet">- </span>不会影响正常调度<br><br>严重过期（&gt; 5秒）：<br><span class="hljs-bullet">- </span>如果全部立即执行 → 可能导致系统雪崩<br><span class="hljs-bullet">- </span>大量过期任务同时执行 → 执行器压力过大<br><span class="hljs-bullet">- </span>影响正常任务调度<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-业务考虑"><a href="#2-业务考虑" class="headerlink" title="2. 业务考虑"></a>2. 业务考虑</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">轻微延迟（&lt; 5秒）：<br><span class="hljs-bullet">- </span>数据仍然有效<br><span class="hljs-bullet">- </span>业务影响小<br><span class="hljs-bullet">- </span>立即执行可以接受<br><br>严重过期（&gt; 5秒）：<br><span class="hljs-bullet">- </span>数据可能已经失效<br><span class="hljs-bullet">- </span>业务影响大<br><span class="hljs-bullet">- </span>需要业务方决定是否执行<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-系统稳定性"><a href="#3-系统稳定性" class="headerlink" title="3. 系统稳定性"></a>3. 系统稳定性</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">轻微延迟（&lt; 5秒）：<br><span class="hljs-bullet">- </span>正常波动，系统健康<br><span class="hljs-bullet">- </span>立即执行不会造成问题<br><br>严重过期（&gt; 5秒）：<br><span class="hljs-bullet">- </span>系统可能有问题<br><span class="hljs-bullet">- </span>需要谨慎处理，避免雪崩<br><span class="hljs-bullet">- </span>通过策略控制执行<br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="📊-处理流程对比图"><a href="#📊-处理流程对比图" class="headerlink" title="📊 处理流程对比图"></a>📊 处理流程对比图</h2><figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bnf">过期任务处理决策树：<br><br>任务过期？<br>  │<br>  ├─ 过期 <span class="hljs-attribute">&lt; 5秒？</span><br><span class="hljs-attribute">  │   │</span><br><span class="hljs-attribute">  │   ├─ 是 → 立即触发（CRON）</span><br><span class="hljs-attribute">  │   │       保证时效性</span><br><span class="hljs-attribute">  │   │       正常调度类型</span><br><span class="hljs-attribute">  │   │</span><br><span class="hljs-attribute">  │   └─ 否 → 继续判断</span><br><span class="hljs-attribute">  │</span><br><span class="hljs-attribute">  └─ 过期 &gt;</span> 5秒？<br>      │<br>      ├─ 获取 Misfire 策略<br>      │<br>      ├─ DO_NOTHING<br>      │   └─ 跳过，记录日志<br>      │       更新下次执行时间<br>      │<br>      └─ FIRE_ONCE_NOW<br>          └─ 立即触发（MISFIRE）<br>              补偿执行<br>              更新下次执行时间<br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="🎨-实际应用场景"><a href="#🎨-实际应用场景" class="headerlink" title="🎨 实际应用场景"></a>🎨 实际应用场景</h2><h3 id="场景1：高频任务（每秒执行）"><a href="#场景1：高频任务（每秒执行）" class="headerlink" title="场景1：高频任务（每秒执行）"></a>场景1：高频任务（每秒执行）</h3><figure class="highlight ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ldif">任务配置：每1秒执行一次<br><span class="hljs-attribute">10</span>:30:20.000 - 应该执行<br><span class="hljs-attribute">10</span>:30:22.000 - 检测到（过期2秒）<br><br>处理：立即触发<br>原因：<br><span class="hljs-literal">-</span> 过期时间短，数据仍然有效<br><span class="hljs-literal">-</span> 高频任务，延迟2秒可以接受<br><span class="hljs-literal">-</span> 立即执行保证连续性<br></code></pre></td></tr></table></figure>
+
+<h3 id="场景2：系统重启后"><a href="#场景2：系统重启后" class="headerlink" title="场景2：系统重启后"></a>场景2：系统重启后</h3><figure class="highlight ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ldif">任务配置：每小时执行一次<br><span class="hljs-attribute">10</span>:30:20.000 - 应该执行<br><span class="hljs-attribute">10</span>:30:25.000 - 系统重启完成<br><span class="hljs-attribute">10</span>:30:26.000 - 检测到（过期6秒）<br><br>处理：根据策略<br><span class="hljs-literal">-</span> DO_NOTHING：跳过，等待下次执行（11:30:20）<br><span class="hljs-literal">-</span> FIRE_ONCE_NOW：立即执行，补偿本次<br><br>原因：<br><span class="hljs-literal">-</span> 过期时间长，可能是系统问题<br><span class="hljs-literal">-</span> 需要业务方决定是否补偿<br></code></pre></td></tr></table></figure>
+
+<h3 id="场景3：大量任务积压"><a href="#场景3：大量任务积压" class="headerlink" title="场景3：大量任务积压"></a>场景3：大量任务积压</h3><figure class="highlight ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ldif">场景：系统中有1000个任务需要调度<br><span class="hljs-attribute">10</span>:30:20.000 - 任务A应该执行<br><span class="hljs-attribute">10</span>:30:25.000 - 处理了500个任务<br><span class="hljs-attribute">10</span>:30:26.000 - 处理到任务A（过期6秒）<br><br>处理：根据策略<br><span class="hljs-literal">-</span> 如果全部立即执行 → 系统可能崩溃<br><span class="hljs-literal">-</span> 通过策略控制 → 只执行重要的过期任务<br><br>原因：<br><span class="hljs-literal">-</span> 系统负载高，需要保护<br><span class="hljs-literal">-</span> 避免雪崩效应<br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="🔧-代码实现细节"><a href="#🔧-代码实现细节" class="headerlink" title="🔧 代码实现细节"></a>🔧 代码实现细节</h2><h3 id="情况1：过期超过5秒"><a href="#情况1：过期超过5秒" class="headerlink" title="情况1：过期超过5秒"></a>情况1：过期超过5秒</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (nowTime &gt; jobInfo.getTriggerNextTime() + PRE_READ_MS) &#123;<br>    <span class="hljs-comment">// 1、misfire handle</span><br>    <span class="hljs-type">MisfireStrategyEnum</span> <span class="hljs-variable">misfireStrategyEnum</span> <span class="hljs-operator">=</span> <br>        MisfireStrategyEnum.match(<br>            jobInfo.getMisfireStrategy(), <br>            MisfireStrategyEnum.DO_NOTHING  <span class="hljs-comment">// 默认策略</span><br>        );<br>    misfireStrategyEnum.getMisfireHandler().handle(jobInfo.getId());<br>    <br>    <span class="hljs-comment">// 2、fresh next（基于当前时间）</span><br>    refreshNextTriggerTime(jobInfo, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>    <br>    <span class="hljs-comment">// 注意：不立即触发，除非策略是 FIRE_ONCE_NOW</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="情况2：过期但小于5秒"><a href="#情况2：过期但小于5秒" class="headerlink" title="情况2：过期但小于5秒"></a>情况2：过期但小于5秒</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nowTime &gt; jobInfo.getTriggerNextTime()) &#123;<br>    <span class="hljs-comment">// 1、trigger direct（立即触发）</span><br>    trigger(jobInfo.getId(), TriggerTypeEnum.CRON, -<span class="hljs-number">1</span>, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>);<br>    <br>    <span class="hljs-comment">// 2、fresh next</span><br>    refreshNextTriggerTime(jobInfo, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>    <br>    <span class="hljs-comment">// 3、如果下次执行时间在5秒内，预读放入时间轮</span><br>    <span class="hljs-keyword">if</span> (jobInfo.getTriggerStatus() == RUNNING &amp;&amp; <br>        nowTime + PRE_READ_MS &gt; jobInfo.getTriggerNextTime()) &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">ringSecond</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>)((jobInfo.getTriggerNextTime()/<span class="hljs-number">1000</span>)%<span class="hljs-number">60</span>);<br>        pushTimeRing(ringSecond, jobInfo.getId());<br>        refreshNextTriggerTime(jobInfo, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(jobInfo.getTriggerNextTime()));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="📝-关键区别总结"><a href="#📝-关键区别总结" class="headerlink" title="📝 关键区别总结"></a>📝 关键区别总结</h2><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>过期 &lt; 5秒</th>
+<th>过期 &gt; 5秒</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>判断条件</strong></td>
+<td><code>nowTime &gt; triggerNextTime</code></td>
+<td><code>nowTime &gt; triggerNextTime + 5000</code></td>
+</tr>
+<tr>
+<td><strong>处理方式</strong></td>
+<td>立即触发</td>
+<td>根据 Misfire 策略</td>
+</tr>
+<tr>
+<td><strong>触发类型</strong></td>
+<td>CRON（正常调度）</td>
+<td>MISFIRE（补偿）或 不触发</td>
+</tr>
+<tr>
+<td><strong>时效性</strong></td>
+<td>仍然有效</td>
+<td>可能失效</td>
+</tr>
+<tr>
+<td><strong>系统影响</strong></td>
+<td>影响小</td>
+<td>影响大</td>
+</tr>
+<tr>
+<td><strong>业务控制</strong></td>
+<td>自动处理</td>
+<td>策略控制</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>正常波动</td>
+<td>系统问题</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="💡-设计优势"><a href="#💡-设计优势" class="headerlink" title="💡 设计优势"></a>💡 设计优势</h2><h3 id="1-平衡时效性和稳定性"><a href="#1-平衡时效性和稳定性" class="headerlink" title="1. 平衡时效性和稳定性"></a>1. 平衡时效性和稳定性</h3><ul>
+<li><strong>轻微延迟</strong>：立即执行，保证时效性</li>
+<li><strong>严重过期</strong>：策略控制，保证稳定性</li>
+</ul>
+<h3 id="2-避免系统雪崩"><a href="#2-避免系统雪崩" class="headerlink" title="2. 避免系统雪崩"></a>2. 避免系统雪崩</h3><ul>
+<li><strong>轻微延迟</strong>：任务数量有限，立即执行不会造成问题</li>
+<li><strong>严重过期</strong>：可能大量任务过期，需要策略控制</li>
+</ul>
+<h3 id="3-业务灵活性"><a href="#3-业务灵活性" class="headerlink" title="3. 业务灵活性"></a>3. 业务灵活性</h3><ul>
+<li><strong>轻微延迟</strong>：自动处理，无需业务方干预</li>
+<li><strong>严重过期</strong>：业务方可以决定是否执行</li>
+</ul>
+<h3 id="4-性能优化"><a href="#4-性能优化" class="headerlink" title="4. 性能优化"></a>4. 性能优化</h3><ul>
+<li><strong>轻微延迟</strong>：立即执行，减少延迟</li>
+<li><strong>严重过期</strong>：避免大量任务同时执行，保护系统</li>
+</ul>
+<hr>
+<h2 id="📝-总结"><a href="#📝-总结" class="headerlink" title="📝 总结"></a>📝 总结</h2><p>区分两种过期情况的核心原因：</p>
+<ol>
+<li><p><strong>时效性考虑</strong></p>
+<ul>
+<li>过期 &lt; 5秒：数据仍然有效，立即执行</li>
+<li>过期 &gt; 5秒：数据可能失效，需要策略控制</li>
+</ul>
+</li>
+<li><p><strong>系统稳定性</strong></p>
+<ul>
+<li>过期 &lt; 5秒：正常波动，立即执行安全</li>
+<li>过期 &gt; 5秒：可能是系统问题，需要谨慎处理</li>
+</ul>
+</li>
+<li><p><strong>业务控制</strong></p>
+<ul>
+<li>过期 &lt; 5秒：自动处理，保证连续性</li>
+<li>过期 &gt; 5秒：策略控制，业务方决定</li>
+</ul>
+</li>
+<li><p><strong>性能保护</strong></p>
+<ul>
+<li>过期 &lt; 5秒：任务数量有限，不会造成压力</li>
+<li>过期 &gt; 5秒：可能大量任务，需要保护机制</li>
+</ul>
+</li>
+</ol>
+<p>这种设计既保证了任务的时效性，又保护了系统的稳定性，是一个优秀的设计方案。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0/" class="category-chain-item">开源学习</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0/">#开源学习</a>
+      
+        <a href="/tags/Xxl-job/">#Xxl-job</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>为什么要区分两种过期情况？</div>
+      <div>https://super-404.github.io/2025/12/30/tech-开源学习-Xxl-job-过期任务区分处理原因分析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年12月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/12/30/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-Xxl-job-ringThread%E6%97%B6%E9%97%B4%E8%BD%AE%E7%BA%BF%E7%A8%8B%E8%AF%A6%E8%A7%A3/" title="ringThread 时间轮线程详解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ringThread 时间轮线程详解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/12/30/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-Xxl-job-%E8%BF%87%E6%9C%9F%E4%BB%BB%E5%8A%A1%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3/" title="过期任务处理机制详解">
+                        <span class="hidden-mobile">过期任务处理机制详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

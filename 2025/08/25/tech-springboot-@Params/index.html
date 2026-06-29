@@ -1,73 +1,724 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="好的，我们来详细讲解一下在 MyBatis（特别是与 Spring 集成的版本中） @Param 注解的作用和用法。 一、核心作用@Param 注解的核心作用是为Mapper接口中的方法参数命名，以便在MyBatis的XML映射文件中能够通过这个名字来引用该参数。 在没有其他注解（如 @Param）的情况下，MyBatis 默认会使用以下规则来处理参数：  单个基本类型或 String 类型参数：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@Params">
+<meta property="og:url" content="https://super-404.github.io/2025/08/25/tech-springboot-@Params/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="好的，我们来详细讲解一下在 MyBatis（特别是与 Spring 集成的版本中） @Param 注解的作用和用法。 一、核心作用@Param 注解的核心作用是为Mapper接口中的方法参数命名，以便在MyBatis的XML映射文件中能够通过这个名字来引用该参数。 在没有其他注解（如 @Param）的情况下，MyBatis 默认会使用以下规则来处理参数：  单个基本类型或 String 类型参数：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-25T03:09:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="springboot">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>@Params - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="@Params"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-25 11:09" pubdate>
+          2025年8月25日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">@Params</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>好的，我们来详细讲解一下在 MyBatis（特别是与 Spring 集成的版本中） <code>@Param</code> 注解的作用和用法。</p>
+<h3 id="一、核心作用"><a href="#一、核心作用" class="headerlink" title="一、核心作用"></a>一、核心作用</h3><p><code>@Param</code> 注解的<strong>核心作用是为Mapper接口中的方法参数命名</strong>，以便在MyBatis的XML映射文件中能够通过这个名字来引用该参数。</p>
+<p>在没有其他注解（如 <code>@Param</code>）的情况下，MyBatis 默认会使用以下规则来处理参数：</p>
+<ol>
+<li><strong>单个基本类型或 String 类型参数</strong>：可以直接在 XML 中使用任何名字（但通常使用参数名本身），但更推荐使用 <code>_parameter</code> 这个内置名称。</li>
+<li><strong>单个JavaBean（POJO）参数</strong>：直接在 XML 中使用其属性名。</li>
+<li><strong>多个参数</strong>：MyBatis 默认会将它们转换为一个 <code>Map</code> 结构，其键为 <code>param1</code>, <code>param2</code>, … 或者 <code>arg0</code>, <code>arg1</code>, …。这种方式非常不直观，容易出错。</li>
+</ol>
+<h2 id="Param-注解就是为了解决第3种（多参数）情况的清晰度问题，同时也让第1种情况更加明确。"><a href="#Param-注解就是为了解决第3种（多参数）情况的清晰度问题，同时也让第1种情况更加明确。" class="headerlink" title="@Param 注解就是为了解决第3种（多参数）情况的清晰度问题，同时也让第1种情况更加明确。"></a><code>@Param</code> 注解就是为了解决第3种（多参数）情况的清晰度问题，同时也让第1种情况更加明确。</h2><h3 id="二、主要用法和场景"><a href="#二、主要用法和场景" class="headerlink" title="二、主要用法和场景"></a>二、主要用法和场景</h3><h4 id="场景1：方法有多个参数"><a href="#场景1：方法有多个参数" class="headerlink" title="场景1：方法有多个参数"></a>场景1：方法有多个参数</h4><p>这是 <code>@Param</code> 最常用、最重要的场景。它让多个简单类型的参数变得可读性更高。</p>
+<p><strong>没有 <code>@Param</code> 时（不推荐）：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Mapper 接口</span><br>User <span class="hljs-title function_">findByCredentials</span><span class="hljs-params">(String username, String password)</span>;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- XML 映射文件 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findByCredentials&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>  SELECT * FROM user <br>  WHERE username = #&#123;param1&#125;  <span class="hljs-comment">&lt;!-- 或者 #&#123;arg0&#125; --&gt;</span><br>  AND password = #&#123;param2&#125;    <span class="hljs-comment">&lt;!-- 或者 #&#123;arg1&#125; --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>这种方式非常糟糕，因为你必须记住参数的顺序。</p>
+<p><strong>使用 <code>@Param</code> 后（推荐）：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Mapper 接口</span><br>User <span class="hljs-title function_">findByCredentials</span><span class="hljs-params">(</span><br><span class="hljs-params">    <span class="hljs-meta">@Param(&quot;name&quot;)</span> String username, </span><br><span class="hljs-params">    <span class="hljs-meta">@Param(&quot;pwd&quot;)</span> String password</span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- XML 映射文件 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findByCredentials&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>  SELECT * FROM user <br>  WHERE username = #&#123;name&#125;  <span class="hljs-comment">&lt;!-- 直接使用注解定义的名称 --&gt;</span><br>  AND password = #&#123;pwd&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>这样代码的可读性和可维护性大大提高，参数的含义一目了然。</p>
+<h4 id="场景2：方法参数是一个集合（如-List-Array-Set）"><a href="#场景2：方法参数是一个集合（如-List-Array-Set）" class="headerlink" title="场景2：方法参数是一个集合（如 List, Array, Set）"></a>场景2：方法参数是一个集合（如 List, Array, Set）</h4><p>当需要传递一个集合给 <code>foreach</code> 标签时，使用 <code>@Param</code> 命名是必须的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Mapper 接口</span><br>List&lt;User&gt; <span class="hljs-title function_">findByIds</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;idList&quot;)</span> List&lt;Long&gt; ids)</span>;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- XML 映射文件 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findByIds&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>  SELECT * FROM user <br>  WHERE id IN <br>  <span class="hljs-tag">&lt;<span class="hljs-name">foreach</span> <span class="hljs-attr">item</span>=<span class="hljs-string">&quot;item&quot;</span> <span class="hljs-attr">collection</span>=<span class="hljs-string">&quot;idList&quot;</span> <span class="hljs-attr">open</span>=<span class="hljs-string">&quot;(&quot;</span> <span class="hljs-attr">separator</span>=<span class="hljs-string">&quot;,&quot;</span> <span class="hljs-attr">close</span>=<span class="hljs-string">&quot;)&quot;</span>&gt;</span><br>    #&#123;item&#125;<br>  <span class="hljs-tag">&lt;/<span class="hljs-name">foreach</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>这里的 <code>collection=&quot;idList&quot;</code> 必须与 <code>@Param(&quot;idList&quot;)</code> 中定义的名称一致。</p>
+<h4 id="场景3：增强单个参数的可读性"><a href="#场景3：增强单个参数的可读性" class="headerlink" title="场景3：增强单个参数的可读性"></a>场景3：增强单个参数的可读性</h4><p>即使只有一个参数，使用 <code>@Param</code> 也可以让XML中的 <code>#&#123;&#125;</code> 更清晰地表达意图，而不是使用默认的 <code>_parameter</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Mapper 接口</span><br>User <span class="hljs-title function_">findByName</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;userName&quot;)</span> String name)</span>;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- XML 映射文件 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findByName&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>  SELECT * FROM user WHERE username = #&#123;userName&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>这比 <code>#&#123;_parameter&#125;</code> 或随意起一个名字要专业和清晰得多。</p>
+<h4 id="场景4：与动态SQL（如-）结合使用"><a href="#场景4：与动态SQL（如-）结合使用" class="headerlink" title="场景4：与动态SQL（如 &lt;if&gt;）结合使用"></a>场景4：与动态SQL（如 <code>&lt;if&gt;</code>）结合使用</h4><p>在动态SQL的测试条件中，直接使用命名的参数会比 <code>param1</code> 清晰得多。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Mapper 接口</span><br>List&lt;User&gt; <span class="hljs-title function_">searchUsers</span><span class="hljs-params">(</span><br><span class="hljs-params">    <span class="hljs-meta">@Param(&quot;name&quot;)</span> String name,</span><br><span class="hljs-params">    <span class="hljs-meta">@Param(&quot;email&quot;)</span> String email,</span><br><span class="hljs-params">    <span class="hljs-meta">@Param(&quot;status&quot;)</span> Integer status</span><br><span class="hljs-params">)</span>;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- XML 映射文件 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;searchUsers&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>  SELECT * FROM user <br>  <span class="hljs-tag">&lt;<span class="hljs-name">where</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;name != null and name != &#x27;&#x27;&quot;</span>&gt;</span><br>      AND username LIKE CONCAT(&#x27;%&#x27;, #&#123;name&#125;, &#x27;%&#x27;)<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;email != null&quot;</span>&gt;</span><br>      AND email = #&#123;email&#125;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;status != null&quot;</span>&gt;</span><br>      AND status = #&#123;status&#125;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">where</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="在-表达式中，可以直接使用-Param-定义的名称（如-name-email），这使得动态SQL的条件判断非常直观。"><a href="#在-表达式中，可以直接使用-Param-定义的名称（如-name-email），这使得动态SQL的条件判断非常直观。" class="headerlink" title="在 &lt;if test=&quot;...&quot;&gt; 表达式中，可以直接使用 @Param 定义的名称（如 name, email），这使得动态SQL的条件判断非常直观。"></a>在 <code>&lt;if test=&quot;...&quot;&gt;</code> 表达式中，可以直接使用 <code>@Param</code> 定义的名称（如 <code>name</code>, <code>email</code>），这使得动态SQL的条件判断非常直观。</h2><h3 id="三、底层原理"><a href="#三、底层原理" class="headerlink" title="三、底层原理"></a>三、底层原理</h3><p>当你在方法参数上使用 <code>@Param(&quot;myName&quot;)</code> 后，MyBatis 在底层会做这样一件事：</p>
+<p>它将这个参数放入一个Map中，其中 <strong>Key</strong> 就是你指定的名称（例如 <code>&quot;myName&quot;</code>），<strong>Value</strong> 就是参数的值。</p>
+<h2 id="所以，在XML中通过-myName-访问时，实际上就是从这个小Map中根据Key-myName-来获取对应的Value。"><a href="#所以，在XML中通过-myName-访问时，实际上就是从这个小Map中根据Key-myName-来获取对应的Value。" class="headerlink" title="所以，在XML中通过 #{myName} 访问时，实际上就是从这个小Map中根据Key myName 来获取对应的Value。"></a>所以，在XML中通过 <code>#&#123;myName&#125;</code> 访问时，实际上就是从这个小Map中根据Key <code>myName</code> 来获取对应的Value。</h2><h3 id="四、总结对比"><a href="#四、总结对比" class="headerlink" title="四、总结对比"></a>四、总结对比</h3><table>
+<thead>
+<tr>
+<th align="left">场景</th>
+<th align="left">无 <code>@Param</code>（默认行为）</th>
+<th align="left">使用 <code>@Param</code>（推荐）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>多参数</strong></td>
+<td align="left">使用 <code>param1</code>, <code>param2</code>, <code>arg0</code>, <code>arg1</code></td>
+<td align="left">使用自定义的清晰名称，如 <code>name</code>, <code>pwd</code></td>
+</tr>
+<tr>
+<td align="left"><strong>集合参数</strong></td>
+<td align="left">无法直接处理，需包装成Map或POJO</td>
+<td align="left">使用自定义名称，可直接用于 <code>foreach</code></td>
+</tr>
+<tr>
+<td align="left"><strong>动态SQL</strong></td>
+<td align="left">在 <code>&lt;if test&gt;</code> 中需使用 <code>param1</code></td>
+<td align="left">在 <code>&lt;if test&gt;</code> 中可直接使用自定义名称</td>
+</tr>
+<tr>
+<td align="left"><strong>单参数</strong></td>
+<td align="left">可使用 <code>_parameter</code> 或任意名称</td>
+<td align="left">使用有意义的自定义名称，增强可读性</td>
+</tr>
+</tbody></table>
+<p><strong>最佳实践建议：</strong></p>
+<ul>
+<li><strong>只要方法参数超过1个，就毫不犹豫地使用 <code>@Param</code>。</strong></li>
+<li>即使只有一个参数，如果它是一个简单的类型（如 <code>String</code>, <code>Long</code>），也建议使用 <code>@Param</code> 来赋予它一个清晰的名称，这会让你的代码更专业、更易维护。</li>
+<li>如果单个参数是一个复杂的JavaBean，则不需要使用 <code>@Param</code>，直接在XML中使用其属性名即可。</li>
+</ul>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/springboot/" class="category-chain-item">springboot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/springboot/">#springboot</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>@Params</div>
+      <div>https://super-404.github.io/2025/08/25/tech-springboot-@Params/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/29/tech-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3%E8%A7%A3%E9%87%8A/" title="日志配置相关解释">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">日志配置相关解释</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/23/tech-%E7%B1%BB%E5%9E%8B%E8%A7%81%E8%AF%81/" title="类型见证">
+                        <span class="hidden-mobile">类型见证</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

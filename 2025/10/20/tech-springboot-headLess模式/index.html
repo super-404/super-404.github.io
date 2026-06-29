@@ -1,73 +1,712 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="设置和确保 Java AWT 无头模式（Headless Mode）的系统属性。 代码分析12System.setProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS,        System.getProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS, Boolean.toString(this.headless)));  其中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="application.yml">
+<meta property="og:url" content="https://super-404.github.io/2025/10/20/tech-springboot-headLess%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="设置和确保 Java AWT 无头模式（Headless Mode）的系统属性。 代码分析12System.setProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS,        System.getProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS, Boolean.toString(this.headless)));  其中">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-20T03:12:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="springboot">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>application.yml - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="application.yml"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-20 11:12" pubdate>
+          2025年10月20日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">application.yml</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>设置和确保 Java AWT 无头模式（Headless Mode）的系统属性</strong>。</p>
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">System.setProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS,<br>        System.getProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS, Boolean.toString(<span class="hljs-built_in">this</span>.headless)));<br></code></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>SYSTEM_PROPERTY_JAVA_AWT_HEADLESS</code> 通常是 <code>&quot;java.awt.headless&quot;</code></li>
+<li><code>this.headless</code> 是 Spring Boot 配置的无头模式标志</li>
+</ul>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>这行代码实际上是一个<strong>智能的默认值设置机制</strong>：</p>
+<h3 id="执行逻辑："><a href="#执行逻辑：" class="headerlink" title="执行逻辑："></a>执行逻辑：</h3><ol>
+<li><p><strong>检查现有值</strong>：<code>System.getProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS, Boolean.toString(this.headless))</code></p>
+<ul>
+<li>首先检查系统属性 <code>java.awt.headless</code> 是否已经设置</li>
+<li>如果已经设置，就使用现有的值</li>
+<li>如果没有设置，使用 <code>this.headless</code> 的布尔值转换为字符串作为默认值</li>
+</ul>
+</li>
+<li><p><strong>设置属性</strong>：<code>System.setProperty()</code> 将上述结果设置回系统属性</p>
+</li>
+</ol>
+<h3 id="等价于："><a href="#等价于：" class="headerlink" title="等价于："></a>等价于：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">existingValue</span> <span class="hljs-operator">=</span> System.getProperty(<span class="hljs-string">&quot;java.awt.headless&quot;</span>);<br><span class="hljs-keyword">if</span> (existingValue == <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-comment">// 如果系统属性未设置，使用 Spring Boot 的配置值</span><br>    System.setProperty(<span class="hljs-string">&quot;java.awt.headless&quot;</span>, String.valueOf(<span class="hljs-built_in">this</span>.headless));<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// 如果系统属性已设置，保持原值不变（实际上重新设置了一遍）</span><br>    System.setProperty(<span class="hljs-string">&quot;java.awt.headless&quot;</span>, existingValue);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="什么是无头模式（Headless-Mode）？"><a href="#什么是无头模式（Headless-Mode）？" class="headerlink" title="什么是无头模式（Headless Mode）？"></a>什么是无头模式（Headless Mode）？</h2><p><strong>无头模式</strong>是指在没有显示设备、键盘或鼠标的环境中运行 Java 应用程序。</p>
+<h3 id="典型场景："><a href="#典型场景：" class="headerlink" title="典型场景："></a>典型场景：</h3><ul>
+<li><strong>服务器环境</strong>：Linux 服务器没有图形界面</li>
+<li><strong>CI&#x2F;CD 流水线</strong>：自动化构建和测试环境</li>
+<li><strong>Docker 容器</strong>：通常没有图形显示能力</li>
+<li><strong>云端部署</strong>：云服务器实例</li>
+</ul>
+<h3 id="在无头模式下可以做什么："><a href="#在无头模式下可以做什么：" class="headerlink" title="在无头模式下可以做什么："></a>在无头模式下可以做什么：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 即使在无图形界面的服务器上，这些操作仍然可以工作：</span><br><span class="hljs-type">BufferedImage</span> <span class="hljs-variable">image</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedImage</span>(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>, BufferedImage.TYPE_INT_RGB);<br><span class="hljs-type">Graphics2D</span> <span class="hljs-variable">g2d</span> <span class="hljs-operator">=</span> image.createGraphics();<br>g2d.drawString(<span class="hljs-string">&quot;Hello&quot;</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>);<br>g2d.dispose();<br><br><span class="hljs-comment">// 图像处理、PDF 生成、图表渲染等</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="在无头模式下不能做什么："><a href="#在无头模式下不能做什么：" class="headerlink" title="在无头模式下不能做什么："></a>在无头模式下不能做什么：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 这些操作会抛出 HeadlessException</span><br><span class="hljs-type">JFrame</span> <span class="hljs-variable">frame</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JFrame</span>(<span class="hljs-string">&quot;Title&quot;</span>);  <span class="hljs-comment">// 失败！</span><br>frame.setVisible(<span class="hljs-literal">true</span>);<br><br><span class="hljs-comment">// 任何需要实际显示器的 GUI 操作</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="在-Spring-Boot-中的重要性"><a href="#在-Spring-Boot-中的重要性" class="headerlink" title="在 Spring Boot 中的重要性"></a>在 Spring Boot 中的重要性</h2><p>Spring Boot 应用经常在服务器环境中运行，这些环境通常没有图形界面：</p>
+<h3 id="1-避免-HeadlessException"><a href="#1-避免-HeadlessException" class="headerlink" title="1. 避免 HeadlessException"></a>1. 避免 <code>HeadlessException</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 如果没有设置无头模式，某些操作可能意外失败</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageProcessor</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processImage</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 如果环境没有显示器且未设置无头模式，这里可能抛出异常</span><br>        <span class="hljs-type">BufferedImage</span> <span class="hljs-variable">image</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedImage</span>(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>, BufferedImage.TYPE_INT_RGB);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-支持图表生成等操作"><a href="#2-支持图表生成等操作" class="headerlink" title="2. 支持图表生成等操作"></a>2. 支持图表生成等操作</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ChartController</span> &#123;<br>    <br>    <span class="hljs-meta">@GetMapping(&quot;/chart&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">generateChart</span><span class="hljs-params">(HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        <span class="hljs-comment">// 在无头模式下，仍然可以生成图表图像</span><br>        <span class="hljs-type">BufferedImage</span> <span class="hljs-variable">chartImage</span> <span class="hljs-operator">=</span> createChart();<br>        ImageIO.write(chartImage, <span class="hljs-string">&quot;PNG&quot;</span>, response.getOutputStream());<br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> BufferedImage <span class="hljs-title function_">createChart</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 创建图表逻辑，需要 AWT 但不需要实际显示器</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedImage</span>(<span class="hljs-number">400</span>, <span class="hljs-number">300</span>, BufferedImage.TYPE_INT_RGB);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="配置方式"><a href="#配置方式" class="headerlink" title="配置方式"></a>配置方式</h2><h3 id="通过-Spring-Boot-配置："><a href="#通过-Spring-Boot-配置：" class="headerlink" title="通过 Spring Boot 配置："></a>通过 Spring Boot 配置：</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># application.yml</span><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">main:</span><br>    <span class="hljs-attr">web-application-type:</span> <span class="hljs-string">servlet</span><br>    <span class="hljs-attr">headless:</span> <span class="hljs-literal">true</span>  <span class="hljs-comment"># 默认就是 true</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="通过命令行参数："><a href="#通过命令行参数：" class="headerlink" title="通过命令行参数："></a>通过命令行参数：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">java -Djava.awt.headless=<span class="hljs-literal">true</span> -jar myapp.jar<br></code></pre></td></tr></table></figure>
+
+<h3 id="通过环境变量："><a href="#通过环境变量：" class="headerlink" title="通过环境变量："></a>通过环境变量：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> JAVA_OPTS=<span class="hljs-string">&quot;-Djava.awt.headless=true&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h2><h3 id="场景1：PDF-报告生成"><a href="#场景1：PDF-报告生成" class="headerlink" title="场景1：PDF 报告生成"></a>场景1：PDF 报告生成</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ReportService</span> &#123;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">generatePdfReport</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 使用 iText 或其他 PDF 库</span><br>        <span class="hljs-comment">// 这些库底层可能使用 AWT 进行字体度量、图像处理等</span><br>        <span class="hljs-type">Document</span> <span class="hljs-variable">document</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Document</span>();<br>        PdfWriter.getInstance(document, outputStream);<br>        document.open();<br>        document.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Paragraph</span>(<span class="hljs-string">&quot;Report Content&quot;</span>));<br>        document.close();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="场景2：图像处理服务"><a href="#场景2：图像处理服务" class="headerlink" title="场景2：图像处理服务"></a>场景2：图像处理服务</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span> <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageService</span> &#123;<br>    <br>    <span class="hljs-keyword">public</span> BufferedImage <span class="hljs-title function_">resizeImage</span><span class="hljs-params">(BufferedImage original, <span class="hljs-type">int</span> targetWidth, <span class="hljs-type">int</span> targetHeight)</span> &#123;<br>        <span class="hljs-comment">// 使用 AWT 的图像处理功能</span><br>        <span class="hljs-type">BufferedImage</span> <span class="hljs-variable">resized</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedImage</span>(targetWidth, targetHeight, original.getType());<br>        <span class="hljs-type">Graphics2D</span> <span class="hljs-variable">g2d</span> <span class="hljs-operator">=</span> resized.createGraphics();<br>        g2d.drawImage(original, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, targetWidth, targetHeight, <span class="hljs-literal">null</span>);<br>        g2d.dispose();<br>        <span class="hljs-keyword">return</span> resized;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="场景3：验证码生成"><a href="#场景3：验证码生成" class="headerlink" title="场景3：验证码生成"></a>场景3：验证码生成</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CaptchaGenerator</span> &#123;<br>    <br>    <span class="hljs-keyword">public</span> BufferedImage <span class="hljs-title function_">generateCaptcha</span><span class="hljs-params">(String text)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">width</span> <span class="hljs-operator">=</span> <span class="hljs-number">120</span>, height = <span class="hljs-number">40</span>;<br>        <span class="hljs-type">BufferedImage</span> <span class="hljs-variable">image</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedImage</span>(width, height, BufferedImage.TYPE_INT_RGB);<br>        <span class="hljs-type">Graphics2D</span> <span class="hljs-variable">g2d</span> <span class="hljs-operator">=</span> image.createGraphics();<br>        <br>        <span class="hljs-comment">// 设置背景、绘制文本等</span><br>        g2d.setColor(Color.WHITE);<br>        g2d.fillRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, width, height);<br>        g2d.setColor(Color.BLACK);<br>        g2d.drawString(text, <span class="hljs-number">10</span>, <span class="hljs-number">25</span>);<br>        <br>        g2d.dispose();<br>        <span class="hljs-keyword">return</span> image;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这两行代码的作用是：</p>
+<ol>
+<li><strong>确保一致性</strong>：保证 <code>java.awt.headless</code> 系统属性被正确设置</li>
+<li><strong>提供智能默认值</strong>：如果用户没有显式设置，使用 Spring Boot 的配置值</li>
+<li><strong>尊重用户配置</strong>：如果用户已经设置了该属性，保持用户设置不变</li>
+<li><strong>支持服务器部署</strong>：让 Spring Boot 应用能够在无图形界面的服务器环境中正常运行图像处理、PDF 生成等功能</li>
+</ol>
+<p>这是一个防御性编程的很好例子，确保了应用在各种环境下的兼容性和稳定性。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/springboot/" class="category-chain-item">springboot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/springboot/">#springboot</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>application.yml</div>
+      <div>https://super-404.github.io/2025/10/20/tech-springboot-headLess模式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/22/tech-springboot-%E7%B1%BB%E7%9A%84%E6%B3%A8%E5%86%8C-@Import/" title="一、@Import 是什么">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一、@Import 是什么</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/20/tech-java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-classLoader/" title="classLoader">
+                        <span class="hidden-mobile">classLoader</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

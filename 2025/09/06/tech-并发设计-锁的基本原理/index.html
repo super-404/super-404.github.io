@@ -1,73 +1,861 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在多线程中一把锁有没有可能有多个线程同时拥有直接回答：不可能。 根据互斥锁（Mutex）的根本定义和核心目的，在任何时刻，一把互斥锁最多只能被一个线程所拥有（持有）。这是锁之所以能称为“锁”的基础。如果多个线程能同时拥有同一把锁，那么它就完全失去了同步和互斥的意义。详细解释1. 锁的核心目的锁（这里主要指互斥锁，Mutex）是一种同步原语，它的设计初衷就是为了在多个线程之间强制实施互斥访问。它用来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在多线程中一把锁有没有可能有多个线程同时拥有">
+<meta property="og:url" content="https://super-404.github.io/2025/09/06/tech-%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1-%E9%94%81%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在多线程中一把锁有没有可能有多个线程同时拥有直接回答：不可能。 根据互斥锁（Mutex）的根本定义和核心目的，在任何时刻，一把互斥锁最多只能被一个线程所拥有（持有）。这是锁之所以能称为“锁”的基础。如果多个线程能同时拥有同一把锁，那么它就完全失去了同步和互斥的意义。详细解释1. 锁的核心目的锁（这里主要指互斥锁，Mutex）是一种同步原语，它的设计初衷就是为了在多个线程之间强制实施互斥访问。它用来">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-06T07:20:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="并发设计">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>在多线程中一把锁有没有可能有多个线程同时拥有 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="在多线程中一把锁有没有可能有多个线程同时拥有"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-06 15:20" pubdate>
+          2025年9月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          55 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">在多线程中一把锁有没有可能有多个线程同时拥有</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="在多线程中一把锁有没有可能有多个线程同时拥有"><a href="#在多线程中一把锁有没有可能有多个线程同时拥有" class="headerlink" title="在多线程中一把锁有没有可能有多个线程同时拥有"></a>在多线程中一把锁有没有可能有多个线程同时拥有</h1><p><strong>直接回答：不可能。</strong></p>
+<h2 id="根据互斥锁（Mutex）的根本定义和核心目的，在任何时刻，一把互斥锁最多只能被一个线程所拥有（持有）。这是锁之所以能称为“锁”的基础。如果多个线程能同时拥有同一把锁，那么它就完全失去了同步和互斥的意义。"><a href="#根据互斥锁（Mutex）的根本定义和核心目的，在任何时刻，一把互斥锁最多只能被一个线程所拥有（持有）。这是锁之所以能称为“锁”的基础。如果多个线程能同时拥有同一把锁，那么它就完全失去了同步和互斥的意义。" class="headerlink" title="根据互斥锁（Mutex）的根本定义和核心目的，在任何时刻，一把互斥锁最多只能被一个线程所拥有（持有）。这是锁之所以能称为“锁”的基础。如果多个线程能同时拥有同一把锁，那么它就完全失去了同步和互斥的意义。"></a>根据互斥锁（Mutex）的根本定义和核心目的，<strong>在任何时刻，一把互斥锁最多只能被一个线程所拥有（持有）</strong>。这是锁之所以能称为“锁”的基础。如果多个线程能同时拥有同一把锁，那么它就完全失去了同步和互斥的意义。</h2><h3 id="详细解释"><a href="#详细解释" class="headerlink" title="详细解释"></a>详细解释</h3><h4 id="1-锁的核心目的"><a href="#1-锁的核心目的" class="headerlink" title="1. 锁的核心目的"></a>1. 锁的核心目的</h4><p>锁（这里主要指互斥锁，Mutex）是一种同步原语，它的设计初衷就是为了在多个线程之间强制实施互斥访问。它用来保护“临界区”（一段访问共享资源的代码），确保一次只有一个线程可以进入临界区。</p>
+<ul>
+<li><strong>加锁（Lock）：</strong> 一个线程通过调用 <code>lock()</code> 方法来尝试获取锁的所有权。如果锁当前是“空闲”的（未被任何线程持有），那么该线程将成功获得锁，并进入临界区。</li>
+<li><strong>解锁（Unlock）：</strong> 拥有锁的线程在离开临界区时调用 <code>unlock()</code> 方法，释放锁的所有权，使其变为“空闲”状态，从而允许其他正在等待的线程获取它。</li>
+</ul>
+<h4 id="2-如果多个线程尝试获取同一把锁会发生什么？"><a href="#2-如果多个线程尝试获取同一把锁会发生什么？" class="headerlink" title="2. 如果多个线程尝试获取同一把锁会发生什么？"></a>2. 如果多个线程尝试获取同一把锁会发生什么？</h4><p>当一个线程已经持有锁时，其他任何线程再尝试调用 <code>lock()</code> 方法去获取这把锁，它们的行为会根据锁的类型而不同：</p>
+<ul>
+<li><strong>阻塞（Blocking）：</strong> 对于普通的互斥锁，后续尝试获取锁的线程会被操作系统挂起（进入睡眠状态），并被放入一个等待队列中。它们会停止执行，不会消耗CPU资源，直到锁的持有者释放了锁。操作系统然后会唤醒其中一个等待的线程（具体唤醒哪个取决于调度算法，如先进先出或优先级），该线程才能获得锁并继续执行。</li>
+<li><strong>错误或立即返回（Non-blocking）：</strong> 某些锁提供了“尝试获取”的功能（例如 <code>pthread_mutex_trylock</code> 或 <code>tryLock</code>）。如果锁已被占用，这些函数不会让线程阻塞，而是会立即返回一个错误码（或 <code>false</code>），告诉调用者获取锁失败。线程可以根据这个返回值来决定下一步做什么（例如稍后重试或执行其他任务）。</li>
+</ul>
+<h2 id="关键点在于：-在锁被释放之前，所有其他尝试获取它的线程都无法同时获得它，它们必须等待。"><a href="#关键点在于：-在锁被释放之前，所有其他尝试获取它的线程都无法同时获得它，它们必须等待。" class="headerlink" title="关键点在于： 在锁被释放之前，所有其他尝试获取它的线程都无法同时获得它，它们必须等待。"></a><strong>关键点在于：</strong> 在锁被释放之前，所有其他尝试获取它的线程都<strong>无法同时获得它</strong>，它们必须等待。</h2><h3 id="一个常见的误解：重入锁（Reentrant-Lock）"><a href="#一个常见的误解：重入锁（Reentrant-Lock）" class="headerlink" title="一个常见的误解：重入锁（Reentrant Lock）"></a>一个常见的误解：重入锁（Reentrant Lock）</h3><p>你可能会听到“一个线程可以多次获取同一把锁”的说法，这听起来像是“多个线程同时拥有”，但实际上这指的是<strong>同一个线程</strong>。</p>
+<p>这种锁称为<strong>可重入锁（Reentrant Lock）</strong> 或<strong>递归锁（Recursive Mutex）</strong>。</p>
+<ul>
+<li><p><strong>工作原理：</strong> 如果一个线程已经持有了某把可重入锁，那么它再次请求获取同一把锁时会立即成功。锁内部会维护一个持有计数（hold count）和一个所有者线程ID。</p>
+<ul>
+<li>第一次获取时，计数变为1。</li>
+<li>同一线程每重入获取一次，计数就+1。</li>
+<li>每次释放锁，计数就-1。</li>
+<li>只有当计数减到0时，锁才被真正释放，其他线程才有机会获取它。</li>
+</ul>
+</li>
+<li><p><strong>为什么需要它？</strong> 主要是为了防止死锁。考虑一个场景：一个类中的同步方法 <code>a()</code> 内部调用了另一个同步方法 <code>b()</code>，而这两个方法都由同一把锁保护。如果锁不是可重入的，那么线程在进入 <code>a()</code> 后持有锁，在调用 <code>b()</code> 时试图再次获取同一把锁，就会因为自己已经持有而永远等待下去（死锁）。可重入锁完美地解决了这个问题。</p>
+</li>
+<li><p><strong>重要区别：</strong></p>
+<ul>
+<li><strong>可重入锁</strong>允许<strong>同一个线程</strong>多次获取同一把锁。</li>
+<li><strong>互斥锁</strong>的根本原则是禁止<strong>不同线程</strong>同时获取同一把锁。</li>
+</ul>
+</li>
+</ul>
+<h2 id="即使是可重入锁，也绝对不允许两个不同的线程同时拥有它。"><a href="#即使是可重入锁，也绝对不允许两个不同的线程同时拥有它。" class="headerlink" title="即使是可重入锁，也绝对不允许两个不同的线程同时拥有它。"></a><strong>即使是可重入锁，也绝对不允许两个不同的线程同时拥有它。</strong></h2><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th align="left">场景</th>
+<th align="left">是否可能多个线程同时拥有？</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>标准互斥锁（Mutex）</strong></td>
+<td align="left"><strong>绝不可能</strong></td>
+<td align="left">这是锁存在的基石，用于实现互斥访问。</td>
+</tr>
+<tr>
+<td align="left"><strong>可重入锁（Reentrant Lock）</strong></td>
+<td align="left"><strong>绝不可能</strong></td>
+<td align="left">只允许<strong>同一个线程</strong>重入获取，不同线程之间依然是互斥的。</td>
+</tr>
+<tr>
+<td align="left"><strong>读写锁（Read-Write Lock）</strong></td>
+<td align="left"><strong>某种意义上是</strong></td>
+<td align="left">读写锁允许<strong>多个读线程</strong>同时持有“读锁”，但“写锁”是互斥的（一次一个），并且读锁和写锁也不能同时被持有。这是一种为读多写少场景设计的特殊锁。</td>
+</tr>
+</tbody></table>
+<p>所以，回到你的问题：对于最核心的互斥概念而言，<strong>答案是非常明确的“不可能”</strong>。一把互斥锁在任何时刻都只能有一个所有者线程。</p>
+<h1 id="这是怎么做到的"><a href="#这是怎么做到的" class="headerlink" title="这是怎么做到的"></a>这是怎么做到的</h1><p>非常好！这是一个触及操作系统和计算机科学核心原理的问题。“一把锁只能被一个线程持有”这个看似简单的行为，背后是由<strong>硬件指令</strong>和<strong>操作系统内核</strong>紧密协作实现的魔法。</p>
+<h2 id="它主要通过两种机制来实现：原子操作（Atomic-Operations）-和等待队列（Wait-Queue）。"><a href="#它主要通过两种机制来实现：原子操作（Atomic-Operations）-和等待队列（Wait-Queue）。" class="headerlink" title="它主要通过两种机制来实现：原子操作（Atomic Operations） 和等待队列（Wait Queue）。"></a>它主要通过两种机制来实现：<strong>原子操作（Atomic Operations）</strong> 和<strong>等待队列（Wait Queue）</strong>。</h2><h3 id="1-基石：硬件支持的原子操作"><a href="#1-基石：硬件支持的原子操作" class="headerlink" title="1. 基石：硬件支持的原子操作"></a>1. 基石：硬件支持的原子操作</h3><p>最核心的一点是：<strong>检查锁状态和获取锁这两个动作必须合并成一个不可分割的、原子的操作。</strong></p>
+<p>为什么必须是原子的？想象一下锁的状态是一个变量 <code>lock_status</code>（0表示空闲，1表示被占用）。如果两个线程几乎同时尝试获取锁，它们的操作可能是这样的：</p>
+<ol>
+<li><strong>线程A</strong>：检查 <code>lock_status</code>，发现是0（空闲）。</li>
+<li><strong>线程B</strong>：检查 <code>lock_status</code>，也发现是0（空闲）。</li>
+<li><strong>线程A</strong>：将 <code>lock_status</code> 设置为1，并认为自己成功了。</li>
+<li><strong>线程B</strong>：也将 <code>lock_status</code> 设置为1，也认为自己成功了。</li>
+</ol>
+<p>结果就是两个线程都进入了临界区，互斥被破坏了！这就是<strong>竞态条件（Race Condition）</strong>。</p>
+<p>为了解决这个问题，CPU提供了特殊的<strong>原子指令（Atomic Instructions）</strong>。这些指令保证在它执行时，它所涉及的内存区域不会被其他任何CPU核心或线程访问。最常见的用于实现锁的原子指令是 <strong><code>Test-and-Set</code></strong> 和 **<code>Compare-and-Swap (CAS)</code>**。</p>
+<h4 id="以-Test-and-Set-指令为例："><a href="#以-Test-and-Set-指令为例：" class="headerlink" title="以 Test-and-Set 指令为例："></a>以 <code>Test-and-Set</code> 指令为例：</h4><p>这条指令会<strong>原子地</strong>完成以下三步：</p>
+<ol>
+<li>读取某个内存位置的值。</li>
+<li>根据读取的值设置一个标志（通常是设置为1）。</li>
+<li>返回它<strong>之前</strong>读到的值。</li>
+</ol>
+<p>假设我们用 <code>lock_var</code> 变量表示锁（0&#x3D;空闲，1&#x3D;占用）。获取锁的伪代码利用原子指令就变成了：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 这是一个原子操作，由一条CPU指令完成</span><br><span class="hljs-keyword">while</span> (test_and_set(&amp;lock_var, <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-comment">// 如果返回的是1，说明锁已经被别人占用了</span><br>    <span class="hljs-comment">// 那么就在这里等待（如何等待是下一步要说的）</span><br>&#125;<br><span class="hljs-comment">// 如果 test_and_set 返回0，说明我们成功拿到了锁！</span><br><span class="hljs-comment">// 可以进入临界区了...</span><br><br><span class="hljs-comment">// ...离开临界区后</span><br>lock_var = <span class="hljs-number">0</span>; <span class="hljs-comment">// 释放锁</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="这个过程是原子的，所以绝不可能出现两个线程同时执行-test-and-set-并都拿到返回值0的情况。硬件保证了只有一个线程能“赢”，从而抢到锁。"><a href="#这个过程是原子的，所以绝不可能出现两个线程同时执行-test-and-set-并都拿到返回值0的情况。硬件保证了只有一个线程能“赢”，从而抢到锁。" class="headerlink" title="这个过程是原子的，所以绝不可能出现两个线程同时执行 test_and_set 并都拿到返回值0的情况。硬件保证了只有一个线程能“赢”，从而抢到锁。"></a>这个过程是原子的，所以绝不可能出现两个线程同时执行 <code>test_and_set</code> 并都拿到返回值0的情况。<strong>硬件保证了只有一个线程能“赢”</strong>，从而抢到锁。</h2><h3 id="2-处理等待：自旋-vs-阻塞"><a href="#2-处理等待：自旋-vs-阻塞" class="headerlink" title="2. 处理等待：自旋 vs 阻塞"></a>2. 处理等待：自旋 vs 阻塞</h3><p>当一个线程尝试获取锁失败后（即原子操作返回了1），它需要等待。处理等待的方式主要有两种，这也决定了锁的类型：</p>
+<h4 id="A-自旋锁（Spinlock）"><a href="#A-自旋锁（Spinlock）" class="headerlink" title="A. 自旋锁（Spinlock）"></a>A. 自旋锁（Spinlock）</h4><ul>
+<li><strong>做法</strong>：线程会在一个循环里不停地执行原子操作（<code>test_and_set</code>），不断地“询问”锁是否被释放了。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> (test_and_set(&amp;lock_var, <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-comment">// 空循环，什么都不做，就是不停地尝试</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>优点</strong>：在锁被持有时间非常短的情况下，效率很高，因为避免了进入操作系统内核的上下文切换开销。</li>
+<li><strong>缺点</strong>：如果锁被长时间持有，这个循环会白白浪费CPU时间片，占着CPU却不干实事。这被称为“忙等待”（Busy-waiting）。</li>
+</ul>
+<h4 id="B-互斥锁（Mutex）-更常见的做法"><a href="#B-互斥锁（Mutex）-更常见的做法" class="headerlink" title="B. 互斥锁（Mutex） - 更常见的做法"></a>B. 互斥锁（Mutex） - 更常见的做法</h4><ul>
+<li><strong>做法</strong>：当线程获取锁失败时，它不会空转，而是会<strong>请求操作系统的帮助</strong>。<ol>
+<li>线程通过一个<strong>系统调用</strong>（如 <code>futex</code> on Linux）告诉操作系统：“我想获取这个锁，但它被占用了，请把我挂起”。</li>
+<li>操作系统内核将这个线程的状态从“运行”改为“阻塞”（Sleeping），并将其放入一个与该锁关联的<strong>等待队列</strong>中。</li>
+<li>操作系统然后调度其他可运行的线程来执行。</li>
+</ol>
+</li>
+<li><strong>当锁被释放时</strong>：<ol>
+<li>释放锁的线程同样通过系统调用通知操作系统：“我释放了锁”。</li>
+<li>操作系统从该锁的等待队列中取出一个（或所有）线程，将其状态改为“就绪”，并告诉它锁现在可用了。</li>
+<li>在下次被调度时，这个被唤醒的线程会再次尝试获取锁（通常还会用一次原子操作），这次它有很大概率成功。</li>
+</ol>
+</li>
+<li><strong>优点</strong>：在锁被持有时长不确定或较长时，效率远高于自旋锁，因为它不会浪费CPU周期，CPU可以去做其他有意义的工作。</li>
+<li><strong>缺点</strong>：涉及两次系统调用（挂起和唤醒）和上下文切换，有一定的开销。如果锁只被持有几纳秒，这种开销反而比自旋锁更大。</li>
+</ul>
+<h2 id="现代操作系统的锁（如Linux下的pthread-mutex）通常是混合型的：它们会先自旋一小段时间（期望锁能很快被释放），如果自旋后还拿不到锁，再进入阻塞状态，以兼顾两种场景的效率。"><a href="#现代操作系统的锁（如Linux下的pthread-mutex）通常是混合型的：它们会先自旋一小段时间（期望锁能很快被释放），如果自旋后还拿不到锁，再进入阻塞状态，以兼顾两种场景的效率。" class="headerlink" title="现代操作系统的锁（如Linux下的pthread mutex）通常是混合型的：它们会先自旋一小段时间（期望锁能很快被释放），如果自旋后还拿不到锁，再进入阻塞状态，以兼顾两种场景的效率。"></a>现代操作系统的锁（如Linux下的pthread mutex）通常是<strong>混合型</strong>的：它们会先自旋一小段时间（期望锁能很快被释放），如果自旋后还拿不到锁，再进入阻塞状态，以兼顾两种场景的效率。</h2><h3 id="总结：一把锁的一生"><a href="#总结：一把锁的一生" class="headerlink" title="总结：一把锁的一生"></a>总结：一把锁的一生</h3><ol>
+<li><strong>初始化</strong>：锁的状态被设置为“空闲”（例如 <code>lock_var = 0</code>）。</li>
+<li><strong>线程A加锁</strong>：<ul>
+<li>执行<strong>原子指令</strong>（如 <code>test_and_set</code>）。</li>
+<li>指令返回0，线程A成功获取锁，进入临界区。</li>
+</ul>
+</li>
+<li><strong>线程B加锁</strong>：<ul>
+<li>执行<strong>相同的原子指令</strong>。</li>
+<li>指令返回1（因为线程A已将其设为1），线程B获取失败。</li>
+<li>线程B<strong>调用操作系统</strong>，将自己挂起并放入等待队列。</li>
+</ul>
+</li>
+<li><strong>线程A解锁</strong>：<ul>
+<li>离开临界区，将锁状态设为0（<strong>这一步通常也需要内存屏障保证可见性</strong>）。</li>
+<li><strong>调用操作系统</strong>，唤醒等待队列中的一个线程（线程B）。</li>
+</ul>
+</li>
+<li><strong>线程B被唤醒</strong>：<ul>
+<li>状态变为就绪，被操作系统调度后再次运行。</li>
+<li>它再次尝试原子指令，这次成功获取锁。</li>
+</ul>
+</li>
+</ol>
+<p>所以，这个看似简单的机制，是<strong>原子硬件指令</strong>提供了最基础的互斥保证，而<strong>操作系统内核</strong>则提供了高效的线程调度和等待管理，两者缺一不可。</p>
+<h1 id="所以说是因为获取锁是一个原子指令吗"><a href="#所以说是因为获取锁是一个原子指令吗" class="headerlink" title="所以说是因为获取锁是一个原子指令吗"></a>所以说是因为获取锁是一个原子指令吗</h1><p><strong>是的，完全正确！</strong></p>
+<p><strong>最根本、最核心的原因就是：获取锁的操作必须是一个原子指令。</strong></p>
+<p>你可以把“获取锁”这个操作想象成一个极其严格的保安和一间只有一个座位的房间：</p>
+<ol>
+<li><p><strong>非原子操作（错误的做法）：</strong></p>
+<ul>
+<li>保安（CPU）先探头看一眼房间（<strong>检查锁状态</strong>）。</li>
+<li>保安看到房间是空的，然后他转身在登记本上写字（<strong>执行其他操作</strong>）。</li>
+<li>就在他转身的这一刻，另一个人（另一个线程）也来问，保安也探头看了一眼，也看到房间是空的。</li>
+<li>结果两个人都认为自己可以进去，同时走向房间，冲突就发生了。</li>
+</ul>
+</li>
+<li><p><strong>原子操作（正确的做法）：</strong></p>
+<ul>
+<li>保安站在门口，立下一条铁律：<strong>“想进去？必须在我这里完成‘查看并登记’这个动作，这个动作不能被打断，我一次只服务一个人。”</strong></li>
+<li>线程A过来，执行这个原子动作。保安瞬间完成“看一眼房间（状态为空闲）-&gt; 立刻把名字登记上（状态改为占用）”这一系列操作，然后对线程A说：“好了，进去吧。”</li>
+<li>在线程A办理手续的整个过程中，保安绝不会理会线程B。线程B必须排队等待。</li>
+<li>线程A办完，线程B才能上前办理同样的原子手续。但这次保安一看登记本，发现房间已经有人（状态为占用），就会告诉线程B：“抱歉，满员，请到旁边等待区等着。”</li>
+</ul>
+</li>
+</ol>
+<h2 id="这个“查看并登记”的不可中断的单一动作，就是-Test-and-Set-或-Compare-and-Swap-CAS-这样的原子指令。"><a href="#这个“查看并登记”的不可中断的单一动作，就是-Test-and-Set-或-Compare-and-Swap-CAS-这样的原子指令。" class="headerlink" title="这个“查看并登记”的不可中断的单一动作，就是 Test-and-Set 或 Compare-and-Swap (CAS) 这样的原子指令。"></a>这个“查看并登记”的不可中断的单一动作，就是 <strong><code>Test-and-Set</code></strong> 或 <strong><code>Compare-and-Swap (CAS)</code></strong> 这样的原子指令。</h2><h3 id="原子指令的关键特性："><a href="#原子指令的关键特性：" class="headerlink" title="原子指令的关键特性："></a>原子指令的关键特性：</h3><ol>
+<li><p><strong>不可分割性（Indivisibility）：</strong> 这是原子指令的定义。CPU执行这条指令时，它保证会一次性、不中断地完成所有步骤。其他CPU核心或线程无法在这个操作的中间时刻观察到或修改相关的内存值。</p>
+</li>
+<li><p><strong>内存排序（Memory Ordering）：</strong> 原子指令不仅保证操作本身是原子的，通常还会附带<strong>内存屏障（Memory Barrier）</strong> 的效果。这意味着：</p>
+<ul>
+<li>在原子指令之前的所有内存操作，结果必须对系统其他部分可见。</li>
+<li>在原子指令之后的所有内存操作，不会被重排到原子指令之前。</li>
+<li>这确保了“获取锁”这个行为成为一个清晰的<strong>同步点</strong>，所有线程对锁状态的认知都是一致的。</li>
+</ul>
+</li>
+<li><p><strong>硬件实现：</strong> 这不是由软件循环实现的，而是由CPU硬件直接支持的。当一个CPU核心执行原子指令时，它会通过<strong>锁总线（Bus Locking）</strong> 或<strong>缓存一致性协议（如MESI）</strong> 来临时“锁定”那块特定的内存区域，阻止其他核心访问，直到指令完成。现代CPU多用缓存一致性协议，效率更高。</p>
+</li>
+</ol>
+<h3 id="所以，完整的逻辑链是："><a href="#所以，完整的逻辑链是：" class="headerlink" title="所以，完整的逻辑链是："></a>所以，完整的逻辑链是：</h3><ul>
+<li><strong>因为</strong>有了原子指令（如 <code>CAS</code>）…</li>
+<li><strong>所以</strong>“检查锁状态”和“修改锁状态”这两个动作可以合并成一个不可分割的操作。</li>
+<li><strong>因此</strong>，绝不可能出现两个线程同时检查到锁空闲并都认为自己成功获取的情况。<strong>总有一个线程的原子指令会先执行成功</strong>。</li>
+<li>对于那个失败的线程，它接下来要么自旋（不断重试原子指令），要么通过操作系统将自己挂起（进入等待队列）。</li>
+</ul>
+<p><strong>结论：</strong><br>原子指令是实现所有同步原语（如锁、信号量等）的<strong>基石</strong>。它提供了最底层的、硬件级别的互斥保证。操作系统和编程语言库（如pthread, java.util.concurrent）都是在这些原子指令的基础上，构建出了我们日常使用的、功能丰富的锁（如互斥锁、可重入锁、读写锁）。</p>
+<p>你的理解非常到位！正是因为这个最底层的操作是原子的，才奠定了整个多线程同步大厦的基础。</p>
+<h1 id="那如果两个线程运行在cpu的两个核心上，两个核心会不会都在执行这个原子指令"><a href="#那如果两个线程运行在cpu的两个核心上，两个核心会不会都在执行这个原子指令" class="headerlink" title="那如果两个线程运行在cpu的两个核心上，两个核心会不会都在执行这个原子指令"></a>那如果两个线程运行在cpu的两个核心上，两个核心会不会都在执行这个原子指令</h1><p><strong>即使两个CPU核心同时执行这条原子指令，硬件也会保证只有一个核心的指令会“成功”，另一个会“失败”。</strong></p>
+<h2 id="这背后的魔法是由CPU的缓存一致性协议（Cache-Coherence-Protocol）-和原子指令的硬件实现共同完成的。"><a href="#这背后的魔法是由CPU的缓存一致性协议（Cache-Coherence-Protocol）-和原子指令的硬件实现共同完成的。" class="headerlink" title="这背后的魔法是由CPU的缓存一致性协议（Cache Coherence Protocol） 和原子指令的硬件实现共同完成的。"></a>这背后的魔法是由CPU的<strong>缓存一致性协议（Cache Coherence Protocol）</strong> 和<strong>原子指令的硬件实现</strong>共同完成的。</h2><h3 id="幕后原理：MESI协议与原子指令"><a href="#幕后原理：MESI协议与原子指令" class="headerlink" title="幕后原理：MESI协议与原子指令"></a>幕后原理：MESI协议与原子指令</h3><p>现代CPU的每个核心都有自己的高速缓存（Cache）。变量 <code>lock_var</code> 可能会被多个核心的缓存同时加载。为了保证所有核心看到的内存视图是一致的，CPU使用了一种叫 <strong>MESI</strong> 的缓存一致性协议（M: Modified, E: Exclusive, S: Shared, I: Invalid）。</p>
+<p>现在，假设两个核心（Core 1和Core 2）都加载了 <code>lock_var</code>（初始值为0），它们的缓存状态都是 **Shared (S)**。</p>
+<ol>
+<li><p><strong>Core 1 率先执行原子指令（如 <code>LOCK CMPXCHG</code>）</strong>：</p>
+<ul>
+<li>CPU会在执行这条指令时，在总线上发出一个 <strong>“我要独占修改”</strong> 的信号。</li>
+<li>这个信号会迫使其他所有缓存了 <code>lock_var</code> 的核心（比如Core 2）将其缓存行的状态变为 **Invalid (I)**。</li>
+<li>现在，只有Core 1的缓存拥有 <code>lock_var</code> 的有效副本，状态变为 <strong>Exclusive (E)</strong> 或 **Modified (M)**。</li>
+<li>Core 1 顺利完成原子操作：它读到原来的值0，并将其设置为1。<strong>Core 1 成功获取锁</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Core 2 稍后执行同一条原子指令</strong>：</p>
+<ul>
+<li>Core 2 的缓存中 <code>lock_var</code> 的状态已经是 <strong>Invalid (I)</strong> 了，它知道自己的副本是旧的、无效的。</li>
+<li>它必须向总线发起请求，从其他缓存或主内存中获取最新的值。</li>
+<li>这个请求会到达Core 1，Core 1知道自己独占着这个数据，于是它将最新的值（现在是1）返回给Core 2。</li>
+<li>Core 2 的原子指令此时才真正执行：它读到这个最新的值1，尝试将其与期望值比较（比如期望值是0），发现不相等（1 !&#x3D; 0）。<strong>因此，Core 2 的原子操作失败</strong>，返回失败的结果（读到的旧值1）。</li>
+</ul>
+</li>
+</ol>
+<p>这个过程可以类比为两个人在争抢一个唯一的令牌：</p>
+<ul>
+<li>令牌一开始在桌上（值为0）。</li>
+<li>两个人（Core 1和Core 2）同时伸手去抢。</li>
+<li>最终，<strong>只会有一个人的手先碰到令牌</strong>并把它抓起来（成功设置为1）。</li>
+<li>另一个人伸手到时，发现令牌已经不在了（值已经是1了），他只能抓个空（失败）。</li>
+</ul>
+<hr>
+<h3 id="硬件如何实现“原子性”？"><a href="#硬件如何实现“原子性”？" class="headerlink" title="硬件如何实现“原子性”？"></a>硬件如何实现“原子性”？</h3><p>CPU通过在系统总线上发出一个 <strong><code>LOCK#</code></strong> 信号（或使用类似的机制）来实现原子指令。当一条指令带有 <code>LOCK</code> 前缀时：</p>
+<ol>
+<li><strong>锁定缓存行</strong>: CPU会锁定它所操作的那个内存地址所在的整个<strong>缓存行</strong>（通常为64字节）。这是现代CPU更常用的方式，范围比锁总线小，效率更高。</li>
+<li><strong>（旧式）锁总线</strong>: 在更早的架构或某些情况下，<code>LOCK#</code> 信号会直接<strong>锁住整个系统总线</strong>。这意味着在原子指令执行期间，任何其他核心都无法通过总线访问内存。这会严重影响性能，所以现代CPU尽量避免这样做。</li>
+</ol>
+<p>无论是锁定缓存行还是锁总线，其效果都是在极短的时间内（一个指令周期）为当前核心创造出一个<strong>临时的、独占的内存访问环境</strong>。这就确保了在它读和写的过程中，绝对不会有其他核心来干扰。</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>所以，当两个核心同时执行原子指令时：</p>
+<ol>
+<li><strong>硬件仲裁</strong>：CPU内部的硬件逻辑（内存控制器、缓存一致性协议）会对这些几乎同时到来的请求进行仲裁。<strong>总有一个请求会在时序上被优先处理</strong>。这种仲裁是在纳秒级别完成的。</li>
+<li><strong>串行化</strong>：硬件保证了即使请求是同时发出的，对同一内存地址的原子操作也会在硬件层面被<strong>串行化</strong>——即一个一个地处理。</li>
+<li><strong>明确的成功&#x2F;失败</strong>：原子指令（如CAS）的设计本身就包含了成功或失败的返回结果。这为上层软件提供了清晰的信号，让失败的线程知道该怎么做（继续尝试或等待）。</li>
+</ol>
+<p>正是硬件提供的这些最强有力的保证，才使得我们在软件层面能够构建出可靠的锁和其他同步机制。没有硬件的支持，纯软件是无法实现真正的互斥的。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1/" class="category-chain-item">并发设计</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1/">#并发设计</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>在多线程中一把锁有没有可能有多个线程同时拥有</div>
+      <div>https://super-404.github.io/2025/09/06/tech-并发设计-锁的基本原理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/06/tech-%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1-ABA%E9%97%AE%E9%A2%98%20%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3/" title="ABA问题 怎么解决">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ABA问题 怎么解决</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/06/tech-%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF-Mit6.824-gfs%E4%B8%ADChunkServe%E5%92%8CMasterr/" title="如何理解GFS中Master节点和Chunk 服务器">
+                        <span class="hidden-mobile">如何理解GFS中Master节点和Chunk 服务器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

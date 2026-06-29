@@ -1,73 +1,687 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="使用LettuceConnectionFactory管理Redis连接池 实际上这两个连接池的配置效果是相同的，最后都由 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用LettuceConnectionFactory管理Redis连接池">
+<meta property="og:url" content="https://super-404.github.io/2025/09/01/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-redis-%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="使用LettuceConnectionFactory管理Redis连接池 实际上这两个连接池的配置效果是相同的，最后都由 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://super-404.github.io/2025/09/01/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-redis-%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E7%AE%A1%E7%90%86/index.html#local-path">
+<meta property="og:image" content="https://super-404.github.io/2025/09/01/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-redis-%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E7%AE%A1%E7%90%86/index.html#local-path">
+<meta property="article:published_time" content="2025-09-01T07:06:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="开源学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://super-404.github.io/2025/09/01/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-redis-%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E7%AE%A1%E7%90%86/index.html#local-path">
+  
+  
+  
+  <title>使用LettuceConnectionFactory管理Redis连接池 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="使用LettuceConnectionFactory管理Redis连接池"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-01 15:06" pubdate>
+          2025年9月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          109 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">使用LettuceConnectionFactory管理Redis连接池</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="使用LettuceConnectionFactory管理Redis连接池"><a href="#使用LettuceConnectionFactory管理Redis连接池" class="headerlink" title="使用LettuceConnectionFactory管理Redis连接池"></a>使用LettuceConnectionFactory管理Redis连接池</h1><p><img src="#local-path" srcset="/img/loading.gif" lazyload alt="image-20250901150309947"></p>
+<p>实际上这两个连接池的配置效果是相同的，最后都由<img src="#local-path" srcset="/img/loading.gif" lazyload alt="image-20250901150410824"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//</span><br><span class="hljs-comment">// Source code recreated from a .class file by IntelliJ IDEA</span><br><span class="hljs-comment">// (powered by FernFlower decompiler)</span><br><span class="hljs-comment">//</span><br><br><span class="hljs-keyword">package</span> org.springframework.boot.autoconfigure.data.redis;<br><br><span class="hljs-keyword">import</span> java.time.Duration;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;<br><br><span class="hljs-meta">@ConfigurationProperties(</span><br><span class="hljs-meta">    prefix = &quot;spring.redis&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisProperties</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">database</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">private</span> String url;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">String</span> <span class="hljs-variable">host</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;localhost&quot;</span>;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String password;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">port</span> <span class="hljs-operator">=</span> <span class="hljs-number">6379</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> ssl;<br>    <span class="hljs-keyword">private</span> Duration timeout;<br>    <span class="hljs-keyword">private</span> Duration connectTimeout;<br>    <span class="hljs-keyword">private</span> String clientName;<br>    <span class="hljs-keyword">private</span> ClientType clientType;<br>    <span class="hljs-keyword">private</span> Sentinel sentinel;<br>    <span class="hljs-keyword">private</span> Cluster cluster;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Jedis</span> <span class="hljs-variable">jedis</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Jedis</span>();<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Lettuce</span> <span class="hljs-variable">lettuce</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Lettuce</span>();<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getDatabase</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.database;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setDatabase</span><span class="hljs-params">(<span class="hljs-type">int</span> database)</span> &#123;<br>        <span class="hljs-built_in">this</span>.database = database;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getUrl</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.url;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setUrl</span><span class="hljs-params">(String url)</span> &#123;<br>        <span class="hljs-built_in">this</span>.url = url;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getHost</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.host;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setHost</span><span class="hljs-params">(String host)</span> &#123;<br>        <span class="hljs-built_in">this</span>.host = host;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getUsername</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.username;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setUsername</span><span class="hljs-params">(String username)</span> &#123;<br>        <span class="hljs-built_in">this</span>.username = username;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getPassword</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.password;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPassword</span><span class="hljs-params">(String password)</span> &#123;<br>        <span class="hljs-built_in">this</span>.password = password;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getPort</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.port;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPort</span><span class="hljs-params">(<span class="hljs-type">int</span> port)</span> &#123;<br>        <span class="hljs-built_in">this</span>.port = port;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSsl</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.ssl;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setSsl</span><span class="hljs-params">(<span class="hljs-type">boolean</span> ssl)</span> &#123;<br>        <span class="hljs-built_in">this</span>.ssl = ssl;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setTimeout</span><span class="hljs-params">(Duration timeout)</span> &#123;<br>        <span class="hljs-built_in">this</span>.timeout = timeout;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Duration <span class="hljs-title function_">getTimeout</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.timeout;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Duration <span class="hljs-title function_">getConnectTimeout</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.connectTimeout;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setConnectTimeout</span><span class="hljs-params">(Duration connectTimeout)</span> &#123;<br>        <span class="hljs-built_in">this</span>.connectTimeout = connectTimeout;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getClientName</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.clientName;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setClientName</span><span class="hljs-params">(String clientName)</span> &#123;<br>        <span class="hljs-built_in">this</span>.clientName = clientName;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> ClientType <span class="hljs-title function_">getClientType</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.clientType;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setClientType</span><span class="hljs-params">(ClientType clientType)</span> &#123;<br>        <span class="hljs-built_in">this</span>.clientType = clientType;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Sentinel <span class="hljs-title function_">getSentinel</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.sentinel;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setSentinel</span><span class="hljs-params">(Sentinel sentinel)</span> &#123;<br>        <span class="hljs-built_in">this</span>.sentinel = sentinel;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Cluster <span class="hljs-title function_">getCluster</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.cluster;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCluster</span><span class="hljs-params">(Cluster cluster)</span> &#123;<br>        <span class="hljs-built_in">this</span>.cluster = cluster;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Jedis <span class="hljs-title function_">getJedis</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.jedis;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Lettuce <span class="hljs-title function_">getLettuce</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.lettuce;<br>    &#125;<br><br>  <span class="hljs-comment">//注意Client</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ClientType</span> &#123;<br>        LETTUCE,<br>        JEDIS;<br>    &#125;<br>		<span class="hljs-comment">//最后的pool都配置在了这里</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Pool</span> &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">maxIdle</span> <span class="hljs-operator">=</span> <span class="hljs-number">8</span>;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">minIdle</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">maxActive</span> <span class="hljs-operator">=</span> <span class="hljs-number">8</span>;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">Duration</span> <span class="hljs-variable">maxWait</span> <span class="hljs-operator">=</span> Duration.ofMillis(-<span class="hljs-number">1L</span>);<br>        <span class="hljs-keyword">private</span> Duration timeBetweenEvictionRuns;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getMaxIdle</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.maxIdle;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setMaxIdle</span><span class="hljs-params">(<span class="hljs-type">int</span> maxIdle)</span> &#123;<br>            <span class="hljs-built_in">this</span>.maxIdle = maxIdle;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getMinIdle</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.minIdle;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setMinIdle</span><span class="hljs-params">(<span class="hljs-type">int</span> minIdle)</span> &#123;<br>            <span class="hljs-built_in">this</span>.minIdle = minIdle;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getMaxActive</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.maxActive;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setMaxActive</span><span class="hljs-params">(<span class="hljs-type">int</span> maxActive)</span> &#123;<br>            <span class="hljs-built_in">this</span>.maxActive = maxActive;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> Duration <span class="hljs-title function_">getMaxWait</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.maxWait;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setMaxWait</span><span class="hljs-params">(Duration maxWait)</span> &#123;<br>            <span class="hljs-built_in">this</span>.maxWait = maxWait;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> Duration <span class="hljs-title function_">getTimeBetweenEvictionRuns</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.timeBetweenEvictionRuns;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setTimeBetweenEvictionRuns</span><span class="hljs-params">(Duration timeBetweenEvictionRuns)</span> &#123;<br>            <span class="hljs-built_in">this</span>.timeBetweenEvictionRuns = timeBetweenEvictionRuns;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Cluster</span> &#123;<br>        <span class="hljs-keyword">private</span> List&lt;String&gt; nodes;<br>        <span class="hljs-keyword">private</span> Integer maxRedirects;<br><br>        <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">getNodes</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.nodes;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setNodes</span><span class="hljs-params">(List&lt;String&gt; nodes)</span> &#123;<br>            <span class="hljs-built_in">this</span>.nodes = nodes;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">getMaxRedirects</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.maxRedirects;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setMaxRedirects</span><span class="hljs-params">(Integer maxRedirects)</span> &#123;<br>            <span class="hljs-built_in">this</span>.maxRedirects = maxRedirects;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Sentinel</span> &#123;<br>        <span class="hljs-keyword">private</span> String master;<br>        <span class="hljs-keyword">private</span> List&lt;String&gt; nodes;<br>        <span class="hljs-keyword">private</span> String password;<br><br>        <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getMaster</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.master;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setMaster</span><span class="hljs-params">(String master)</span> &#123;<br>            <span class="hljs-built_in">this</span>.master = master;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">getNodes</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.nodes;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setNodes</span><span class="hljs-params">(List&lt;String&gt; nodes)</span> &#123;<br>            <span class="hljs-built_in">this</span>.nodes = nodes;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getPassword</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.password;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPassword</span><span class="hljs-params">(String password)</span> &#123;<br>            <span class="hljs-built_in">this</span>.password = password;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Jedis</span> &#123;<br>        <span class="hljs-keyword">private</span> Pool pool;<br><br>        <span class="hljs-keyword">public</span> Pool <span class="hljs-title function_">getPool</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.pool;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPool</span><span class="hljs-params">(Pool pool)</span> &#123;<br>            <span class="hljs-built_in">this</span>.pool = pool;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Lettuce</span> &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">Duration</span> <span class="hljs-variable">shutdownTimeout</span> <span class="hljs-operator">=</span> Duration.ofMillis(<span class="hljs-number">100L</span>);<br>        <span class="hljs-keyword">private</span> Pool pool;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Cluster</span> <span class="hljs-variable">cluster</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cluster</span>();<br><br>        <span class="hljs-keyword">public</span> Duration <span class="hljs-title function_">getShutdownTimeout</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.shutdownTimeout;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setShutdownTimeout</span><span class="hljs-params">(Duration shutdownTimeout)</span> &#123;<br>            <span class="hljs-built_in">this</span>.shutdownTimeout = shutdownTimeout;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> Pool <span class="hljs-title function_">getPool</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.pool;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPool</span><span class="hljs-params">(Pool pool)</span> &#123;<br>            <span class="hljs-built_in">this</span>.pool = pool;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> Cluster <span class="hljs-title function_">getCluster</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.cluster;<br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Cluster</span> &#123;<br>            <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Refresh</span> <span class="hljs-variable">refresh</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Refresh</span>();<br><br>            <span class="hljs-keyword">public</span> Refresh <span class="hljs-title function_">getRefresh</span><span class="hljs-params">()</span> &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.refresh;<br>            &#125;<br><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Refresh</span> &#123;<br>                <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">dynamicRefreshSources</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>                <span class="hljs-keyword">private</span> Duration period;<br>                <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> adaptive;<br><br>                <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isDynamicRefreshSources</span><span class="hljs-params">()</span> &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.dynamicRefreshSources;<br>                &#125;<br><br>                <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setDynamicRefreshSources</span><span class="hljs-params">(<span class="hljs-type">boolean</span> dynamicRefreshSources)</span> &#123;<br>                    <span class="hljs-built_in">this</span>.dynamicRefreshSources = dynamicRefreshSources;<br>                &#125;<br><br>                <span class="hljs-keyword">public</span> Duration <span class="hljs-title function_">getPeriod</span><span class="hljs-params">()</span> &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.period;<br>                &#125;<br><br>                <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPeriod</span><span class="hljs-params">(Duration period)</span> &#123;<br>                    <span class="hljs-built_in">this</span>.period = period;<br>                &#125;<br><br>                <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isAdaptive</span><span class="hljs-params">()</span> &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.adaptive;<br>                &#125;<br><br>                <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setAdaptive</span><span class="hljs-params">(<span class="hljs-type">boolean</span> adaptive)</span> &#123;<br>                    <span class="hljs-built_in">this</span>.adaptive = adaptive;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>LettuceConnectionFactory默认使用内置连接池，但也可以通过配置来优化连接池管理。</p>
+<h2 id="1-基本配置方式"><a href="#1-基本配置方式" class="headerlink" title="1. 基本配置方式"></a>1. 基本配置方式</h2><h3 id="方式一：通过配置文件（推荐）"><a href="#方式一：通过配置文件（推荐）" class="headerlink" title="方式一：通过配置文件（推荐）"></a>方式一：通过配置文件（推荐）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">host:</span> <span class="hljs-string">localhost</span><br>    <span class="hljs-attr">port:</span> <span class="hljs-number">6379</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">your_password</span><br>    <span class="hljs-attr">database:</span> <span class="hljs-number">0</span><br>    <span class="hljs-attr">lettuce:</span><br>      <span class="hljs-attr">pool:</span><br>        <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br>        <span class="hljs-attr">max-active:</span> <span class="hljs-number">8</span>      <span class="hljs-comment"># 最大连接数</span><br>        <span class="hljs-attr">max-idle:</span> <span class="hljs-number">8</span>        <span class="hljs-comment"># 最大空闲连接</span><br>        <span class="hljs-attr">min-idle:</span> <span class="hljs-number">0</span>        <span class="hljs-comment"># 最小空闲连接</span><br>        <span class="hljs-attr">max-wait:</span> <span class="hljs-string">-1ms</span>     <span class="hljs-comment"># 获取连接最大等待时间（-1表示无限等待）</span><br>        <span class="hljs-attr">time-between-eviction-runs:</span> <span class="hljs-string">30000ms</span> <span class="hljs-comment"># 空闲连接检查间隔</span><br>      <span class="hljs-attr">shutdown-timeout:</span> <span class="hljs-string">100ms</span> <span class="hljs-comment"># 关闭超时时间</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="方式二：Java代码配置"><a href="#方式二：Java代码配置" class="headerlink" title="方式二：Java代码配置"></a>方式二：Java代码配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisConfig</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> LettuceConnectionFactory <span class="hljs-title function_">lettuceConnectionFactory</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">RedisStandaloneConfiguration</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisStandaloneConfiguration</span>();<br>        config.setHostName(<span class="hljs-string">&quot;localhost&quot;</span>);<br>        config.setPort(<span class="hljs-number">6379</span>);<br>        config.setPassword(<span class="hljs-string">&quot;password&quot;</span>);<br>        config.setDatabase(<span class="hljs-number">0</span>);<br><br>        <span class="hljs-type">LettucePoolingClientConfiguration</span> <span class="hljs-variable">clientConfig</span> <span class="hljs-operator">=</span> LettucePoolingClientConfiguration.builder()<br>                .poolConfig(lettucePoolConfig())<br>                .clientOptions(clientOptions())<br>                .build();<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LettuceConnectionFactory</span>(config, clientConfig);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> GenericObjectPoolConfig&lt;Object&gt; <span class="hljs-title function_">lettucePoolConfig</span><span class="hljs-params">()</span> &#123;<br>        GenericObjectPoolConfig&lt;Object&gt; poolConfig = <span class="hljs-keyword">new</span> <span class="hljs-title class_">GenericObjectPoolConfig</span>&lt;&gt;();<br>        poolConfig.setMaxTotal(<span class="hljs-number">8</span>);           <span class="hljs-comment">// 最大连接数</span><br>        poolConfig.setMaxIdle(<span class="hljs-number">8</span>);            <span class="hljs-comment">// 最大空闲连接</span><br>        poolConfig.setMinIdle(<span class="hljs-number">0</span>);            <span class="hljs-comment">// 最小空闲连接</span><br>        poolConfig.setMaxWait(Duration.ofMillis(-<span class="hljs-number">1</span>)); <span class="hljs-comment">// 无限等待</span><br>        poolConfig.setTestOnBorrow(<span class="hljs-literal">true</span>);    <span class="hljs-comment">// 借出时验证</span><br>        poolConfig.setTestWhileIdle(<span class="hljs-literal">true</span>);   <span class="hljs-comment">// 空闲时验证</span><br>        <span class="hljs-keyword">return</span> poolConfig;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> ClientOptions <span class="hljs-title function_">clientOptions</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> ClientOptions.builder()<br>                .autoReconnect(<span class="hljs-literal">true</span>)         <span class="hljs-comment">// 自动重连</span><br>                .disconnectedBehavior(ClientOptions.DisconnectedBehavior.REJECT_COMMANDS)<br>                .timeoutOptions(TimeoutOptions.enabled(Duration.ofSeconds(<span class="hljs-number">5</span>)))<br>                .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-高级连接池配置"><a href="#2-高级连接池配置" class="headerlink" title="2. 高级连接池配置"></a>2. 高级连接池配置</h2><h3 id="完整的连接池管理配置"><a href="#完整的连接池管理配置" class="headerlink" title="完整的连接池管理配置"></a>完整的连接池管理配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableCaching</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisPoolConfig</span> &#123;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;spring.redis.host&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String host;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;spring.redis.port&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> port;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;spring.redis.password&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String password;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> LettuceConnectionFactory <span class="hljs-title function_">lettuceConnectionFactory</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">RedisStandaloneConfiguration</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisStandaloneConfiguration</span>();<br>        config.setHostName(host);<br>        config.setPort(port);<br>        config.setPassword(RedisPassword.of(password));<br><br>        <span class="hljs-comment">// 详细的连接池配置</span><br>        <span class="hljs-type">LettucePoolingClientConfiguration</span> <span class="hljs-variable">clientConfig</span> <span class="hljs-operator">=</span> LettucePoolingClientConfiguration.builder()<br>                .poolConfig(createPoolConfig())<br>                .clientOptions(createClientOptions())<br>                .commandTimeout(Duration.ofSeconds(<span class="hljs-number">10</span>))<br>                .shutdownTimeout(Duration.ofMillis(<span class="hljs-number">100</span>))<br>                .build();<br><br>        <span class="hljs-type">LettuceConnectionFactory</span> <span class="hljs-variable">factory</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LettuceConnectionFactory</span>(config, clientConfig);<br>        factory.setValidateConnection(<span class="hljs-literal">true</span>); <span class="hljs-comment">// 验证连接有效性</span><br>        <span class="hljs-keyword">return</span> factory;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> GenericObjectPoolConfig&lt;Object&gt; <span class="hljs-title function_">createPoolConfig</span><span class="hljs-params">()</span> &#123;<br>        GenericObjectPoolConfig&lt;Object&gt; config = <span class="hljs-keyword">new</span> <span class="hljs-title class_">GenericObjectPoolConfig</span>&lt;&gt;();<br>        config.setMaxTotal(<span class="hljs-number">20</span>);                      <span class="hljs-comment">// 最大连接数</span><br>        config.setMaxIdle(<span class="hljs-number">10</span>);                       <span class="hljs-comment">// 最大空闲连接</span><br>        config.setMinIdle(<span class="hljs-number">2</span>);                        <span class="hljs-comment">// 最小空闲连接（重要！避免连接震荡）</span><br>        config.setMaxWait(Duration.ofSeconds(<span class="hljs-number">3</span>));    <span class="hljs-comment">// 获取连接最大等待时间</span><br>        config.setTestOnBorrow(<span class="hljs-literal">true</span>);                <span class="hljs-comment">// 借出时测试连接</span><br>        config.setTestOnReturn(<span class="hljs-literal">false</span>);               <span class="hljs-comment">// 归还时测试连接</span><br>        config.setTestWhileIdle(<span class="hljs-literal">true</span>);               <span class="hljs-comment">// 空闲时测试连接</span><br>        config.setTimeBetweenEvictionRuns(Duration.ofSeconds(<span class="hljs-number">30</span>)); <span class="hljs-comment">// 空闲连接检查间隔</span><br>        config.setMinEvictableIdleTime(Duration.ofMinutes(<span class="hljs-number">5</span>)); <span class="hljs-comment">// 连接最小空闲时间</span><br>        config.setNumTestsPerEvictionRun(<span class="hljs-number">3</span>);         <span class="hljs-comment">// 每次检查的连接数</span><br>        config.setBlockWhenExhausted(<span class="hljs-literal">true</span>);          <span class="hljs-comment">// 连接耗尽时是否阻塞</span><br>        <span class="hljs-keyword">return</span> config;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> ClientOptions <span class="hljs-title function_">createClientOptions</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> ClientOptions.builder()<br>                .autoReconnect(<span class="hljs-literal">true</span>)                 <span class="hljs-comment">// 自动重连</span><br>                .cancelCommandsOnReconnectFailure(<span class="hljs-literal">true</span>) <span class="hljs-comment">// 重连失败时取消命令</span><br>                .disconnectedBehavior(ClientOptions.DisconnectedBehavior.REJECT_COMMANDS)<br>                .socketOptions(SocketOptions.builder()<br>                        .keepAlive(<span class="hljs-literal">true</span>)             <span class="hljs-comment">// 启用KeepAlive</span><br>                        .tcpNoDelay(<span class="hljs-literal">true</span>)           <span class="hljs-comment">// 禁用Nagle算法</span><br>                        .build())<br>                .timeoutOptions(TimeoutOptions.enabled(Duration.ofSeconds(<span class="hljs-number">5</span>)))<br>                .publishOnScheduler(<span class="hljs-literal">true</span>)           <span class="hljs-comment">// 在调度器上发布消息</span><br>                .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-连接池监控和管理"><a href="#3-连接池监控和管理" class="headerlink" title="3. 连接池监控和管理"></a>3. 连接池监控和管理</h2><h3 id="添加监控指标"><a href="#添加监控指标" class="headerlink" title="添加监控指标"></a>添加监控指标</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> MeterRegistry <span class="hljs-title function_">meterRegistry</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleMeterRegistry</span>();<br>&#125;<br><br><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> MetricsCommandLatencyRecorder <span class="hljs-title function_">latencyRecorder</span><span class="hljs-params">(MeterRegistry meterRegistry)</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MetricsCommandLatencyRecorder</span>(meterRegistry, <span class="hljs-string">&quot;redis&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">// 在连接工厂配置中添加监控</span><br>LettucePoolingClientConfiguration.builder()<br>    .commandLatencyRecorder(latencyRecorder(meterRegistry))<br>    <span class="hljs-comment">// ... 其他配置</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="获取连接池状态"><a href="#获取连接池状态" class="headerlink" title="获取连接池状态"></a>获取连接池状态</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisPoolMonitor</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> LettuceConnectionFactory connectionFactory;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">printPoolStats</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">if</span> (connectionFactory != <span class="hljs-literal">null</span>) &#123;<br>            System.out.println(<span class="hljs-string">&quot;活动连接数: &quot;</span> + connectionFactory.getRequiredConnectionFactory()<br>                    .getPoolStats().getActive());<br>            System.out.println(<span class="hljs-string">&quot;空闲连接数: &quot;</span> + connectionFactory.getRequiredConnectionFactory()<br>                    .getPoolStats().getIdle());<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-最佳实践配置"><a href="#4-最佳实践配置" class="headerlink" title="4. 最佳实践配置"></a>4. 最佳实践配置</h2><h3 id="生产环境推荐配置"><a href="#生产环境推荐配置" class="headerlink" title="生产环境推荐配置"></a>生产环境推荐配置</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">lettuce:</span><br>      <span class="hljs-attr">pool:</span><br>        <span class="hljs-attr">max-active:</span> <span class="hljs-number">20</span>           <span class="hljs-comment"># 根据业务负载调整</span><br>        <span class="hljs-attr">max-idle:</span> <span class="hljs-number">10</span>             <span class="hljs-comment"># 通常为max-active的50-70%</span><br>        <span class="hljs-attr">min-idle:</span> <span class="hljs-number">2</span>              <span class="hljs-comment"># 避免连接震荡，设置最小空闲连接</span><br>        <span class="hljs-attr">max-wait:</span> <span class="hljs-string">2000ms</span>         <span class="hljs-comment"># 合理的等待时间，避免长时间阻塞</span><br>        <span class="hljs-attr">time-between-eviction-runs:</span> <span class="hljs-string">30000ms</span><br>      <span class="hljs-attr">shutdown-timeout:</span> <span class="hljs-string">100ms</span><br>    <span class="hljs-attr">timeout:</span> <span class="hljs-string">3000ms</span>              <span class="hljs-comment"># 命令执行超时时间</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="5-注意事项"><a href="#5-注意事项" class="headerlink" title="5. 注意事项"></a>5. 注意事项</h2><ol>
+<li><strong>min-idle的重要性</strong>：设置合理的min-idle可以避免连接震荡</li>
+<li><strong>连接验证</strong>：启用testWhileIdle或testOnBorrow确保连接有效性</li>
+<li><strong>超时设置</strong>：合理设置连接获取和命令执行超时</li>
+<li><strong>监控</strong>：生产环境需要监控连接池状态</li>
+<li><strong>资源清理</strong>：应用关闭时确保连接池正确关闭</li>
+</ol>
+<h2 id="6-完整示例"><a href="#6-完整示例" class="headerlink" title="6. 完整示例"></a>6. 完整示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisConfiguration</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> LettuceConnectionFactory <span class="hljs-title function_">redisConnectionFactory</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">RedisStandaloneConfiguration</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisStandaloneConfiguration</span>();<br>        config.setHostName(<span class="hljs-string">&quot;localhost&quot;</span>);<br>        config.setPort(<span class="hljs-number">6379</span>);<br><br>        <span class="hljs-type">LettucePoolingClientConfiguration</span> <span class="hljs-variable">clientConfig</span> <span class="hljs-operator">=</span> LettucePoolingClientConfiguration.builder()<br>                .poolConfig(redisPoolConfig())<br>                .clientOptions(ClientOptions.builder()<br>                        .autoReconnect(<span class="hljs-literal">true</span>)<br>                        .timeoutOptions(TimeoutOptions.enabled(Duration.ofSeconds(<span class="hljs-number">5</span>)))<br>                        .build())<br>                .build();<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LettuceConnectionFactory</span>(config, clientConfig);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> GenericObjectPoolConfig&lt;Object&gt; <span class="hljs-title function_">redisPoolConfig</span><span class="hljs-params">()</span> &#123;<br>        GenericObjectPoolConfig&lt;Object&gt; config = <span class="hljs-keyword">new</span> <span class="hljs-title class_">GenericObjectPoolConfig</span>&lt;&gt;();<br>        config.setMaxTotal(<span class="hljs-number">20</span>);<br>        config.setMaxIdle(<span class="hljs-number">10</span>);<br>        config.setMinIdle(<span class="hljs-number">2</span>);<br>        config.setMaxWait(Duration.ofSeconds(<span class="hljs-number">2</span>));<br>        config.setTestWhileIdle(<span class="hljs-literal">true</span>);<br>        config.setTimeBetweenEvictionRuns(Duration.ofSeconds(<span class="hljs-number">30</span>));<br>        <span class="hljs-keyword">return</span> config;<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> RedisTemplate&lt;String, Object&gt; <span class="hljs-title function_">redisTemplate</span><span class="hljs-params">(LettuceConnectionFactory connectionFactory)</span> &#123;<br>        RedisTemplate&lt;String, Object&gt; template = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisTemplate</span>&lt;&gt;();<br>        template.setConnectionFactory(connectionFactory);<br>        template.setKeySerializer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">StringRedisSerializer</span>());<br>        template.setValueSerializer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">GenericJackson2JsonRedisSerializer</span>());<br>        <span class="hljs-keyword">return</span> template;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样配置后，LettuceConnectionFactory就会使用连接池来管理Redis连接，提供更好的性能和资源管理。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0/" class="category-chain-item">开源学习</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/redis/">#redis</a>
+      
+        <a href="/tags/%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0/">#开源学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>使用LettuceConnectionFactory管理Redis连接池</div>
+      <div>https://super-404.github.io/2025/09/01/tech-开源学习-redis-连接池的管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/02/tech-git-git%20clone%20%E5%8D%95%E4%B8%AA%E5%88%86%E6%94%AF/" title="或者更简单的现代写法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">或者更简单的现代写法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/01/tech-@builder/" title="@builder">
+                        <span class="hidden-mobile">@builder</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

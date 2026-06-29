@@ -1,73 +1,712 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="好的，Lombok 的 @Builder 是一个非常强大且常用的注解，它用一种非常优雅的方式实现了建造者模式（Builder Pattern），使得创建复杂对象变得简单、可读性高且线程安全。 下面我将详细解释如何使用它。1. 基本使用步骤 1: 引入依赖首先，确保你的项目中已经引入了 Lombok 依赖（以 Maven 为例）： 12345&lt;dependency&gt;    &lt;gro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@builder">
+<meta property="og:url" content="https://super-404.github.io/2025/09/01/tech-@builder/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="好的，Lombok 的 @Builder 是一个非常强大且常用的注解，它用一种非常优雅的方式实现了建造者模式（Builder Pattern），使得创建复杂对象变得简单、可读性高且线程安全。 下面我将详细解释如何使用它。1. 基本使用步骤 1: 引入依赖首先，确保你的项目中已经引入了 Lombok 依赖（以 Maven 为例）： 12345&lt;dependency&gt;    &lt;gro">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-01T07:02:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>@builder - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="@builder"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-01 15:02" pubdate>
+          2025年9月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">@builder</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>好的，Lombok 的 <code>@Builder</code> 是一个非常强大且常用的注解，它用一种非常优雅的方式实现了<strong>建造者模式（Builder Pattern）</strong>，使得创建复杂对象变得简单、可读性高且线程安全。</p>
+<h2 id="下面我将详细解释如何使用它。"><a href="#下面我将详细解释如何使用它。" class="headerlink" title="下面我将详细解释如何使用它。"></a>下面我将详细解释如何使用它。</h2><h3 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h3><h4 id="步骤-1-引入依赖"><a href="#步骤-1-引入依赖" class="headerlink" title="步骤 1: 引入依赖"></a>步骤 1: 引入依赖</h4><p>首先，确保你的项目中已经引入了 Lombok 依赖（以 Maven 为例）：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>provided<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="步骤-2-在类上添加-Builder-注解"><a href="#步骤-2-在类上添加-Builder-注解" class="headerlink" title="步骤 2: 在类上添加 @Builder 注解"></a>步骤 2: 在类上添加 <code>@Builder</code> 注解</h4><p>这是最基础的用法。只需在类上添加 <code>@Builder</code> 注解，Lombok 就会自动为你生成一个建造者。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><span class="hljs-keyword">import</span> lombok.Getter; <span class="hljs-comment">// 可选，推荐加上以避免直接暴露字段</span><br><span class="hljs-keyword">import</span> lombok.Setter; <span class="hljs-comment">// 可选</span><br><br><span class="hljs-meta">@Getter</span> <span class="hljs-comment">// 通常Builder用于创建不可变对象，所以常与@Getter搭配</span><br><span class="hljs-meta">@Builder</span> <span class="hljs-comment">// 核心注解</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String name; <span class="hljs-comment">// 使用final表示不可变</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Integer age;<br>    <span class="hljs-keyword">private</span> String email; <span class="hljs-comment">// 也可以不是final</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="步骤-3-使用生成的-Builder"><a href="#步骤-3-使用生成的-Builder" class="headerlink" title="步骤 3: 使用生成的 Builder"></a>步骤 3: 使用生成的 Builder</h4><p>Lombok 会自动生成一个名为 <code>builder()</code> 的静态方法，以及一个内部建造者类。使用方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 链式调用，清晰易懂</span><br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> User.builder()<br>                .name(<span class="hljs-string">&quot;Alice&quot;</span>)<br>                .age(<span class="hljs-number">30</span>)<br>                .email(<span class="hljs-string">&quot;alice@example.com&quot;</span>)<br>                .build(); <span class="hljs-comment">// 最终调用 build() 方法创建对象</span><br><br>        System.out.println(user.getName()); <span class="hljs-comment">// 输出: Alice</span><br>        System.out.println(user.getAge());  <span class="hljs-comment">// 输出: 30</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-高级用法与定制"><a href="#2-高级用法与定制" class="headerlink" title="2. 高级用法与定制"></a>2. 高级用法与定制</h3><h4 id="2-1-设置默认值"><a href="#2-1-设置默认值" class="headerlink" title="2.1 设置默认值"></a>2.1 设置默认值</h4><p>你可以在字段声明时直接赋予默认值。如果建造者没有设置该字段，就会使用默认值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Builder</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">String</span> <span class="hljs-variable">category</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Electronics&quot;</span>; <span class="hljs-comment">// 默认值</span><br>    <span class="hljs-keyword">private</span> Double price;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-type">Product</span> <span class="hljs-variable">product</span> <span class="hljs-operator">=</span> Product.builder()<br>        .name(<span class="hljs-string">&quot;iPhone&quot;</span>)<br>        <span class="hljs-comment">// 没有设置 category，将使用默认值 &quot;Electronics&quot;</span><br>        .price(<span class="hljs-number">999.99</span>)<br>        .build();<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-在方法上使用-Builder-用于复杂构造"><a href="#2-2-在方法上使用-Builder-用于复杂构造" class="headerlink" title="2.2 在方法上使用 @Builder (用于复杂构造)"></a>2.2 在方法上使用 <code>@Builder</code> (用于复杂构造)</h4><p>如果你不想污染整个类，或者想为一个已有的构造函数生成 Builder，可以在方法（通常是构造函数或静态工厂方法）上使用 <code>@Builder</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> Integer age;<br><br>    <span class="hljs-comment">// 在构造函数上使用 @Builder</span><br>    <span class="hljs-meta">@Builder</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">User</span><span class="hljs-params">(String name, Integer age)</span> &#123;<br>        <span class="hljs-built_in">this</span>.name = name;<br>        <span class="hljs-built_in">this</span>.age = age;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用方式完全相同</span><br><span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> User.builder()<br>        .name(<span class="hljs-string">&quot;Bob&quot;</span>)<br>        .age(<span class="hljs-number">25</span>)<br>        .build();<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-使用-Builder-Default-控制默认值"><a href="#2-3-使用-Builder-Default-控制默认值" class="headerlink" title="2.3 使用 @Builder.Default 控制默认值"></a>2.3 使用 <code>@Builder.Default</code> 控制默认值</h4><p><code>@Builder.Default</code> 提供了更精确的控制。<strong>当 Builder 没有设置该值时，会使用这个默认值；如果显式设置了 <code>null</code>，则会覆盖默认值。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Builder</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Account</span> &#123;<br>    <span class="hljs-keyword">private</span> String username;<br>    <br>    <span class="hljs-meta">@Builder</span>.Default <span class="hljs-comment">// 使用此注解控制默认值</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">String</span> <span class="hljs-variable">status</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ACTIVE&quot;</span>;<br>    <br>    <span class="hljs-meta">@Builder</span>.Default<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">loginCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-type">Account</span> <span class="hljs-variable">acc1</span> <span class="hljs-operator">=</span> Account.builder()<br>        .username(<span class="hljs-string">&quot;user1&quot;</span>)<br>        <span class="hljs-comment">// 不设置 status 和 loginCount，使用默认值</span><br>        .build(); <span class="hljs-comment">// status = &quot;ACTIVE&quot;, loginCount = 0</span><br><br><span class="hljs-type">Account</span> <span class="hljs-variable">acc2</span> <span class="hljs-operator">=</span> Account.builder()<br>        .username(<span class="hljs-string">&quot;user2&quot;</span>)<br>        .status(<span class="hljs-string">&quot;INACTIVE&quot;</span>) <span class="hljs-comment">// 显式设置，覆盖默认值</span><br>        <span class="hljs-comment">// 不设置 loginCount，仍使用默认值 0</span><br>        .build();<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-4-与-Singular-集合构建"><a href="#2-4-与-Singular-集合构建" class="headerlink" title="2.4 与 @Singular 集合构建"></a>2.4 与 <code>@Singular</code> 集合构建</h4><p>这是 <code>@Builder</code> 一个非常强大的功能！它可以让你优雅地构建集合（List, Set, Map），并自动处理 <code>null</code> 和重复元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><span class="hljs-keyword">import</span> lombok.Singular;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Set;<br><br><span class="hljs-meta">@Builder</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Order</span> &#123;<br>    <span class="hljs-keyword">private</span> String orderId;<br>    <br>    <span class="hljs-meta">@Singular</span> <span class="hljs-comment">// 为 items 列表生成优雅的方法</span><br>    <span class="hljs-keyword">private</span> List&lt;String&gt; items;<br>    <br>    <span class="hljs-meta">@Singular(&quot;tag&quot;)</span> <span class="hljs-comment">// 可以指定方法名，默认是集合名的单数形式</span><br>    <span class="hljs-keyword">private</span> Set&lt;String&gt; tags;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-type">Order</span> <span class="hljs-variable">order</span> <span class="hljs-operator">=</span> Order.builder()<br>        .orderId(<span class="hljs-string">&quot;ORD-123&quot;</span>)<br>        .item(<span class="hljs-string">&quot;Book&quot;</span>) <span class="hljs-comment">// 添加单个元素，方法名是集合名的单数形式 (item)</span><br>        .item(<span class="hljs-string">&quot;Pen&quot;</span>)  <span class="hljs-comment">// 再添加一个</span><br>        .tag(<span class="hljs-string">&quot;urgent&quot;</span>) <span class="hljs-comment">// 因为用了 @Singular(&quot;tag&quot;)，所以方法是 .tag()</span><br>        .tag(<span class="hljs-string">&quot;gift&quot;</span>)<br>        <span class="hljs-comment">// 也可以一次添加所有元素（但这样就失去了Builder的意义）</span><br>        <span class="hljs-comment">// .items(Arrays.asList(&quot;Book&quot;, &quot;Pen&quot;))</span><br>        .build();<br><br>System.out.println(order.getItems()); <span class="hljs-comment">// 输出: [Book, Pen]</span><br>System.out.println(order.getTags());  <span class="hljs-comment">// 输出: [urgent, gift]</span><br></code></pre></td></tr></table></figure>
+<h2 id="Lombok-会生成-item-items-clearItems-等一系列方法，非常方便。"><a href="#Lombok-会生成-item-items-clearItems-等一系列方法，非常方便。" class="headerlink" title="Lombok 会生成 item(), items(), clearItems() 等一系列方法，非常方便。"></a>Lombok 会生成 <code>item()</code>, <code>items()</code>, <code>clearItems()</code> 等一系列方法，非常方便。</h2><h3 id="3-完整的实践示例"><a href="#3-完整的实践示例" class="headerlink" title="3. 完整的实践示例"></a>3. 完整的实践示例</h3><p>这是一个综合了上述特性的常见 DTO 示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><span class="hljs-keyword">import</span> lombok.Getter;<br><span class="hljs-keyword">import</span> lombok.Singular;<br><span class="hljs-keyword">import</span> java.time.LocalDateTime;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Map;<br><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Builder</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApiResponse</span>&lt;T&gt; &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> success;<br>    <span class="hljs-keyword">private</span> String message;<br>    <span class="hljs-keyword">private</span> T data;<br>    <br>    <span class="hljs-meta">@Builder</span>.Default<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">timestamp</span> <span class="hljs-operator">=</span> LocalDateTime.now();<br>    <br>    <span class="hljs-meta">@Singular</span><br>    <span class="hljs-keyword">private</span> List&lt;String&gt; errors;<br>    <br>    <span class="hljs-meta">@Singular(&quot;metadataEntry&quot;)</span><br>    <span class="hljs-keyword">private</span> Map&lt;String, Object&gt; metadata;<br>&#125;<br><br><span class="hljs-comment">// 使用：构建一个复杂的响应对象</span><br>ApiResponse&lt;User&gt; response = ApiResponse.&lt;User&gt;builder() <span class="hljs-comment">// 注意泛型的写法</span><br>        .success(<span class="hljs-literal">true</span>)<br>        .message(<span class="hljs-string">&quot;User found successfully&quot;</span>)<br>        .data(user) <span class="hljs-comment">// 假设user是之前创建的对象</span><br>        <span class="hljs-comment">// timestamp 使用默认的当前时间</span><br>        .metadataEntry(<span class="hljs-string">&quot;version&quot;</span>, <span class="hljs-string">&quot;1.0&quot;</span>)<br>        .metadataEntry(<span class="hljs-string">&quot;page&quot;</span>, <span class="hljs-number">1</span>)<br>        <span class="hljs-comment">// 如果没有错误，就不调用 .error()</span><br>        .build();<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">用法</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>基础构建</strong></td>
+<td align="left"><code>@Builder</code> on class</td>
+<td align="left">为整个类生成建造者。</td>
+</tr>
+<tr>
+<td align="left"><strong>方法构建</strong></td>
+<td align="left"><code>@Builder</code> on constructor&#x2F;method</td>
+<td align="left">为特定方法生成建造者，更灵活。</td>
+</tr>
+<tr>
+<td align="left"><strong>默认值</strong></td>
+<td align="left">直接赋值 或 <code>@Builder.Default</code></td>
+<td align="left"><code>@Builder.Default</code> 优先级更高，且不会被显式的 <code>null</code> 覆盖。</td>
+</tr>
+<tr>
+<td align="left"><strong>集合构建</strong></td>
+<td align="left"><code>@Singular</code> on collection field</td>
+<td align="left">生成优雅的方法来逐个添加集合元素，自动处理空集合。</td>
+</tr>
+<tr>
+<td align="left"><strong>泛型支持</strong></td>
+<td align="left"><code>ClassName.&lt;Type&gt;builder()</code></td>
+<td align="left">构建泛型类时需要使用这种语法。</td>
+</tr>
+</tbody></table>
+<p><strong>优点：</strong></p>
+<ul>
+<li><strong>代码极其简洁</strong>：无需手动编写大量的 setter 方法和构建代码。</li>
+<li><strong>可读性强</strong>：链式调用使得对象创建过程一目了然。</li>
+<li><strong>线程安全</strong>：建造者模式通常用于构建不可变对象。</li>
+<li><strong>灵活性高</strong>：可以忽略某些字段，使用默认值。</li>
+</ul>
+<p><strong>最终建议：</strong> 在创建复杂的、尤其是带有许多可选参数的 DTO、配置类或实体时，**强烈推荐使用 <code>@Builder</code>**，它能极大地提升代码质量和开发体验。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%9F%BA%E7%A1%80%E6%96%87%E6%A1%A3/" class="category-chain-item">基础文档</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>@builder</div>
+      <div>https://super-404.github.io/2025/09/01/tech-@builder/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/01/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-redis-%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E7%AE%A1%E7%90%86/" title="使用LettuceConnectionFactory管理Redis连接池">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用LettuceConnectionFactory管理Redis连接池</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/01/tech-%E5%BC%80%E6%BA%90%E5%AD%A6%E4%B9%A0-redis-redis%E4%B8%89%E4%B8%AA%E5%B7%A5%E5%8E%82%E7%9A%84%E5%8C%BA%E5%88%AB/" title="Redis连接工厂和配置对比">
+                        <span class="hidden-mobile">Redis连接工厂和配置对比</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

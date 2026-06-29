@@ -1,73 +1,744 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="好的，在 Java 配置文件中配置 classpath 路径是一个很常见的需求。根据你使用的配置文件类型（如 .properties, .xml, .yaml&#x2F;.yml）和具体框架（如 Spring Boot），配置方式有所不同。 下面我将分几种常见的情况进行详细说明。核心概念：什么是 Classpath？简单来说，classpath 就是 JVM 或应用程序寻找 类文件（.class）、jar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐)">
+<meta property="og:url" content="https://super-404.github.io/2025/09/05/tech-classpath%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="好的，在 Java 配置文件中配置 classpath 路径是一个很常见的需求。根据你使用的配置文件类型（如 .properties, .xml, .yaml&#x2F;.yml）和具体框架（如 Spring Boot），配置方式有所不同。 下面我将分几种常见的情况进行详细说明。核心概念：什么是 Classpath？简单来说，classpath 就是 JVM 或应用程序寻找 类文件（.class）、jar">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-05T07:27:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-05 15:27" pubdate>
+          2025年9月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>好的，在 Java 配置文件中配置 classpath 路径是一个很常见的需求。根据你使用的配置文件类型（如 <code>.properties</code>, <code>.xml</code>, <code>.yaml/.yml</code>）和具体框架（如 Spring Boot），配置方式有所不同。</p>
+<h2 id="下面我将分几种常见的情况进行详细说明。"><a href="#下面我将分几种常见的情况进行详细说明。" class="headerlink" title="下面我将分几种常见的情况进行详细说明。"></a>下面我将分几种常见的情况进行详细说明。</h2><h3 id="核心概念：什么是-Classpath？"><a href="#核心概念：什么是-Classpath？" class="headerlink" title="核心概念：什么是 Classpath？"></a>核心概念：什么是 Classpath？</h3><p>简单来说，classpath 就是 JVM 或应用程序寻找 <strong>类文件（.class）、jar 包、以及资源文件（如 .properties, .xml, .txt 等）</strong> 的路径集合。</p>
+<ul>
+<li><strong>绝对路径：</strong> 像 <code>C:/project/config/application.properties</code>，这种路径依赖于具体的操作系统和文件位置，不推荐在配置中使用。</li>
+<li><strong>相对路径：</strong> 相对于当前工作目录（运行 <code>java</code> 命令的目录），也不够稳定。</li>
+<li><strong>Classpath 路径：</strong> <strong>最推荐的方式</strong>。它指向打包后（JAR&#x2F;WAR）内部或外部依赖中的文件，与具体部署环境无关。</li>
+</ul>
+<h2 id="在配置文件中引用-classpath-资源时，通常使用-classpath-或-classpath-前缀。-classpath-：只在第一个找到的匹配资源时停止搜索。-classpath-：会搜索所有-classpath-目录和-JAR-包，找到所有匹配的资源。这在多个-JAR-包中有同名配置文件时非常有用。"><a href="#在配置文件中引用-classpath-资源时，通常使用-classpath-或-classpath-前缀。-classpath-：只在第一个找到的匹配资源时停止搜索。-classpath-：会搜索所有-classpath-目录和-JAR-包，找到所有匹配的资源。这在多个-JAR-包中有同名配置文件时非常有用。" class="headerlink" title="在配置文件中引用 classpath 资源时，通常使用 classpath: 或 classpath*: 前缀。*   classpath:：只在第一个找到的匹配资源时停止搜索。*   classpath*:：会搜索所有 classpath 目录和 JAR 包，找到所有匹配的资源。这在多个 JAR 包中有同名配置文件时非常有用。"></a>在配置文件中引用 classpath 资源时，通常使用 <code>classpath:</code> 或 <code>classpath*:</code> 前缀。<br>*   <code>classpath:</code>：只在<strong>第一个</strong>找到的匹配资源时停止搜索。<br>*   <code>classpath*:</code>：会搜索<strong>所有</strong> classpath 目录和 JAR 包，找到所有匹配的资源。这在多个 JAR 包中有同名配置文件时非常有用。</h2><h3 id="场景一：Spring-Spring-Boot-的-application-properties-或-application-yml"><a href="#场景一：Spring-Spring-Boot-的-application-properties-或-application-yml" class="headerlink" title="场景一：Spring&#x2F;Spring Boot 的 application.properties 或 application.yml"></a>场景一：Spring&#x2F;Spring Boot 的 <code>application.properties</code> 或 <code>application.yml</code></h3><p>这是最常见的情况，Spring Boot 会自动从 classpath 的根目录（<code>/</code>）或常用位置（如 <code>config/</code> 文件夹）加载 <code>application.properties</code> 或 <code>application.yml</code>。</p>
+<h4 id="1-引用其他-Classpath-下的配置文件"><a href="#1-引用其他-Classpath-下的配置文件" class="headerlink" title="1. 引用其他 Classpath 下的配置文件"></a>1. 引用其他 Classpath 下的配置文件</h4><p>如果你的配置需要引入另一个位于 classpath 下的配置文件，可以使用以下方式：</p>
+<p><strong>在 <code>application.properties</code> 中：</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># 使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐)</span><br><span class="hljs-attr">spring.config.import</span>=<span class="hljs-string">classpath:/another-config.properties</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 旧版本方式 (仍支持但不推荐用于新项目)</span><br><span class="hljs-attr">spring.profiles.include</span>=<span class="hljs-string">dev</span><br><span class="hljs-comment"># 然后通过命名约定，如 application-dev.properties，它会自动从 classpath 加载</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>在 <code>application.yml</code> 中：</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">config:</span><br>    <span class="hljs-attr">import:</span> <span class="hljs-string">&quot;classpath:another-config.yml&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-配置资源路径（如-XML、模板文件）"><a href="#2-配置资源路径（如-XML、模板文件）" class="headerlink" title="2. 配置资源路径（如 XML、模板文件）"></a>2. 配置资源路径（如 XML、模板文件）</h4><p>有时你需要告诉框架去哪里扫描你的 XML 映射文件、模板文件等。</p>
+<p><strong>在 <code>application.properties</code> 中：</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># MyBatis 映射文件的位置</span><br><span class="hljs-attr">mybatis.mapper-locations</span>=<span class="hljs-string">classpath*:mapper/**/*.xml</span><br><span class="hljs-comment"># 或者更具体一点</span><br><span class="hljs-attr">mybatis.mapper-locations</span>=<span class="hljs-string">classpath*:com/mycompany/mapper/xml/*.xml</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># Thymeleaf 模板位置 (默认就是 classpath:/templates/)</span><br><span class="hljs-attr">spring.thymeleaf.prefix</span>=<span class="hljs-string">classpath:/templates/</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 静态资源位置 (默认是 classpath:/static/, /public/, /resources/, /META-INF/resources/)</span><br><span class="hljs-attr">spring.web.resources.static-locations</span>=<span class="hljs-string">classpath:/static/</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>在 <code>application.yml</code> 中：</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">mybatis:</span><br>  <span class="hljs-attr">mapper-locations:</span> <span class="hljs-string">&quot;classpath*:mapper/**/*.xml&quot;</span><br><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">thymeleaf:</span><br>    <span class="hljs-attr">prefix:</span> <span class="hljs-string">&quot;classpath:/templates/&quot;</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">resources:</span><br>      <span class="hljs-attr">static-locations:</span> <span class="hljs-string">&quot;classpath:/static/&quot;</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="场景二：传统的-XML-配置文件（如-Spring-XML）"><a href="#场景二：传统的-XML-配置文件（如-Spring-XML）" class="headerlink" title="场景二：传统的 XML 配置文件（如 Spring XML）"></a>场景二：传统的 XML 配置文件（如 Spring XML）</h3><p>在旧的或使用 XML 配置的 Spring 项目中，你需要在 XML 文件中显式地指定 classpath 资源。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">beans</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.springframework.org/schema/beans&quot;</span></span><br><span class="hljs-tag">       <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">       <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://www.springframework.org/schema/beans</span></span><br><span class="hljs-string"><span class="hljs-tag">        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 1. 加载 properties 文件 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context:property-placeholder</span> <span class="hljs-attr">location</span>=<span class="hljs-string">&quot;classpath:database.properties&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!-- 如果要加载多个，可以用逗号分隔 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context:property-placeholder</span> <span class="hljs-attr">location</span>=<span class="hljs-string">&quot;classpath:app.properties, classpath:secret.properties&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!-- 使用 classpath* 通配符 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context:property-placeholder</span> <span class="hljs-attr">location</span>=<span class="hljs-string">&quot;classpath*:*-config.properties&quot;</span>/&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 2. 导入其他 Spring XML 配置文件 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">&quot;classpath:applicationContext-dao.xml&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">&quot;classpath*:META-INF/spring/module-context.xml&quot;</span>/&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 3. 组件扫描 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context:component-scan</span> <span class="hljs-attr">base-package</span>=<span class="hljs-string">&quot;com.mycompany.service&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">beans</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="场景三：Logback-或-Log4j2-日志配置文件"><a href="#场景三：Logback-或-Log4j2-日志配置文件" class="headerlink" title="场景三：Logback 或 Log4j2 日志配置文件"></a>场景三：Logback 或 Log4j2 日志配置文件</h3><p>日志框架也需要从 classpath 加载其配置。</p>
+<p><strong>Logback (<code>logback-spring.xml</code> 或 <code>logback.xml</code>)：</strong><br>Logback 默认会自动在 classpath 根目录下寻找 <code>logback.xml</code> 或 <code>logback-spring.xml</code>。你不需要在其他地方配置路径，只需确保文件在 classpath 下即可。</p>
+<p>如果非要在一个属性中指定，可以在 <code>application.properties</code> 中覆盖默认路径：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># 指定 Logback 配置文件的精确位置</span><br><span class="hljs-attr">logging.config</span>=<span class="hljs-string">classpath:config/logback-dev.xml</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>Log4j2 (<code>log4j2-spring.xml</code> 或 <code>log4j2.xml</code>)：</strong><br>同理，默认自动查找。也可以在 <code>application.properties</code> 中指定：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">logging.config</span>=<span class="hljs-string">classpath:logging/log4j2.xml</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="如何确保你的文件在-Classpath-中？"><a href="#如何确保你的文件在-Classpath-中？" class="headerlink" title="如何确保你的文件在 Classpath 中？"></a>如何确保你的文件在 Classpath 中？</h3><p>配置了路径，但文件本身必须位于正确的物理位置才能被打包进 classpath。</p>
+<h4 id="1-对于-Maven-Gradle-项目"><a href="#1-对于-Maven-Gradle-项目" class="headerlink" title="1. 对于 Maven&#x2F;Gradle 项目"></a>1. 对于 Maven&#x2F;Gradle 项目</h4><p>标准项目结构如下，<code>src/main/resources</code> 和 <code>src/test/resources</code> 目录下的所有文件在编译后都会被放入产出的 JAR 包的 classpath 根目录。</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nix">my-project<span class="hljs-symbol">/</span><br>├── src<span class="hljs-symbol">/</span><br>│   ├── main<span class="hljs-symbol">/</span><br>│   │   ├── java<span class="hljs-symbol">/</span>          <span class="hljs-comment"># .java 源文件</span><br>│   │   └── resources<span class="hljs-symbol">/</span>     <span class="hljs-comment"># 资源文件 -&gt; 对应 classpath 根目录 /</span><br>│   │       ├── application.properties<br>│   │       ├── mapper<span class="hljs-symbol">/</span>    <span class="hljs-comment"># -&gt; classpath:/mapper/</span><br>│   │       └── static<span class="hljs-symbol">/</span>    <span class="hljs-comment"># -&gt; classpath:/static/</span><br>│   └── test<span class="hljs-symbol">/</span><br>│       └── resources<span class="hljs-symbol">/</span>     <span class="hljs-comment"># 测试用的资源文件</span><br>├── target<span class="hljs-symbol">/</span> (或 build<span class="hljs-operator">/</span>)    <span class="hljs-comment"># 编译输出目录</span><br>│   ├── classes<span class="hljs-symbol">/</span>           <span class="hljs-comment"># 这里是编译后的 class 和资源文件，可以查看结构</span><br>│   └── my-application.jar <span class="hljs-comment"># 打包后的 JAR</span><br>└── pom.xml<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>如果你在 <code>src/main/resources/config/db.properties</code> 放置文件，它在 classpath 中的路径就是 <code>config/db.properties</code>。</li>
+<li>在配置中引用它：<code>classpath:config/db.properties</code></li>
+</ul>
+<h4 id="2-外部化配置（打包后）"><a href="#2-外部化配置（打包后）" class="headerlink" title="2. 外部化配置（打包后）"></a>2. 外部化配置（打包后）</h4><p>对于 Spring Boot，你还可以将配置文件放在打包好的 JAR 包<strong>同级目录</strong>的 <code>/config</code> 文件夹下，它的优先级<strong>高于</strong> JAR 包内部的 classpath 配置。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs applescript">.<br>├── <span class="hljs-keyword">my</span>-<span class="hljs-built_in">application</span>.jar<br>└── config/<br>    └── <span class="hljs-built_in">application</span>.properties <span class="hljs-comment"># 这个文件会被自动加载，且优先级最高</span><br></code></pre></td></tr></table></figure>
+<p>在这种情况下，你不需要使用 <code>classpath:</code> 前缀，因为它是外部文件。Spring Boot 的机制会自动处理这种位置的配置。</p>
+<p>好的，修复后的总结表格如下：</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>配置文件类型</th>
+<th>配置示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Spring Boot</strong></td>
+<td><code>.properties</code></td>
+<td><code>spring.config.import=classpath:/another.properties</code></td>
+<td>导入其他配置文件</td>
+</tr>
+<tr>
+<td><strong>Spring Boot</strong></td>
+<td><code>.properties</code></td>
+<td><code>mybatis.mapper-locations=classpath*:mapper/**/*.xml</code></td>
+<td>指定MyBatis映射文件扫描路径</td>
+</tr>
+<tr>
+<td><strong>Spring XML</strong></td>
+<td><code>.xml</code></td>
+<td><code>&lt;import resource=&quot;classpath:app-context.xml&quot;/&gt;</code></td>
+<td>导入其他Spring XML配置文件</td>
+</tr>
+<tr>
+<td><strong>Spring XML</strong></td>
+<td><code>.xml</code></td>
+<td><code>&lt;context:property-placeholder location=&quot;classpath:db.properties&quot;/&gt;</code></td>
+<td>加载属性配置文件</td>
+</tr>
+<tr>
+<td><strong>日志框架</strong></td>
+<td><code>.properties</code></td>
+<td><code>logging.config=classpath:logback-dev.xml</code></td>
+<td>指定日志配置文件位置</td>
+</tr>
+</tbody></table>
+<p><strong>关键注意事项：</strong></p>
+<ul>
+<li>使用 <code>classpath:</code> 前缀表示从classpath中查找单个资源文件</li>
+<li>使用 <code>classpath*:</code> 前缀表示搜索所有classpath路径中的匹配资源</li>
+<li>确保资源文件位于正确的目录中（如 <code>src/main/resources</code>）</li>
+<li>Spring Boot支持多种配置方式，包括内部classpath和外部文件系统路径</li>
+</ul>
+<p><strong>关键点：</strong></p>
+<ol>
+<li>使用 <code>classpath:</code> 或 <code>classpath*:</code> 前缀。</li>
+<li>确保你的资源文件位于正确的源代码目录（通常是 <code>src/main/resources</code>）中，从而能正确打包到最终的 JAR&#x2F;WAR 文件里。</li>
+<li>理解 Spring Boot 的外部化配置规则，它提供了多种灵活的方式来组织配置文件。</li>
+</ol>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%9F%BA%E7%A1%80%E6%96%87%E6%A1%A3/" class="category-chain-item">基础文档</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>使用 spring.config.import 属性 (Spring Boot 2.4+ 推荐)</div>
+      <div>https://super-404.github.io/2025/09/05/tech-classpath的问题/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/06/tech-%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF-Mit6.824-gfs%E4%B8%ADChunkServe%E5%92%8CMasterr/" title="如何理解GFS中Master节点和Chunk 服务器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何理解GFS中Master节点和Chunk 服务器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/05/tech-%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1-CompletableFuture%E8%AE%BE%E8%AE%A1/" title="实现一个简化的 CompletableFuture">
+                        <span class="hidden-mobile">实现一个简化的 CompletableFuture</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>

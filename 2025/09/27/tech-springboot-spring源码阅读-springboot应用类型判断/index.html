@@ -1,73 +1,715 @@
-<%
-var banner_img_height = parseFloat(page.banner_img_height || theme.index.banner_img_height)
-var colorSchema = theme.dark_mode && theme.dark_mode.enable && theme.dark_mode.default ? theme.dark_mode.default : ''
-%>
+
 
 <!DOCTYPE html>
-<html lang="<%= config.language %>" <%= colorSchema ? `data-default-color-scheme=${colorSchema}` : '' %>>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-<%- partial('_partials/head.ejs') %>
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="super-404">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="方法功能deduceFromClasspath() 是一个静态方法，它的唯一目的是：通过检查当前项目的类路径（Classpath）中是否存在特定的关键类，来推断出 Spring Boot 应用的类型。 它返回一个 WebApplicationType 枚举，共有三个值：- REACTIVE: 响应式 Web 应用- SERVLET: 基于 Servlet 的传统 Web 应用- NONE: 非 W">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot应用类型判断">
+<meta property="og:url" content="https://super-404.github.io/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-springboot%E5%BA%94%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="方法功能deduceFromClasspath() 是一个静态方法，它的唯一目的是：通过检查当前项目的类路径（Classpath）中是否存在特定的关键类，来推断出 Spring Boot 应用的类型。 它返回一个 WebApplicationType 枚举，共有三个值：- REACTIVE: 响应式 Web 应用- SERVLET: 基于 Servlet 的传统 Web 应用- NONE: 非 W">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-27T05:26:00.000Z">
+<meta property="article:modified_time" content="2026-06-29T05:00:04.000Z">
+<meta property="article:author" content="super-404">
+<meta property="article:tag" content="springboot">
+<meta property="article:tag" content="spring源码阅读">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>springboot应用类型判断 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"super-404.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
 
 <body>
-  <%- inject_point('bodyBegin') %>
+  
 
   <header>
-    <%- inject_point('header') %>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>super-404</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
+                <i class="iconfont icon-bookmark-fill"></i>
+                <span>技术文档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="springboot应用类型判断"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-27 13:26" pubdate>
+          2025年9月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
-    <% if(is_post() || page.layout === '404') { %>
-      <%- body %>
-    <% } else { %>
-      <div class="container nopadding-x-md">
-        <div id="board"
-          <%- banner_img_height >= 100 && theme.banner && theme.banner.parallax ? 'style="margin-top: 0"' : '' %>>
-          <% if(page.layout === 'about') { %>
-            <div class="about-avatar">
-              <img src="<%= url_for(theme.about.avatar) %>" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          <% } %>
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                <%- body %>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">springboot应用类型判断</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="方法功能"><a href="#方法功能" class="headerlink" title="方法功能"></a>方法功能</h3><p><strong><code>deduceFromClasspath()</code></strong> 是一个静态方法，它的唯一目的是：<strong>通过检查当前项目的类路径（Classpath）中是否存在特定的关键类，来推断出 Spring Boot 应用的类型</strong>。</p>
+<h2 id="它返回一个-WebApplicationType-枚举，共有三个值：-REACTIVE-响应式-Web-应用-SERVLET-基于-Servlet-的传统-Web-应用-NONE-非-Web-应用（如后台任务、批处理应用）"><a href="#它返回一个-WebApplicationType-枚举，共有三个值：-REACTIVE-响应式-Web-应用-SERVLET-基于-Servlet-的传统-Web-应用-NONE-非-Web-应用（如后台任务、批处理应用）" class="headerlink" title="它返回一个 WebApplicationType 枚举，共有三个值：- REACTIVE: 响应式 Web 应用- SERVLET: 基于 Servlet 的传统 Web 应用- NONE: 非 Web 应用（如后台任务、批处理应用）"></a>它返回一个 <code>WebApplicationType</code> 枚举，共有三个值：<br>- <code>REACTIVE</code>: 响应式 Web 应用<br>- <code>SERVLET</code>: 基于 Servlet 的传统 Web 应用<br>- <code>NONE</code>: 非 Web 应用（如后台任务、批处理应用）</h2><h3 id="代码逐行解析"><a href="#代码逐行解析" class="headerlink" title="代码逐行解析"></a>代码逐行解析</h3><h4 id="第一部分：判断是否为响应式（REACTIVE）应用"><a href="#第一部分：判断是否为响应式（REACTIVE）应用" class="headerlink" title="第一部分：判断是否为响应式（REACTIVE）应用"></a>第一部分：判断是否为响应式（REACTIVE）应用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (ClassUtils.isPresent(WEBFLUX_INDICATOR_CLASS, <span class="hljs-literal">null</span>) &amp;&amp; <br>    !ClassUtils.isPresent(WEBMVC_INDICATOR_CLASS, <span class="hljs-literal">null</span>) &amp;&amp;<br>    !ClassUtils.isPresent(JERSEY_INDICATOR_CLASS, <span class="hljs-literal">null</span>)) &#123;<br>    <span class="hljs-keyword">return</span> WebApplicationType.REACTIVE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>ClassUtils.isPresent(String className, ClassLoader classLoader)</code></strong>: 这是一个 Spring 工具方法，用于判断指定的类能否在当前的类路径下被成功加载。如果能，返回 <code>true</code>，表示该类存在。</li>
+<li><strong><code>WEBFLUX_INDICATOR_CLASS</code></strong>: 通常是 <code>&quot;org.springframework.web.reactive.DispatcherHandler&quot;</code>。这是 Spring WebFlux（响应式 Web 框架）的核心控制器。</li>
+<li><strong><code>WEBMVC_INDICATOR_CLASS</code></strong>: 通常是 <code>&quot;org.springframework.web.servlet.DispatcherServlet&quot;</code>。这是 Spring MVC（传统 Servlet Web 框架）的核心控制器。</li>
+<li><strong><code>JERSEY_INDICATOR_CLASS</code></strong>: 通常是 <code>&quot;org.glassfish.jersey.servlet.ServletContainer&quot;</code>。这是 JAX-RS 规范的一种实现（Jersey），也是一种创建 Web 服务的方式。</li>
+</ul>
+<p><strong>逻辑解释：</strong><br>只有当<strong>同时满足</strong>以下所有条件时，应用才被推断为 <code>REACTIVE</code>：</p>
+<ol>
+<li><strong>存在</strong> WebFlux 的 <code>DispatcherHandler</code> → 意味着项目引入了 Spring WebFlux 依赖（如 <code>spring-boot-starter-webflux</code>）。</li>
+<li><strong>不存在</strong> Spring MVC 的 <code>DispatcherServlet</code> → 意味着项目<strong>没有</strong>引入传统的 Spring MVC 依赖。</li>
+<li><strong>不存在</strong> Jersey 的 <code>ServletContainer</code> → 意味着项目<strong>没有</strong>使用 Jersey 来构建 REST 服务。</li>
+</ol>
+<h2 id="设计意图：-这种判断确保了只有当应用明确地只使用了-WebFlux-时，才会被判定为响应式应用。如果类路径中同时存在-WebFlux-和-MVC（有时可能意外引入），Spring-Boot-会优先将其视为更常见的-SERVLET-应用，以避免冲突。"><a href="#设计意图：-这种判断确保了只有当应用明确地只使用了-WebFlux-时，才会被判定为响应式应用。如果类路径中同时存在-WebFlux-和-MVC（有时可能意外引入），Spring-Boot-会优先将其视为更常见的-SERVLET-应用，以避免冲突。" class="headerlink" title="设计意图： 这种判断确保了只有当应用明确地只使用了 WebFlux 时，才会被判定为响应式应用。如果类路径中同时存在 WebFlux 和 MVC（有时可能意外引入），Spring Boot 会优先将其视为更常见的 SERVLET 应用，以避免冲突。"></a><strong>设计意图：</strong> 这种判断确保了只有当应用<strong>明确地只使用了 WebFlux</strong> 时，才会被判定为响应式应用。如果类路径中同时存在 WebFlux 和 MVC（有时可能意外引入），Spring Boot 会优先将其视为更常见的 SERVLET 应用，以避免冲突。</h2><h4 id="第二部分：判断是否为非-Web（NONE）应用"><a href="#第二部分：判断是否为非-Web（NONE）应用" class="headerlink" title="第二部分：判断是否为非 Web（NONE）应用"></a>第二部分：判断是否为非 Web（NONE）应用</h4><p>如果上一步不满足（即不是纯响应式应用），代码会继续执行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span> (String className : SERVLET_INDICATOR_CLASSES) &#123;<br>    <span class="hljs-keyword">if</span> (!ClassUtils.isPresent(className, <span class="hljs-literal">null</span>)) &#123;<br>        <span class="hljs-keyword">return</span> WebApplicationType.NONE;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>SERVLET_INDICATOR_CLASSES</code></strong>: 这是一个包含多个类名的集合，通常包括：<ul>
+<li><code>&quot;javax.servlet.Servlet&quot;</code></li>
+<li><code>&quot;org.springframework.web.context.ConfigurableWebApplicationContext&quot;</code></li>
+<li>等等。这些是 Servlet 环境和 Spring Web 支持的基础类。</li>
+</ul>
+</li>
+</ul>
+<h2 id="逻辑解释：这是一个“只要有一个不存在，就返回-NONE”的逻辑。-循环遍历所有代表-Servlet-Web-应用所必需的类。-如果发现其中任何一个类不存在于类路径中，就意味着当前环境连最基本的-Servlet-API-或-Spring-Web-支持都不具备，那么它肯定不是一个-Web-应用。-因此，直接返回-WebApplicationType-NONE。"><a href="#逻辑解释：这是一个“只要有一个不存在，就返回-NONE”的逻辑。-循环遍历所有代表-Servlet-Web-应用所必需的类。-如果发现其中任何一个类不存在于类路径中，就意味着当前环境连最基本的-Servlet-API-或-Spring-Web-支持都不具备，那么它肯定不是一个-Web-应用。-因此，直接返回-WebApplicationType-NONE。" class="headerlink" title="逻辑解释：这是一个“只要有一个不存在，就返回 NONE”的逻辑。- 循环遍历所有代表 Servlet Web 应用所必需的类。- 如果发现其中任何一个类不存在于类路径中，就意味着当前环境连最基本的 Servlet API 或 Spring Web 支持都不具备，那么它肯定不是一个 Web 应用。- 因此，直接返回 WebApplicationType.NONE。"></a><strong>逻辑解释：</strong><br>这是一个“只要有一个不存在，就返回 NONE”的逻辑。<br>- 循环遍历所有代表 Servlet Web 应用所<strong>必需</strong>的类。<br>- 如果发现其中<strong>任何一个类不存在于类路径中</strong>，就意味着当前环境连最基本的 Servlet API 或 Spring Web 支持都不具备，那么它肯定不是一个 Web 应用。<br>- 因此，直接返回 <code>WebApplicationType.NONE</code>。</h2><h4 id="第三部分：默认判断为-Servlet（SERVLET）应用"><a href="#第三部分：默认判断为-Servlet（SERVLET）应用" class="headerlink" title="第三部分：默认判断为 Servlet（SERVLET）应用"></a>第三部分：默认判断为 Servlet（SERVLET）应用</h4><p>如果代码能执行到最后的 <code>return</code> 语句，说明：</p>
+<ol>
+<li>它不是纯响应式应用（第一步的条件不满足）。</li>
+<li>它具备了所有 Servlet Web 应用所需的基础类（第二步的循环没有提前返回）。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">return</span> WebApplicationType.SERVLET;<br></code></pre></td></tr></table></figure>
+
+<h2 id="因此，应用被推断为最常用的-WebApplicationType-SERVLET-类型。这涵盖了绝大多数使用-Spring-MVC、Jersey-或者同时引入了-WebFlux-和-MVC-的情况。"><a href="#因此，应用被推断为最常用的-WebApplicationType-SERVLET-类型。这涵盖了绝大多数使用-Spring-MVC、Jersey-或者同时引入了-WebFlux-和-MVC-的情况。" class="headerlink" title="因此，应用被推断为最常用的 WebApplicationType.SERVLET 类型。这涵盖了绝大多数使用 Spring MVC、Jersey 或者同时引入了 WebFlux 和 MVC 的情况。"></a>因此，应用被推断为最常用的 <code>WebApplicationType.SERVLET</code> 类型。这涵盖了绝大多数使用 Spring MVC、Jersey 或者同时引入了 WebFlux 和 MVC 的情况。</h2><h3 id="逻辑流程图"><a href="#逻辑流程图" class="headerlink" title="逻辑流程图"></a>逻辑流程图</h3><pre><code class=" mermaid">graph TD
+    A[开始推断] --&gt; B&#123;是否存在 WebFlux 且&lt;br&gt;不存在 Spring MVC 和 Jersey?&#125;;
+    B -- 是 --&gt; C[返回 REACTIVE];
+    B -- 否 --&gt; D;
+
+    subgraph D [检查 Servlet 环境基础类]
+        D1[遍历必需的 Servlet 类] --&gt; D2&#123;当前类是否存在?&#125;;
+        D2 -- 不存在 --&gt; E[返回 NONE];
+        D2 -- 存在 --&gt; D3&#123;是否所有类都检查完?&#125;;
+        D3 -- 否 --&gt; D1;
+        D3 -- 是 --&gt; F;
+    end
+
+    E --&gt; G[结束];
+    F[返回 SERVLET] --&gt; G;
+    C --&gt; G;
+</code></pre>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这个方法体现了 Spring Boot 的“约定优于配置”原则和强大的自动配置能力。它通过简单的类路径扫描，智能地决定了应用的运行模式：</p>
+<ul>
+<li><strong>优先级从高到低</strong>：<code>REACTIVE</code> &gt; <code>NONE</code> &gt; <code>SERVLET</code>。</li>
+<li><strong>严谨的判断</strong>：确保响应式应用的纯粹性，避免因依赖冲突导致意外行为。</li>
+<li><strong>默认通用</strong>：将最常见的情况（SERVLET）作为默认选择。</li>
+</ul>
+<p>这个推断结果直接影响了后续流程，特别是 <code>ApplicationContext</code> 的类型和内嵌 Web 服务器的创建（例如，<code>REACTIVE</code> 类型会创建 <code>Netty</code> 服务器，而 <code>SERVLET</code> 类型会创建 <code>Tomcat</code> 服务器）。</p>
+
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/springboot/" class="category-chain-item">springboot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/springboot/">#springboot</a>
+      
+        <a href="/tags/spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">#spring源码阅读</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>springboot应用类型判断</div>
+      <div>https://super-404.github.io/2025/09/27/tech-springboot-spring源码阅读-springboot应用类型判断/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>super-404</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              CC BY 4.0
+            
           </div>
         </div>
-      </div>
-    <% } %>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-    <% if (theme.scroll_top_arrow.enable) { %>
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-Spring%20Boot%20%E4%B8%AD%E7%94%A8%E4%BA%8E%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%89%A9%E5%B1%95%E7%BB%84%E4%BB%B6/" title="META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/27/tech-springboot-spring%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-springboot%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" title="springboot启动流程">
+                        <span class="hidden-mobile">springboot启动流程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
       <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
-    <% } %>
+    
 
-    <% if (theme.search.enable) { %>
-      <%- partial('_partials/search.ejs') %>
-    <% } %>
-
-    <% if (theme.custom_html) { %>
-      <div class="col-lg-7 mx-auto nopadding-x-md">
-        <div class="container custom mx-auto">
-          <%- theme.custom_html %>
-        </div>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <% } %>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
   </main>
 
   <footer>
-    <%- inject_point('footer') %>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
   </footer>
 
   <!-- Scripts -->
-  <%- partial('_partials/scripts.ejs') %>
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <%- inject_point('bodyEnd') %>
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
 
   <noscript>
-    <div class="noscript-warning"><%- __('noscript_warning') %></div>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 </body>
 </html>
