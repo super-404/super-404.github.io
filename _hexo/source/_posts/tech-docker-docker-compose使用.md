@@ -2,7 +2,6 @@
 title: '运行指定的配置文件'
 date: '2025-09-22 20:48'
 categories:
-  - '技术文档'
   - '工程工具'
   - 'Docker'
   - 'Docker Compose'

@@ -2,7 +2,6 @@
 title: 'ABA问题 怎么解决'
 date: '2025-09-06 15:33'
 categories:
-  - '技术文档'
   - '并发编程'
   - 'CAS'
   - 'ABA问题'

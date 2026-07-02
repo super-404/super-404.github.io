@@ -2,7 +2,6 @@
 title: 'lsof'
 date: '2025-09-26 17:15'
 categories:
-  - '技术文档'
   - '工程工具'
   - 'Linux命令'
   - 'lsof'

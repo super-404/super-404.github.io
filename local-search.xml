@@ -13,8 +13,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>AI Agent</category>
       
       <category>LobeHub</category>
@@ -45,8 +43,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>数据库</category>
       
@@ -79,8 +75,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>并发编程</category>
       
       <category>CAS</category>
@@ -110,8 +104,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>数据库</category>
       
       <category>存储引擎</category>
@@ -135,8 +127,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>待整理</category>
       
       <category>空文档</category>
@@ -157,8 +147,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>分布式系统</category>
       
@@ -182,8 +170,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>分布式系统</category>
       
@@ -216,8 +202,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>分布式系统</category>
       
       <category>MIT 6.824</category>
@@ -248,8 +232,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>开源学习</category>
       
@@ -284,8 +266,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>开源学习</category>
       
       <category>XXL-JOB</category>
@@ -318,8 +298,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>开源学习</category>
       
@@ -354,8 +332,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>开源学习</category>
       
       <category>XXL-JOB</category>
@@ -388,8 +364,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>开源学习</category>
       
@@ -424,8 +398,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>开源学习</category>
       
       <category>XXL-JOB</category>
@@ -458,8 +430,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>开源学习</category>
       
@@ -494,8 +464,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>开源学习</category>
       
       <category>XXL-JOB</category>
@@ -528,8 +496,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>开源学习</category>
       
@@ -564,8 +530,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>并发编程</category>
       
       <category>高性能队列</category>
@@ -588,8 +552,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -624,8 +586,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Framework</category>
@@ -658,8 +618,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -694,8 +652,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Boot</category>
@@ -727,8 +683,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Java</category>
       
       <category>JVM</category>
@@ -758,8 +712,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>学习资源</category>
       
       <category>文章收藏</category>
@@ -788,8 +740,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -824,8 +774,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Framework</category>
@@ -858,8 +806,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -894,8 +840,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Boot</category>
@@ -928,8 +872,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -964,8 +906,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Boot</category>
@@ -998,8 +938,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -1034,8 +972,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Framework</category>
@@ -1068,8 +1004,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -1104,8 +1038,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Boot</category>
@@ -1138,8 +1070,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -1174,8 +1104,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Framework</category>
@@ -1208,8 +1136,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -1244,8 +1170,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>工程工具</category>
       
       <category>Java工具</category>
@@ -1275,8 +1199,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>工程工具</category>
       
       <category>Linux命令</category>
@@ -1305,8 +1227,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>中间件</category>
       
@@ -1339,8 +1259,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>中间件</category>
       
       <category>待整理</category>
@@ -1370,8 +1288,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>工程工具</category>
       
       <category>Maven</category>
@@ -1400,8 +1316,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>中间件</category>
       
@@ -1434,8 +1348,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>工程工具</category>
       
       <category>Docker</category>
@@ -1465,8 +1377,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>并发编程</category>
       
       <category>线程上下文</category>
@@ -1495,8 +1405,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -1529,8 +1437,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>开源学习</category>
       
       <category>Netty</category>
@@ -1561,8 +1467,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -1595,8 +1499,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>工程工具</category>
       
       <category>Git</category>
@@ -1625,8 +1527,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>中间件</category>
       
@@ -1659,8 +1559,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Boot</category>
@@ -1692,8 +1590,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>并发编程</category>
       
       <category>线程协作</category>
@@ -1722,8 +1618,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>并发编程</category>
       
@@ -1754,8 +1648,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>并发编程</category>
       
       <category>锁与同步器</category>
@@ -1784,8 +1676,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>并发编程</category>
       
@@ -1816,8 +1706,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>并发编程</category>
       
       <category>自旋优化</category>
@@ -1846,8 +1734,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>并发编程</category>
       
@@ -1878,8 +1764,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>并发编程</category>
       
       <category>锁与同步器</category>
@@ -1908,8 +1792,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>分布式系统</category>
       
@@ -1942,8 +1824,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Java</category>
       
       <category>Classpath与资源加载</category>
@@ -1966,8 +1846,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>并发编程</category>
       
@@ -1998,8 +1876,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>业务系统</category>
       
       <category>AdEngine</category>
@@ -2028,8 +1904,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -2062,8 +1936,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Spring</category>
       
       <category>Spring Boot</category>
@@ -2095,8 +1967,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>业务系统</category>
       
       <category>AdEngine</category>
@@ -2126,8 +1996,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>工程工具</category>
       
       <category>Git</category>
@@ -2156,8 +2024,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>开源学习</category>
       
@@ -2192,8 +2058,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Java</category>
       
       <category>Lombok</category>
@@ -2216,8 +2080,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>开源学习</category>
       
@@ -2252,8 +2114,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>开源学习</category>
       
       <category>Redis</category>
@@ -2287,8 +2147,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>工程实践</category>
       
       <category>日志</category>
@@ -2311,8 +2169,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -2345,8 +2201,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Java</category>
       
       <category>泛型</category>
@@ -2369,8 +2223,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       
@@ -2403,8 +2255,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>Java</category>
       
       <category>语言基础</category>
@@ -2428,8 +2278,6 @@
     
     <categories>
       
-      <category>技术文档</category>
-      
       <category>数据库</category>
       
       <category>MySQL</category>
@@ -2452,8 +2300,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>中间件</category>
       
@@ -2485,8 +2331,6 @@
     
     
     <categories>
-      
-      <category>技术文档</category>
       
       <category>Spring</category>
       

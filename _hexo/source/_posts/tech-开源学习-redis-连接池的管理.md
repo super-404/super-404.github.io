@@ -2,7 +2,6 @@
 title: '使用LettuceConnectionFactory管理Redis连接池'
 date: '2025-09-01 15:06'
 categories:
-  - '技术文档'
   - '开源学习'
   - 'Redis'
   - 'Spring集成'

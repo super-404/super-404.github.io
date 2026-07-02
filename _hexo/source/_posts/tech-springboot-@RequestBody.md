@@ -2,7 +2,6 @@
 title: '@RequestBody'
 date: '2025-08-23 16:46'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - 'Web接口'

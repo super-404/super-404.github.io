@@ -24,7 +24,7 @@
 <meta property="og:description" content="好的，我们来详细解释 Thread.onSpinWait() 这个非常有用的方法。 1. 它是做什么的？Thread.onSpinWait() 是 Java 9 引入的一个静态方法。它的核心作用是向 Java 虚拟机（JVM）和底层硬件发出一个提示（Hint）：当前线程正在“忙循环”（Busy-waiting）或“自旋”（Spinning）中主动等待某个条件变为真。 它本身不会释放 CPU，也不会">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-06T09:13:00.000Z">
-<meta property="article:modified_time" content="2026-06-29T05:35:05.599Z">
+<meta property="article:modified_time" content="2026-07-02T11:12:01.999Z">
 <meta property="article:author" content="super-404">
 <meta property="article:tag" content="并发设计">
 <meta name="twitter:card" content="summary_large_image">
@@ -140,18 +140,6 @@
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
-                <i class="iconfont icon-bookmark-fill"></i>
-                <span>技术文档</span>
               </a>
             </li>
           
@@ -369,25 +357,18 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="category-chain-item">并发编程</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="category-chain-item">并发编程</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E8%87%AA%E6%97%8B%E4%BC%98%E5%8C%96/" class="category-chain-item">自旋优化</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E8%87%AA%E6%97%8B%E4%BC%98%E5%8C%96/" class="category-chain-item">自旋优化</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E8%87%AA%E6%97%8B%E4%BC%98%E5%8C%96/Thread-onSpinWait/" class="category-chain-item">Thread.onSpinWait</a>
   
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E8%87%AA%E6%97%8B%E4%BC%98%E5%8C%96/Thread-onSpinWait/" class="category-chain-item">Thread.onSpinWait</a>
-  
-  
-
   
 
   

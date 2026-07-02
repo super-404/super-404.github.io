@@ -2,7 +2,6 @@
 title: '为什么会出现 nowTime > triggerNextTime + PREREADMS 的情况'
 date: '2025-12-30 16:00'
 categories:
-  - '技术文档'
   - '开源学习'
   - 'XXL-JOB'
   - '任务过期'

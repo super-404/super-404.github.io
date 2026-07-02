@@ -2,7 +2,6 @@
 title: 'RestControllerAdvice解释'
 date: '2025-09-02 16:03'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - 'Web接口'

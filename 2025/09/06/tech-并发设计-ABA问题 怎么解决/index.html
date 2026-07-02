@@ -24,7 +24,7 @@
 <meta property="og:description" content="好的，ABA问题是使用CAS（乐观锁）时的一个经典陷阱。解决它的核心思想是：不仅要检查值是否相同，还要检查版本号或状态是否发生过变化。1. 什么是ABA问题？假设一个共享变量的值为 A。  线程1读取到值 A。 线程1被挂起。 线程2将值从 A 修改为 B。 线程3（或线程2）又将值从 B 修改回 A。 线程1恢复运行，执行CAS操作：它期望的值是 A，当前值确实也是 A，所以CAS成功。  问题">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-06T07:33:00.000Z">
-<meta property="article:modified_time" content="2026-06-29T05:35:05.597Z">
+<meta property="article:modified_time" content="2026-07-02T11:12:01.997Z">
 <meta property="article:author" content="super-404">
 <meta property="article:tag" content="并发设计">
 <meta name="twitter:card" content="summary_large_image">
@@ -140,18 +140,6 @@
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
-                <i class="iconfont icon-bookmark-fill"></i>
-                <span>技术文档</span>
               </a>
             </li>
           
@@ -374,25 +362,18 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="category-chain-item">并发编程</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="category-chain-item">并发编程</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/CAS/" class="category-chain-item">CAS</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/CAS/" class="category-chain-item">CAS</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/CAS/ABA%E9%97%AE%E9%A2%98/" class="category-chain-item">ABA问题</a>
   
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/CAS/ABA%E9%97%AE%E9%A2%98/" class="category-chain-item">ABA问题</a>
-  
-  
-
   
 
   

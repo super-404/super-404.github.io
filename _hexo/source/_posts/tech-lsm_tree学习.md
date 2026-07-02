@@ -2,7 +2,6 @@
 title: 'lsm_tree学习'
 date: '2026-04-09 17:35'
 categories:
-  - '技术文档'
   - '数据库'
   - '存储引擎'
   - 'LSM Tree'

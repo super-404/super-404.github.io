@@ -2,7 +2,6 @@
 title: 'BootstrapRegistryInitializer'
 date: '2025-10-24 15:27'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '启动流程'

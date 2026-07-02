@@ -2,7 +2,6 @@
 title: 'springboot应用类型判断'
 date: '2025-09-27 13:26'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '源码阅读'

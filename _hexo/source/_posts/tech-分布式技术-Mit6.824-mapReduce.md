@@ -2,7 +2,6 @@
 title: '崩溃恢复'
 date: '2026-01-08 14:25'
 categories:
-  - '技术文档'
   - '分布式系统'
   - 'MIT 6.824'
   - 'MapReduce'

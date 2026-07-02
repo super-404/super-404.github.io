@@ -2,7 +2,6 @@
 title: 'BeanClassLoaderAware'
 date: '2025-09-27 17:51'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Framework'
   - '源码阅读'

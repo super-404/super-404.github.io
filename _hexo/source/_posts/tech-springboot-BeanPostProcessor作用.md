@@ -2,7 +2,6 @@
 title: 'BeanPostProcessor作用'
 date: '2025-09-19 19:18'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Framework'
   - 'Bean生命周期'

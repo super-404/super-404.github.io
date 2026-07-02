@@ -2,7 +2,6 @@
 title: '在SimpleChannelInboundHandler中的channelActive和channelRead0'
 date: '2025-09-19 11:46'
 categories:
-  - '技术文档'
   - '开源学习'
   - 'Netty'
   - 'ChannelHandler'

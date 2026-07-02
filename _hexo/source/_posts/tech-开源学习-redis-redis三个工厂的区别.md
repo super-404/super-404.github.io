@@ -2,7 +2,6 @@
 title: 'Redis连接工厂和配置对比'
 date: '2025-09-01 14:33'
 categories:
-  - '技术文档'
   - '开源学习'
   - 'Redis'
   - 'Spring集成'

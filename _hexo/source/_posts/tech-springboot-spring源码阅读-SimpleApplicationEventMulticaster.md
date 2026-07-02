@@ -2,7 +2,6 @@
 title: 'SimpleApplicationEventMulticaster'
 date: '2025-09-27 18:12'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Framework'
   - '源码阅读'

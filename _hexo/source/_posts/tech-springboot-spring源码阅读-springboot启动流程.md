@@ -2,7 +2,6 @@
 title: 'springboot启动流程'
 date: '2025-09-27 11:36'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '源码阅读'

@@ -2,7 +2,6 @@
 title: 'run方法'
 date: '2025-09-27 17:17'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '源码阅读'

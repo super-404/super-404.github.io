@@ -2,7 +2,6 @@
 title: '🌱 一、是什么'
 date: '2025-10-22 13:21'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Framework'
   - '类注册'

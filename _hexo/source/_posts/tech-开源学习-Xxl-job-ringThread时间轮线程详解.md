@@ -2,7 +2,6 @@
 title: 'ringThread 时间轮线程详解'
 date: '2025-12-30 16:28'
 categories:
-  - '技术文档'
   - '开源学习'
   - 'XXL-JOB'
   - '调度源码'

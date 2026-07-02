@@ -2,7 +2,6 @@
 title: 'imc-cache 的作用'
 date: '2025-09-04 17:40'
 categories:
-  - '技术文档'
   - '业务系统'
   - 'AdEngine'
   - 'IMC缓存'

@@ -2,7 +2,6 @@
 title: 'META-INF/spring.factories (位于 spring-boot.jar 或 spring-boot-autoconfigure.jar 中)'
 date: '2025-09-27 13:40'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '源码阅读'

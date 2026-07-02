@@ -2,7 +2,6 @@
 title: '暴露Spring后处理器的注解信息'
 date: '2025-09-12 20:25'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Framework'
   - '注解元数据'

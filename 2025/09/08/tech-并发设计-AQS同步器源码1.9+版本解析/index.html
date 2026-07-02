@@ -24,7 +24,7 @@
 <meta property="og:description" content="AQS同步器源码1.9+版本解析一、AQS 概述：同步器的骨架引擎核心定义：AQS 是 java.util.concurrent.locks 包下的一个抽象类。它提供了一个框架，用于实现依赖于先进先出 (FIFO) 等待队列的阻塞锁和相关的同步器（如信号量、事件等）。 设计目标：AQS 解决了在构建同步器时，与状态管理、线程排队、阻塞与唤醒相关的复杂且易错的底层细节。它采用了**模板方法模式 (T">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-08T07:43:00.000Z">
-<meta property="article:modified_time" content="2026-06-29T05:35:05.598Z">
+<meta property="article:modified_time" content="2026-07-02T11:12:01.998Z">
 <meta property="article:author" content="super-404">
 <meta property="article:tag" content="并发设计">
 <meta name="twitter:card" content="summary_large_image">
@@ -140,18 +140,6 @@
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/">
-                <i class="iconfont icon-bookmark-fill"></i>
-                <span>技术文档</span>
               </a>
             </li>
           
@@ -3187,25 +3175,18 @@ I -- stat &lt; 0 中断  --&gt; C
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" class="category-chain-item">技术文档</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="category-chain-item">并发编程</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="category-chain-item">并发编程</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/AQS/" class="category-chain-item">AQS</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/AQS/" class="category-chain-item">AQS</a>
+  <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/AQS/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" class="category-chain-item">源码解析</a>
   
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/AQS/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" class="category-chain-item">源码解析</a>
-  
-  
-
   
 
   

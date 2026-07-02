@@ -2,7 +2,6 @@
 title: 'CyclicBarrier的应用场景'
 date: '2025-09-09 18:00'
 categories:
-  - '技术文档'
   - '并发编程'
   - '线程协作'
   - 'CyclicBarrier'

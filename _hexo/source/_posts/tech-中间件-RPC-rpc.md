@@ -2,7 +2,6 @@
 title: 'Auto Configure'
 date: '2025-09-11 21:03'
 categories:
-  - '技术文档'
   - '中间件'
   - 'RPC'
   - '自动配置'

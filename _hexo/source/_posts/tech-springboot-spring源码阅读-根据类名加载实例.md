@@ -2,7 +2,6 @@
 title: '根据类名加载实例'
 date: '2025-09-27 15:47'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '源码阅读'

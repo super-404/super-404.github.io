@@ -2,7 +2,6 @@
 title: 'spring-boot-2.x.x.jar!/META-INF/spring.factories'
 date: '2025-09-27 17:17'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '源码阅读'

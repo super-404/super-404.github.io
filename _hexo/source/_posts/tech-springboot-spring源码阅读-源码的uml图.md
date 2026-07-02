@@ -2,7 +2,6 @@
 title: '源码的uml图'
 date: '2025-09-27 11:14'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '源码阅读'

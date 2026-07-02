@@ -2,7 +2,6 @@
 title: 'application.yml'
 date: '2025-10-20 11:12'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - '运行模式'

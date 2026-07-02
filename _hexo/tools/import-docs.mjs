@@ -273,7 +273,7 @@ function importTechDocs() {
         {
           title,
           date: dateText,
-          categories: ['技术文档', group],
+          categories: [group],
           tags: relative.split('/').slice(0, -1),
         },
         body + '\n',

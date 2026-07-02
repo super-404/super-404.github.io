@@ -2,7 +2,6 @@
 title: 'java 9的Thread.onSpinWait'
 date: '2025-09-06 17:13'
 categories:
-  - '技术文档'
   - '并发编程'
   - '自旋优化'
   - 'Thread.onSpinWait'

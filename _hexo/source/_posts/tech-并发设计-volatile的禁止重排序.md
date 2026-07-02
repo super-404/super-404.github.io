@@ -2,7 +2,6 @@
 title: 'volatile的禁止重排序'
 date: '2025-09-09 17:44'
 categories:
-  - '技术文档'
   - '并发编程'
   - 'Java内存模型'
   - 'volatile'

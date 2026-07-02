@@ -2,7 +2,6 @@
 title: 'java中static常量的用法'
 date: '2025-08-23 10:16'
 categories:
-  - '技术文档'
   - 'Java'
   - '语言基础'
   - 'static'

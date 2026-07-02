@@ -2,7 +2,6 @@
 title: 'ClassPathXmlApplicationContext'
 date: '2025-09-27 11:15'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Framework'
   - '源码阅读'

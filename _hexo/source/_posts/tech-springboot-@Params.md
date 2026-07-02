@@ -2,7 +2,6 @@
 title: '@Params'
 date: '2025-08-25 11:09'
 categories:
-  - '技术文档'
   - 'Spring'
   - 'Spring Boot'
   - 'Web接口'
